@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "outDir": "../build",
+        "rootDir": ".",
+        "target": "es2024",
+        "module": "preserve",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "strict": true,
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+        "noImplicitOverride": true,
+        "strictNullChecks": false,
+        "forceConsistentCasingInFileNames": true,
+        "types": [
+            "vite/client"
+        ],
+        "lib": [
+            "ES2024",
+            "DOM",
+        ]
+    },
+    "include": [
+        "src",
+        "*.config.*",
+        "config.ts"
+    ]
+}

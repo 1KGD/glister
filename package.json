@@ -1,0 +1,33 @@
+{
+  "name": "mud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently --kill-others --names vite,colyseus -c green,blue 'pnpm run client-dev' 'pnpm run server-dev'",
+        "client-dev": "vite",
+        "server-dev": "tsx watch src/netcode/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.0.9",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "eslint": "^10.3.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.11",
+    "vite-preload": "^1.0.5"
+  },
+  "dependencies": {
+    "@colyseus/sdk": "^0.17.42"
+  }
+}
