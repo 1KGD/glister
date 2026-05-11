@@ -5,4 +5,5 @@ await Colyseus.defineServer({
     rooms: {
         game: Colyseus.defineRoom(GameRoom),
     },
+    greet: false,
 }).listen(config.multiplayer.port);
