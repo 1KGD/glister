@@ -1,7 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Colyseus from '@colyseus/sdk';
-import * as ColyseusReact from '@colyseus/react';
 import roomProvider from './roomProvider';
 import config from '../../config';
 import GameState from '../common/gameState';
@@ -14,7 +13,7 @@ function RoomStatus(): React.JSX.Element {
     const state = roomProvider.useRoomState();
     if (error) return <pre>ERROR {error.name}: {error.message} [{JSON.stringify(error.cause)}]</pre>;
     if (isConnecting || !state) return <>Connecting...</>;
-    return <>{state.g}</>;
+    return <>{JSON.stringify(state.gameMaster)}</>;
 }
 
 function App(): React.JSX.Element {

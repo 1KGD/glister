@@ -1,2 +1,3 @@
 import * as ColyseusReact from '@colyseus/react';
-export default ColyseusReact.createRoomContext();
+import GameState from '../common/gameState';
+export default ColyseusReact.createRoomContext<GameState>();
