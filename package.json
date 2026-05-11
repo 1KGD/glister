@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently --kill-others --names vite,colyseus -c green,blue 'pnpm run client-dev' 'pnpm run server-dev'",
-        "client-dev": "vite",
-        "server-dev": "tsx watch src/netcode/server.ts"
+    "client-dev": "vite",
+    "server-dev": "tsx watch src/server/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "eslint": "^10.3.0",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.11",
