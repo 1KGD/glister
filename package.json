@@ -20,6 +20,9 @@
   },
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "concurrently": "^9.2.1",
     "eslint": "^10.3.0",
     "tsx": "^4.21.0",
@@ -29,6 +32,8 @@
     "vite-preload": "^1.0.5"
   },
   "dependencies": {
-    "@colyseus/sdk": "^0.17.42"
+    "@colyseus/sdk": "^0.17.42",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   }
 }
