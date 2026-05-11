@@ -32,7 +32,9 @@
     "vite-preload": "^1.0.5"
   },
   "dependencies": {
+    "@colyseus/schema": "^4.0.25",
     "@colyseus/sdk": "^0.17.42",
+    "colyseus": "^0.17.10",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   }

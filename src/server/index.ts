@@ -1,1 +1,6 @@
-console.log("Hello from the server!");
+import * as Colyseus from 'colyseus';
+Colyseus.defineServer({
+    rooms: {
+
+    },
+});
