@@ -5,8 +5,15 @@ export class PlayerState extends $.Schema {
     @$.type("string") public name: string;
 }
 
+@$.entity
 export class GameMasterState extends $.Schema {
+    @$.type('string') public readonly id: string;
     @$.type("string") public name: string;
+
+    public constructor(id: string) {
+        super();
+        this.id = id;
+    }
 }
 
 export default class GameState extends $.Schema {
@@ -15,7 +22,6 @@ export default class GameState extends $.Schema {
 
     public constructor() {
         super();
-        this.gameMaster = new GameMasterState();
         this.players = new $.ArraySchema();
     }
 }

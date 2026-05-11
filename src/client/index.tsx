@@ -17,7 +17,7 @@ function RoomStatus(): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
-    return <roomProvider.RoomProvider connect={() => client.joinOrCreate("game", {}, GameState)}>
+    return <roomProvider.RoomProvider connect={() => client.joinOrCreate("game", { isGameMaster: true }, GameState)}>
         <RoomStatus />
     </roomProvider.RoomProvider>;
 }
