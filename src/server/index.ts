@@ -1,6 +1,8 @@
 import * as Colyseus from 'colyseus';
-Colyseus.defineServer({
+import { GameRoom } from './gameRoom';
+import config from '../../config';
+await Colyseus.defineServer({
     rooms: {
-
+        game: Colyseus.defineRoom(GameRoom),
     },
-});
+}).listen(config.multiplayer.port);
