@@ -6,6 +6,8 @@ import config from '../../config';
 import GameState from '../common/gameState';
 import GameMasterInterface from './gameMaster/gameMasterInterface';
 if (config.dev) await import("@colyseus/sdk/debug");
+import './index.css';
+import PlayerInterface from './player/playerInterface';
 
 const client = new Colyseus.Client("/api");
 
@@ -16,8 +18,8 @@ function Interface(): React.JSX.Element {
     if (isConnecting) return <>Connecting...</>;
     if (!state) return <>Fetching State...</>;
 
-    if (state.gameMaster) return <GameMasterInterface state={state} />;
-    return <>TODO: Player Interface</>;
+    if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface state={state} />;
+    return <PlayerInterface state={state} />;
 }
 
 function App(): React.JSX.Element {
