@@ -15,11 +15,12 @@ const client = new Colyseus.Client("/api");
 
 function Interface(): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
+    const state = roomProvider.useRoomState();
     if (error) return <Modal blocking title={"Error: " + error.name}>{error.message}</Modal>;
     if (isConnecting) return <Modal blocking title="Connecting">Joining Game...</Modal>;
-    if (!room.state) return <Modal blocking title="Connecting">Fetching State...</Modal>;
+    if (!state) return <Modal blocking title="Connecting">Fetching State...</Modal>;
 
-    if (room.state.gameMaster?.id === room.sessionId) return <GameMasterInterface />;
+    if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface />;
     return <PlayerInterface />;
 }
 
