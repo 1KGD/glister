@@ -1,12 +1,15 @@
 import * as $ from "@colyseus/schema";
+import StatsState from "./statsState";
 
 @$.entity
 export class PlayerState extends $.Schema {
-    @$.type("string") public name: string;
+    @$.type("string") public readonly name: string;
+    @$.type(StatsState) public stats: StatsState;
 
     public constructor(name: string) {
         super();
         this.name = name;
+        this.stats = new StatsState();
     }
 }
 
