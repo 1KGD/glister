@@ -23,12 +23,26 @@ export class GameMasterState extends $.Schema {
     }
 }
 
+@$.entity
+export class PositionState extends $.Schema {
+    @$.type("number") public x: number = 0;
+    @$.type("number") public y: number = 0;
+}
+
+@$.entity
+export class CreatureState extends $.Schema {
+    @$.type(PositionState) public position: PositionState = new PositionState;
+}
+
 export default class GameState extends $.Schema {
     @$.type(GameMasterState) public gameMaster: GameMasterState;
     @$.type({ map: PlayerState }) public players: $.MapSchema<PlayerState, string>;
+    @$.type([CreatureState]) public creatures: $.ArraySchema<CreatureState>;
 
     public constructor() {
         super();
-        this.players = new $.MapSchema();
+        this.players = new $.MapSchema;
+        this.creatures = new $.ArraySchema;
+        this.creatures.push(new CreatureState);
     }
 }

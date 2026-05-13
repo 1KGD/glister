@@ -18,6 +18,14 @@ export class GameRoom extends Colyseus.Room<{
 }> {
     public override state: GameState = new GameState();
 
+    public override messages = {
+        "moveCreature": (client: Colyseus.Client, payload: { idx: number, x: number, y: number }): void => {
+            const position = this.state.creatures[payload.idx].position;
+            position.x = payload.x;
+            position.y = payload.y;
+        }
+    };
+
     public override onJoin(client: Client, options?: { isGameMaster: boolean, name?: string }): void {
         if (options.isGameMaster) {
             if (this.state.gameMaster) {
