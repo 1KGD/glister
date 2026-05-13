@@ -10,6 +10,7 @@
 
 .modal-blocking {
     pointer-events: auto;
+    backdrop-filter: blur(3px);
 }
 
 .modal {
@@ -18,6 +19,7 @@
     border-radius: 20px;
     pointer-events: auto;
     overflow: hidden;
+    filter: drop-shadow(10px 7px 4px var(--drop-shadow-color));
 }
 
 .modal-title {
