@@ -20,8 +20,8 @@ function Interface(): React.JSX.Element {
     if (isConnecting) return <Modal blocking title="Connecting">Joining Game...</Modal>;
     if (!state) return <Modal blocking title="Connecting">Fetching State...</Modal>;
 
-    if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface state={state} />;
-    return <PlayerInterface state={state} />;
+    if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface state={state} room={room} />;
+    return <PlayerInterface state={state} room={room} />;
 }
 
 function App(): React.JSX.Element {
