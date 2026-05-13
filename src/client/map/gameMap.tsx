@@ -15,10 +15,8 @@ export default function GameMap({ isGameMaster }: { isGameMaster: boolean }): Re
                         x={creature.position.x}
                         y={creature.position.y}
                         radius={50}
-                        draggable
-                        onDragMove={({ target }) => {
-                            room.send("moveCreature", { idx, x: target.attrs.x, y: target.attrs.y });
-                        }}
+                        draggable={isGameMaster}
+                        onDragMove={({ target }) => room.send("moveCreature", { idx, x: target.attrs.x, y: target.attrs.y })}
                         fill="red"
                     />
                 )}

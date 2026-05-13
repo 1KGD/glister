@@ -20,6 +20,7 @@ export class GameRoom extends Colyseus.Room<{
 
     public override messages = {
         "moveCreature": (client: Colyseus.Client, payload: { idx: number, x: number, y: number }): void => {
+            if (client.sessionId !== this.state.gameMaster.id) return;
             const position = this.state.creatures[payload.idx].position;
             position.x = payload.x;
             position.y = payload.y;
