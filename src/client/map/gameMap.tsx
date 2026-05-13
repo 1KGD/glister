@@ -6,8 +6,24 @@ import roomProvider from '../roomProvider';
 export default function GameMap({ isGameMaster }: { isGameMaster: boolean }): React.JSX.Element {
     const { room } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
+
+    const [size, setSize] = React.useState({ width: window.innerWidth, height: window.innerHeight });
+
+    React.useEffect(() => {
+        const checkSize = (): void => {
+            setSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        };
+
+        window.addEventListener('resize', checkSize);
+        return (): void => window.removeEventListener('resize', checkSize);
+
+    }, []);
+
     return <div className="game-map-container">
-        <KV.Stage width={window.innerWidth} height={window.innerHeight} className="game-map">
+        <KV.Stage width={window.innerWidth} height={window.innerHeight} className="game-map" >
             <KV.Layer>
                 {state.creatures.map((creature, idx) =>
                     <KV.Circle
