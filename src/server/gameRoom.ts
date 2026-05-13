@@ -29,4 +29,10 @@ export class GameRoom extends Colyseus.Room<{
             this.state.gameMaster = new GameMasterState(client.sessionId);
         }
     }
+
+    public override onLeave(client: Client): void {
+        if (this.state.gameMaster?.id === client.sessionId) {
+            this.state.gameMaster = null;
+        }
+    }
 }
