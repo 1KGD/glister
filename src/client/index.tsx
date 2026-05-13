@@ -6,6 +6,7 @@ import config from '../../config';
 import GameState from '../common/gameState';
 import GameMasterInterface from './gameMaster/gameMasterInterface';
 if (config.dev) await import("@colyseus/sdk/debug");
+import './colors.css';
 import './index.css';
 import PlayerInterface from './player/playerInterface';
 

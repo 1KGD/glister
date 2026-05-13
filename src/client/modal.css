@@ -1,0 +1,30 @@
+.modal-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    pointer-events: none;
+}
+
+.modal-blocking {
+    pointer-events: auto;
+}
+
+.modal {
+    margin: auto;
+    background-color: var(--bg-1);
+    border-radius: 20px;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.modal-title {
+    padding: 10px;
+    background-color: var(--bg-hl-1);
+}
+
+.modal-body {
+    margin: 20px;
+}
