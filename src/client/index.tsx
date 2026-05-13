@@ -4,22 +4,30 @@ import * as Colyseus from '@colyseus/sdk';
 import roomProvider from './roomProvider';
 import config from '../../config';
 import GameState from '../common/gameState';
+import GameMasterInterface from './gameMaster/gameMasterInterface';
 if (config.dev) await import("@colyseus/sdk/debug");
 
 const client = new Colyseus.Client("/api");
 
-function RoomStatus(): React.JSX.Element {
+function Interface(): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
-    const state = roomProvider.useRoomState();
-    if (error) return <pre>ERROR {error.name}: {error.message} [{JSON.stringify(error.cause)}]</pre>;
-    if (isConnecting || !state) return <>Connecting...</>;
-    return <>{JSON.stringify(state.gameMaster)}</>;
+    const state = roomProvider.useRoomState() as GameState;
+    if (error) return <pre>Error {error.name}: {error.message}</pre>;
+    if (isConnecting) return <>Connecting...</>;
+    if (!state) return <>Fetching State...</>;
+
+    if (state.gameMaster) return <GameMasterInterface state={state} />;
+    return <>TODO: Player Interface</>;
 }
 
 function App(): React.JSX.Element {
-    return <roomProvider.RoomProvider connect={() => client.joinOrCreate("game", { isGameMaster: true }, GameState)}>
-        <RoomStatus />
-    </roomProvider.RoomProvider>;
+    const [isGameMaster, setIsGameMaster] = React.useState(false);
+    const [roomName, setRoomName] = React.useState("game");
+
+    return <roomProvider.RoomProvider connect={() => client.joinOrCreate(roomName, { isGameMaster }, GameState)} deps={[roomName, isGameMaster]}>
+        <button onClick={() => setIsGameMaster(true)}>make me game master</button>
+        <Interface />
+    </roomProvider.RoomProvider >;
 }
 
 createRoot(document.getElementById("root")).render(<App />);
