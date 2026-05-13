@@ -36,7 +36,9 @@
     "@colyseus/schema": "^4.0.25",
     "@colyseus/sdk": "^0.17.42",
     "colyseus": "^0.17.10",
+    "konva": "^10.3.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "react-konva": "^19.2.4"
   }
 }

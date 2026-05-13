@@ -5,6 +5,7 @@ import Modal from '../modal';
 import ChatComponent from '../chat/chatComponent';
 import PlayerSheet from './playerSheet';
 import roomProvider from '../roomProvider';
+import GameMap from '../map/gameMap';
 
 export default function PlayerInterface(): React.JSX.Element {
     const { room } = roomProvider.useRoom();
@@ -12,6 +13,7 @@ export default function PlayerInterface(): React.JSX.Element {
     return <>
         {!state.gameMaster && <Modal title="Waiting...">Waiting for game master...</Modal>}
         {state.players[room.sessionId] ? <PlayerSheet player={state.players[room.sessionId] as PlayerState} /> : <Modal title="loading...">Loading Player Sheet</Modal>}
+        <GameMap />
         <ChatComponent />
     </>;
 }
