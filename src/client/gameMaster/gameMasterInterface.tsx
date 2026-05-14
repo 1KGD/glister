@@ -7,8 +7,8 @@ import GameMap from '../map/gameMap';
 
 export default function GameMasterInterface(): React.JSX.Element {
     const state = roomProvider.useRoomState();
-    return <>
-        {JSON.stringify(state)}
+    return <div className="interface game-master-interface">
         <GameMap isGameMaster />
-    </>;
+        {JSON.stringify(state)}
+    </div>;
 }

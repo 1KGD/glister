@@ -1,0 +1,15 @@
+.interface {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    background-color: blue;
+}
+
+button {
+    position: absolute;
+    z-index: 1000000;
+}
