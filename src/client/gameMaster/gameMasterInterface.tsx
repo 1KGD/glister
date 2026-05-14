@@ -9,6 +9,6 @@ export default function GameMasterInterface(): React.JSX.Element {
     const state = roomProvider.useRoomState();
     return <div className="interface game-master-interface">
         <GameMap isGameMaster />
-        {JSON.stringify(state)}
+        <div style={{ maxWidth: "20vw" }}>{JSON.stringify(state)}</div>
     </div>;
 }
