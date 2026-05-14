@@ -31,7 +31,13 @@ export class PositionState extends $.Schema {
 
 @$.entity
 export class CreatureState extends $.Schema {
+    @$.type("string") public name: string;
     @$.type(PositionState) public position: PositionState = new PositionState;
+
+    public constructor(name: string) {
+        super();
+        this.name = name;
+    }
 }
 
 export default class GameState extends $.Schema {
@@ -43,6 +49,6 @@ export default class GameState extends $.Schema {
         super();
         this.players = new $.MapSchema;
         this.creatures = new $.ArraySchema;
-        this.creatures.push(new CreatureState);
+        this.creatures.push(new CreatureState("Goblin"));
     }
 }
