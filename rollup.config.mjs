@@ -16,7 +16,7 @@ export default {
         resolve({
             custom: { 'node-resolve': { isRequire: true } }
         }),
-        //terser(),
+        terser(),
         json()
     ]
 };
