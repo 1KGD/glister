@@ -1,0 +1,7 @@
+.gitignore
+LICENSE
+eslint.config.mjs
+README.md
+compose.yaml
+node_modules
+Dockerfile
