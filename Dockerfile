@@ -18,10 +18,9 @@ COPY rollup.config.mjs .
 RUN pnpm run build-server
 
 FROM nginx:alpine AS final
-WORKDIR /app
-RUN apk add nodejs
+RUN apk add nodejs npm
+RUN npm i -g concurrently
 COPY nginx.conf /etc/nginx
 COPY --from=client /app/dist /data/www
 COPY --from=server /app/build .
-ENTRYPOINT nginx && \
-  node ./index.js
+ENTRYPOINT concurrently --names nginx,colyseus -c green,blue 'nginx' 'node ./index.js'
