@@ -23,4 +23,4 @@ RUN npm i -g concurrently
 COPY nginx.conf /etc/nginx
 COPY --from=client /app/dist /data/www
 COPY --from=server /app/build .
-ENTRYPOINT concurrently --names nginx,colyseus -c green,blue 'nginx' 'node ./index.js'
+ENTRYPOINT concurrently --names nginx,colyseus -c green,blue 'nginx -e stderr' 'node ./index.js'
