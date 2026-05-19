@@ -36,7 +36,7 @@ export default function CreatureToken({ creature, idx, isGameMaster }: { creatur
         <KV.Text
             width={100}
             height={100}
-            y={-5}
+            y={isGameMaster ? -5 : 0}
             verticalAlign="middle"
             align="center"
             text={creature.name}
