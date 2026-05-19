@@ -33,6 +33,7 @@ export class PositionState extends $.Schema {
 export class CreatureState extends $.Schema {
     @$.type("string") public name: string;
     @$.type(PositionState) public position: PositionState = new PositionState;
+    @$.type(StatsState) public stats: StatsState = new StatsState;
 
     public constructor(name: string) {
         super();
