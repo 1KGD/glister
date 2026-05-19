@@ -34,11 +34,18 @@ export default function CreatureToken({ creature, idx, isGameMaster }: { creatur
             fill="red"
         />
         <KV.Text
+            width={100}
+            height={100}
+            y={-5}
+            verticalAlign="middle"
             align="center"
             text={creature.name}
         />
         {isGameMaster && <KV.Text
-            y={10}
+            width={100}
+            height={100}
+            y={5}
+            verticalAlign="middle"
             align="center"
             text={`${creature.stats.health.current}/${creature.stats.health.max} HP`}
         />}
