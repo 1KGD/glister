@@ -1,7 +1,7 @@
 import React from 'react';
 import Konva from 'konva';
 import * as KV from 'react-konva';
-import { CreatureState } from '../../common/gameState';
+import { CreatureState, CreatureType } from '../../common/gameState';
 import roomProvider from '../roomProvider';
 
 export default function CreatureToken({ creature, idx, isGameMaster }: { creature: CreatureState, idx: number, isGameMaster: boolean }): React.JSX.Element {
@@ -31,7 +31,7 @@ export default function CreatureToken({ creature, idx, isGameMaster }: { creatur
             x={50}
             y={50}
             radius={50}
-            fill="red"
+            fill={creature.type === CreatureType.Monster ? "red" : "blue"}
         />
         <KV.Text
             width={100}

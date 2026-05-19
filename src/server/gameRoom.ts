@@ -1,5 +1,5 @@
 import * as Colyseus from 'colyseus';
-import GameState, { GameMasterState, PlayerState } from '../common/gameState';
+import GameState, { CreatureState, CreatureType, GameMasterState, PlayerState } from '../common/gameState';
 
 interface Metadata {
 
@@ -37,14 +37,17 @@ export class GameRoom extends Colyseus.Room<{
             this.state.gameMaster = new GameMasterState(client.sessionId);
             return;
         }
-        this.state.players.set(client.sessionId, new PlayerState(options.name));
+        const creature = new CreatureState(client.sessionId, CreatureType.Player);
+        this.state.players.set(client.sessionId, new PlayerState(options.name, creature));
+        this.state.creatures.push(creature);
     }
 
     public override onLeave(client: Client): void {
         if (this.state.gameMaster?.id === client.sessionId) {
             this.state.gameMaster = null;
             return;
-        }
+        };
+        this.state.creatures.splice(this.state.creatures.indexOf(this.state.players.get(client.sessionId).creature), 1);
         this.state.players.delete(client.sessionId);
     }
 }
