@@ -14,7 +14,7 @@ export default function CreatureToken({ creature, idx, isGameMaster }: { creatur
     }, [creature]);
 
     React.useEffect(() => {
-        if (isGameMaster) room.send("moveCreature", { idx, x: position.x, y: position.y });
+        if (isGameMaster && dragging) room.send("moveCreature", { idx, x: position.x, y: position.y });
     }, [position]);
 
     return <KV.Group
