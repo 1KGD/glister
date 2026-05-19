@@ -21,6 +21,8 @@
     pointer-events: auto;
     overflow: hidden;
     filter: drop-shadow(10px 7px 4px var(--drop-shadow-color));
+
+    animation: modal-appear 0.3s ease-out;
 }
 
 .modal-title {
@@ -30,4 +32,13 @@
 
 .modal-body {
     margin: 20px;
+}
+
+@keyframes modal-appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
