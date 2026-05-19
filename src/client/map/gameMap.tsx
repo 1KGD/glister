@@ -6,7 +6,6 @@ import CreatureToken from './creatureToken';
 import { CreatureState } from '../../common/gameState';
 
 export default function GameMap({ isGameMaster }: { isGameMaster?: boolean }): React.JSX.Element {
-    const { room } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
 
     const containerRef = React.useRef<HTMLDivElement>(null);

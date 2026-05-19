@@ -10,10 +10,11 @@ import './playerInteface.css';
 export default function PlayerInterface(): React.JSX.Element {
     const { room } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
+    const player = state.players[room.sessionId] as PlayerState;
     return <div className="interface player-interface">
         {!state.gameMaster && <Modal title="Waiting...">Waiting for game master...</Modal>}
         <GameMap />
-        {state.players[room.sessionId] ? <PlayerSheet player={state.players[room.sessionId] as PlayerState} /> : <Modal title="loading...">Loading Player Sheet</Modal>}
+        {player ? <PlayerSheet player={player} /> : <Modal title="loading...">Loading Player Sheet</Modal>}
         <ChatComponent />
     </div>;
 }
