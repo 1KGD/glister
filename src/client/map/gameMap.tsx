@@ -23,7 +23,6 @@ export default function GameMap({ isGameMaster }: { isGameMaster?: boolean }): R
 
         window.addEventListener('resize', checkSize);
         return (): void => window.removeEventListener('resize', checkSize);
-
     }, []);
 
     return <div ref={containerRef} className="game-map-container">
