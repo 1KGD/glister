@@ -11,8 +11,9 @@ export default function PlayerInterface(): React.JSX.Element {
     const { room } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
     const player = state.players[room.sessionId] as PlayerState;
+    const gameMaster = state.gameMaster;
     return <div className="interface player-interface">
-        {!state.gameMaster && <Modal title="Waiting...">Waiting for game master...</Modal>}
+        {!gameMaster && <Modal title="Waiting...">Waiting for game master...</Modal>}
         <GameMap />
         {player ? <PlayerSheet player={player} /> : <Modal title="loading...">Loading Player Sheet</Modal>}
         <ChatComponent />
