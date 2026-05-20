@@ -1,5 +1,4 @@
 import React from 'react';
-import Konva from 'konva';
 import * as KV from 'react-konva';
 import { CreatureState, CreatureType } from '../../common/gameState';
 import roomProvider from '../roomProvider';

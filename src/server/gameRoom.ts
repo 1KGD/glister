@@ -1,5 +1,5 @@
 import * as Colyseus from 'colyseus';
-import GameState, { CreatureState, CreatureType, GameMasterState, PlayerState } from '../common/gameState';
+import GameState, * as State from '../common/gameState';
 
 interface Metadata {
 
@@ -11,7 +11,7 @@ type Client = Colyseus.Client<{
     },
 }>
 
-export class GameRoom extends Colyseus.Room<{
+export default class GameRoom extends Colyseus.Room<{
     state: GameState,
     metadata: Metadata,
     client: Client,
@@ -34,11 +34,11 @@ export class GameRoom extends Colyseus.Room<{
                 return;
             }
             console.log("game master connected");
-            this.state.gameMaster = new GameMasterState(client.sessionId);
+            this.state.gameMaster = new State.GameMasterState(client.sessionId);
             return;
         }
-        const creature = new CreatureState(client.sessionId, CreatureType.Player);
-        this.state.players.set(client.sessionId, new PlayerState(options.name, creature));
+        const creature = new State.CreatureState(client.sessionId, State.CreatureType.Player);
+        this.state.players.set(client.sessionId, new State.PlayerState(options.name, creature));
         this.state.creatures.push(creature);
     }
 
