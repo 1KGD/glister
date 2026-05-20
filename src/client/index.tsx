@@ -28,7 +28,10 @@ function App(): React.JSX.Element {
     const [isGameMaster, setIsGameMaster] = React.useState(false);
     const [roomName, setRoomName] = React.useState("game");
 
-    return <roomProvider.RoomProvider connect={() => client.joinOrCreate(roomName, { isGameMaster }, GameState)} deps={[roomName, isGameMaster]}>
+    return <roomProvider.RoomProvider connect={() => {
+        client.auth.token = "df01c275-9a3c-4895-aeea-36423640e037";
+        return client.joinOrCreate(roomName, { isGameMaster }, GameState);
+    }} deps={[roomName, isGameMaster]}>
         <button onClick={() => setIsGameMaster(true)}>make me game master</button>
         <Interface />
     </roomProvider.RoomProvider >;

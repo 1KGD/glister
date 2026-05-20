@@ -1,5 +1,7 @@
 import * as Colyseus from 'colyseus';
 import GameState, * as State from '../common/gameState';
+import accountManager from './accountManager';
+import Account from './account';
 
 interface Metadata {
 
@@ -9,6 +11,7 @@ type Client = Colyseus.Client<{
     messages: {
         welcome: string,
     },
+    auth: Account,
 }>
 
 export default class GameRoom extends Colyseus.Room<{
@@ -27,6 +30,10 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
+    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<Account> {
+        return await accountManager.verify(context.token);
+    }
+
     public override onJoin(client: Client, options?: { isGameMaster: boolean, name?: string }): void {
         if (options.isGameMaster) {
             if (this.state.gameMaster) {
@@ -37,7 +44,7 @@ export default class GameRoom extends Colyseus.Room<{
             this.state.gameMaster = new State.GameMasterState(client.sessionId);
             return;
         }
-        const creature = new State.CreatureState(client.sessionId, State.CreatureType.Player);
+        const creature = new State.CreatureState(client.auth.name, State.CreatureType.Player);
         this.state.players.set(client.sessionId, new State.PlayerState(options.name, this.state.addCreature(creature)));
     }
 
