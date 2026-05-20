@@ -28,7 +28,7 @@ export default function GameMap({ isGameMaster }: { isGameMaster?: boolean }): R
     return <div ref={containerRef} className="game-map-container">
         <KV.Stage width={size.width} height={size.height} className="game-map" >
             <KV.Layer>
-                {Object.keys(state.creatures).map((id) => // we make do with what we have
+                {Object.keys(state.creatures).map((id) => // we make do with what we have. This will probably break if the client-side MapState api changes.
                     <CreatureToken
                         id={id}
                         key={id}
