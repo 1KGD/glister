@@ -143,3 +143,5 @@ vite.config.ts.timestamp-*
 .vite/
 
 pnpm-lock.yaml
+
+*.db3

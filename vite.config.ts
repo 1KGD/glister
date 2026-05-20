@@ -3,6 +3,7 @@ import preloadPlugin from 'vite-preload/plugin';
 import config from './config';
 
 export default defineConfig({
+    clearScreen: false,
     server: {
         watch: { usePolling: false },
         allowedHosts: true,
