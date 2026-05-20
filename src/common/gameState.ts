@@ -1,5 +1,6 @@
 import * as $ from "@colyseus/schema";
 import StatsState from "./statsState";
+import * as uuid from 'uuid';
 
 export enum CreatureType {
     Player,
@@ -40,9 +41,9 @@ export class CreatureState extends $.Schema {
 @$.entity
 export class PlayerState extends $.Schema {
     @$.type("string") public readonly name: string;
-    @$.type(CreatureState) public readonly creature: CreatureState;
+    @$.type("string") public readonly creature: string;
 
-    public constructor(name: string, creature: CreatureState) {
+    public constructor(name: string, creature: string) {
         super();
         this.name = name;
         this.creature = creature;
@@ -52,12 +53,18 @@ export class PlayerState extends $.Schema {
 export default class GameState extends $.Schema {
     @$.type(GameMasterState) public gameMaster: GameMasterState;
     @$.type({ map: PlayerState }) public readonly players: $.MapSchema<PlayerState, string>;
-    @$.type([CreatureState]) public creatures: $.ArraySchema<CreatureState>;
+    @$.type({ map: CreatureState }) public readonly creatures: $.MapSchema<CreatureState, string>;
 
     public constructor() {
         super();
         this.players = new $.MapSchema;
-        this.creatures = new $.ArraySchema;
-        this.creatures.push(new CreatureState("Goblin", CreatureType.Monster));
+        this.creatures = new $.MapSchema;
+        this.addCreature(new CreatureState("Goblin", CreatureType.Monster));
+    }
+
+    public addCreature(creature: CreatureState): string {
+        const creatureId = uuid.v4();
+        this.creatures.set(creatureId, creature);
+        return creatureId;
     }
 }

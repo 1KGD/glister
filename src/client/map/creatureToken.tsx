@@ -3,7 +3,7 @@ import * as KV from 'react-konva';
 import { CreatureState, CreatureType } from '../../common/gameState';
 import roomProvider from '../roomProvider';
 
-export default function CreatureToken({ creature, idx, isGameMaster }: { creature: CreatureState, idx: number, isGameMaster: boolean }): React.JSX.Element {
+export default function CreatureToken({ creature, id, isGameMaster }: { creature: CreatureState, id: string, isGameMaster: boolean }): React.JSX.Element {
     const { room } = roomProvider.useRoom();
     const [dragging, setDragging] = React.useState(false);
     const [position, setPosition] = React.useState<{ x: number, y: number }>({ x: creature.position.x, y: creature.position.y });
@@ -13,7 +13,7 @@ export default function CreatureToken({ creature, idx, isGameMaster }: { creatur
     }, [creature]);
 
     React.useEffect(() => {
-        if (isGameMaster && dragging) room.send("moveCreature", { idx, x: position.x, y: position.y });
+        if (isGameMaster && dragging) room.send("moveCreature", { id, x: position.x, y: position.y });
     }, [position]);
 
     return <KV.Group

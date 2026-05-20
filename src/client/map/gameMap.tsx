@@ -28,7 +28,9 @@ export default function GameMap({ isGameMaster }: { isGameMaster?: boolean }): R
     return <div ref={containerRef} className="game-map-container">
         <KV.Stage width={size.width} height={size.height} className="game-map" >
             <KV.Layer>
-                {state.creatures.map((creature, idx) => <CreatureToken creature={creature as CreatureState} idx={idx} key={idx} isGameMaster={isGameMaster} />)}
+                {Object.keys(state.creatures).map((id) => // we make do with what we have
+                    <CreatureToken creature={state.creatures[id] as CreatureState} id={id} key={id} isGameMaster={isGameMaster} />
+                )}
             </KV.Layer>
         </KV.Stage>
     </div>;

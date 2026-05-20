@@ -19,9 +19,9 @@ export default class GameRoom extends Colyseus.Room<{
     public override state: GameState = new GameState();
 
     public override messages = {
-        "moveCreature": (client: Colyseus.Client, payload: { idx: number, x: number, y: number }): void => {
+        "moveCreature": (client: Colyseus.Client, payload: { id: string, x: number, y: number }): void => {
             if (client.sessionId !== this.state.gameMaster.id) return;
-            const position = this.state.creatures[payload.idx].position;
+            const position = this.state.creatures.get(payload.id).position;
             position.x = payload.x;
             position.y = payload.y;
         }
@@ -38,8 +38,7 @@ export default class GameRoom extends Colyseus.Room<{
             return;
         }
         const creature = new State.CreatureState(client.sessionId, State.CreatureType.Player);
-        this.state.players.set(client.sessionId, new State.PlayerState(options.name, creature));
-        this.state.creatures.push(creature);
+        this.state.players.set(client.sessionId, new State.PlayerState(options.name, this.state.addCreature(creature)));
     }
 
     public override onLeave(client: Client): void {
@@ -47,7 +46,7 @@ export default class GameRoom extends Colyseus.Room<{
             this.state.gameMaster = null;
             return;
         };
-        this.state.creatures.splice(this.state.creatures.indexOf(this.state.players.get(client.sessionId).creature), 1);
+        this.state.creatures.delete(this.state.players.get(client.sessionId).creature);
         this.state.players.delete(client.sessionId);
     }
 }
