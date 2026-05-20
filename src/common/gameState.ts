@@ -41,12 +41,12 @@ export class CreatureState extends $.Schema {
 @$.entity
 export class PlayerState extends $.Schema {
     @$.type("string") public readonly name: string;
-    @$.type("string") public readonly creature: string;
+    @$.type("string") public readonly creatureId: string;
 
-    public constructor(name: string, creature: string) {
+    public constructor(name: string, creatureId: string) {
         super();
         this.name = name;
-        this.creature = creature;
+        this.creatureId = creatureId;
     }
 }
 

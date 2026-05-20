@@ -46,7 +46,7 @@ export default class GameRoom extends Colyseus.Room<{
             this.state.gameMaster = null;
             return;
         };
-        this.state.creatures.delete(this.state.players.get(client.sessionId).creature);
+        this.state.creatures.delete(this.state.players.get(client.sessionId).creatureId);
         this.state.players.delete(client.sessionId);
     }
 }
