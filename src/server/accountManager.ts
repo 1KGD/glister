@@ -3,22 +3,28 @@ import ormDataSource from './ormDataSource';
 import Account, { SessionToken } from './account';
 import config from '../../config';
 
+export class LoginError extends Error { }
+
 export class AccountManager {
     public async addAccount(name: string, password: string): Promise<void> {
         await ormDataSource.manager.save(new Account(name, password));
     }
 
-    public async verifyAccount(name: string, password: string): Promise<string> {
-        await this.cleanDeadSessions();
-        const account = await ormDataSource.manager.findOneBy(Account, { name: name });
+    public async login(name: string, password: string): Promise<string> {
+        const account = await ormDataSource.manager.findOneBy(Account, { name });
         if (account.password !== password) {
-            return null;
+            throw new LoginError("Bad username or password");
         }
         const token = new SessionToken;
         await ormDataSource.manager.save(token);
         account.token = token.value;
         await ormDataSource.manager.save(account);
         return token.value;
+    }
+
+    public async verify(token: string): Promise<Account> {
+        await this.cleanDeadSessions();
+        return await ormDataSource.manager.findOneBy(Account, { token });
     }
 
     public async cleanDeadSessions(): Promise<void> {

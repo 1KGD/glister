@@ -7,7 +7,7 @@ import ormDataSource from './ormDataSource';
 await ormDataSource.initialize();
 console.log(accountManager);
 //await accountManager.addAccount("john","foo");
-console.log(await accountManager.verifyAccount("john","foo"));
+console.log(await accountManager.verify(await accountManager.login("john","foo")));
 await Colyseus.defineServer({
     transport: new Colyseus.WebSocketTransport(),
     rooms: {
