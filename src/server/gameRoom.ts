@@ -7,11 +7,13 @@ interface Metadata {
 
 }
 
+type ClientAuth = { name: string }
+
 type Client = Colyseus.Client<{
     messages: {
         welcome: string,
     },
-    auth: Account,
+    auth: ClientAuth,
 }>
 
 export default class GameRoom extends Colyseus.Room<{
@@ -30,8 +32,9 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
-    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<Account> {
-        return await accountManager.verify(context.token);
+    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth> {
+        const account = await accountManager.verify(context.token);
+        return { name: account.name };
     }
 
     public override onJoin(client: Client, options?: { isGameMaster: boolean, name?: string }): void {
