@@ -2,6 +2,7 @@ import * as Colyseus from 'colyseus';
 import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
 import Account from './account';
+import cookieParser from 'cookie-parser';
 
 interface Metadata {
 
@@ -32,8 +33,11 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
-    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth> {
-        const account = await accountManager.verify(context.token);
+    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
+        const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
+        if (!tokenRegex) return false;
+        const account = await accountManager.verify(tokenRegex.groups.token);
+        if (!account) return false;
         return { name: account.name };
     }
 

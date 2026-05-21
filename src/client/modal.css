@@ -16,6 +16,7 @@
 
 .modal {
     margin: auto;
+    max-width: 50%;
     background-color: var(--bg-1);
     border-radius: 20px;
     pointer-events: auto;

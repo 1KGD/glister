@@ -28,6 +28,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "concurrently": "^9.2.1",
@@ -46,12 +47,14 @@
     "@colyseus/sdk": "^0.17.42",
     "better-sqlite3": "^12.10.0",
     "colyseus": "^0.17.10",
+    "cookie-parser": "^1.4.7",
     "konva": "^10.3.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-konva": "^19.2.4",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^1.0.0",
+    "typescript-cookie": "^1.0.6",
     "use-image": "^1.1.4",
     "uuid": "^14.0.0"
   }
