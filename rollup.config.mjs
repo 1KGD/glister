@@ -10,12 +10,12 @@ export default {
         dir: './build',
         format: 'es',
     },
+    external: [
+        /node_modules/
+    ],
     plugins: [
         commonjs(),
         typescript(),
-        resolve({
-            custom: { 'node-resolve': { isRequire: true } }
-        }),
         terser(),
         json()
     ]

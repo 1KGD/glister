@@ -23,6 +23,7 @@ FROM nginx:alpine AS final
 RUN apk add nodejs npm
 RUN npm i -g concurrently
 COPY nginx.conf /etc/nginx
+COPY --from=common /app/node_modules/ .
 COPY --from=client /app/dist /data/www
 COPY --from=server /app/build .
 ENV PRODUCTION_SERVER=true
