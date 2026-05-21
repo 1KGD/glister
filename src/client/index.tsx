@@ -10,7 +10,7 @@ import './colors.css';
 import './index.css';
 import PlayerInterface from './player/playerInterface';
 import Modal from './modal';
-import { getCookie } from 'typescript-cookie';
+import * as Router from 'react-router';
 
 const client = new Colyseus.Client("/api");
 
@@ -25,21 +25,36 @@ function Interface(): React.JSX.Element {
     return <PlayerInterface />;
 }
 
-function App(): React.JSX.Element {
-    const [isGameMaster, setIsGameMaster] = React.useState(false);
-    const [roomName, setRoomName] = React.useState("game");
-
-    return <roomProvider.RoomProvider connect={() => {
-        return client.joinOrCreate(roomName, { isGameMaster }, GameState);
-    }} deps={[roomName, isGameMaster]}>
-        <button onClick={() => setIsGameMaster(true)}>make me game master</button>
-        <Interface />
+function LoginPage(): React.JSX.Element {
+    return <Modal title="Login">
         <form method="post" action="/api/login">
             <input type="text" name="username" />
             <input type="password" name="password" />
             <input type="submit" />
         </form>
-    </roomProvider.RoomProvider >;
+    </Modal>
+}
+
+function SessionPage(): React.JSX.Element {
+    const { roomId } = Router.useParams();
+    const [isGameMaster, setIsGameMaster] = React.useState(false);
+    return <roomProvider.RoomProvider connect={() => {
+        return client.joinById(roomId, { isGameMaster }, GameState);
+    }} deps={[roomId, isGameMaster]}>
+        <button onClick={() => setIsGameMaster(true)}>make me game master</button>
+        <Interface />
+    </roomProvider.RoomProvider>;
+}
+
+function App(): React.JSX.Element {
+    const [roomName, setRoomName] = React.useState("game");
+
+    return <Router.BrowserRouter>
+        <Router.Routes>
+            <Router.Route path="/login" element={<LoginPage />} />
+            <Router.Route path="/session/:roomId" element={<SessionPage />} />
+        </Router.Routes>
+    </Router.BrowserRouter>;
 }
 
 createRoot(document.getElementById("root")).render(<App />);

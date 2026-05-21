@@ -1,8 +1,6 @@
 import * as Colyseus from 'colyseus';
 import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
-import Account from './account';
-import cookieParser from 'cookie-parser';
 
 interface Metadata {
 

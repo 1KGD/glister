@@ -8,7 +8,7 @@
     max-width: 100vw;
 }
 
-button, form {
+button {
     position: absolute;
     z-index: 1000000;
 }
