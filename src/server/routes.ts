@@ -10,7 +10,7 @@ const login = Colyseus.createEndpoint("/api/login", {
         ctx.setCookie("token", await accountManager.login(formData.get("username") as string, formData.get("password") as string));
         return ctx.redirect("/");
     } catch (e) {
-        return ctx.redirect("/login_error");
+        return ctx.redirect("/login/error");
     }
 }
 );

@@ -11,14 +11,15 @@ import './index.css';
 import PlayerInterface from './player/playerInterface';
 import Modal from './modal';
 import * as Router from 'react-router';
+import Homepage from './homepage';
 
 const client = new Colyseus.Client("/api");
 
-function Interface(): React.JSX.Element {
+function Interface({ roomId }: { roomId: string }): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
     if (error) return <Modal blocking title={"Error: " + error.name}>{error.message}</Modal>;
-    if (isConnecting) return <Modal blocking title="Connecting">Joining Game...</Modal>;
+    if (isConnecting) return <Modal blocking title="Connecting">Joining {roomId}...</Modal>;
     if (!state) return <Modal blocking title="Connecting">Fetching State...</Modal>;
 
     if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface />;
@@ -32,7 +33,7 @@ function LoginPage(): React.JSX.Element {
             <input type="password" name="password" />
             <input type="submit" />
         </form>
-    </Modal>
+    </Modal>;
 }
 
 function SessionPage(): React.JSX.Element {
@@ -42,17 +43,25 @@ function SessionPage(): React.JSX.Element {
         return client.joinById(roomId, { isGameMaster }, GameState);
     }} deps={[roomId, isGameMaster]}>
         <button onClick={() => setIsGameMaster(true)}>make me game master</button>
-        <Interface />
+        <Interface roomId={roomId} />
     </roomProvider.RoomProvider>;
 }
 
-function App(): React.JSX.Element {
-    const [roomName, setRoomName] = React.useState("game");
+function Error(): React.JSX.Element {
+    return <>foo</>;
+}
 
+function App(): React.JSX.Element {
     return <Router.BrowserRouter>
         <Router.Routes>
-            <Router.Route path="/login" element={<LoginPage />} />
-            <Router.Route path="/session/:roomId" element={<SessionPage />} />
+            <Router.Route index element={<Homepage />} />
+            <Router.Route path="login">
+                <Router.Route index element={<LoginPage />} />
+                <Router.Route path="error" element={<>Login Error</>} />
+            </Router.Route>
+            <Router.Route path="session">
+                <Router.Route path=":roomId" element={<SessionPage />} />
+            </Router.Route>
         </Router.Routes>
     </Router.BrowserRouter>;
 }
