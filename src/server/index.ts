@@ -10,7 +10,7 @@ await ormDataSource.initialize();
 console.log(accountManager);
 //await accountManager.addAccount("john","foo");
 //await accountManager.login("john","foo");
-await Colyseus.defineServer({
+const server =  Colyseus.defineServer({
     routes,
     express: (app)=>{
         app.use(cookieParser());
@@ -20,4 +20,6 @@ await Colyseus.defineServer({
         game: Colyseus.defineRoom(GameRoom),
     },
     greet: !config.dev,
-}).listen(config.multiplayer.port);
+});
+await server.listen(config.multiplayer.port);
+export default server;

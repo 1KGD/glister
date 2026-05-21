@@ -2,9 +2,7 @@ import * as Colyseus from 'colyseus';
 import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
 
-interface Metadata {
-
-}
+interface Metadata { }
 
 type ClientAuth = { name: string }
 
@@ -21,6 +19,8 @@ export default class GameRoom extends Colyseus.Room<{
     client: Client,
 }> {
     public override state: GameState = new GameState();
+
+    public override readonly autoDispose = false;
 
     public override messages = {
         "moveCreature": (client: Colyseus.Client, payload: { id: string, x: number, y: number }): void => {

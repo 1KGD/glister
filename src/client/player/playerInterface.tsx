@@ -10,6 +10,7 @@ import './playerInteface.css';
 export default function PlayerInterface(): React.JSX.Element {
     const { room } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
+    if (!state.players) return <>Loading...</>;
     const player = state.players[room.sessionId] as PlayerState;
     const gameMaster = state.gameMaster;
     return <div className="interface player-interface">

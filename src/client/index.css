@@ -7,8 +7,3 @@
     height: 100vh;
     max-width: 100vw;
 }
-
-button {
-    position: absolute;
-    z-index: 1000000;
-}

@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import * as Colyseus from '@colyseus/sdk';
 import roomProvider from './roomProvider';
 import config from '../../config';
-import GameState from '../common/gameState';
 import GameMasterInterface from './gameMaster/gameMasterInterface';
 if (config.dev) await import("@colyseus/sdk/debug");
 import './colors.css';
@@ -12,8 +11,9 @@ import PlayerInterface from './player/playerInterface';
 import Modal from './modal';
 import * as Router from 'react-router';
 import Homepage from './homepage';
+import type server from '../server/index';
 
-const client = new Colyseus.Client("/api");
+const client = new Colyseus.Client<typeof server>("/api");
 
 function Interface({ roomId }: { roomId: string }): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
@@ -40,15 +40,23 @@ function SessionPage(): React.JSX.Element {
     const { roomId } = Router.useParams();
     const [isGameMaster, setIsGameMaster] = React.useState(false);
     return <roomProvider.RoomProvider connect={() => {
-        return client.joinById(roomId, { isGameMaster }, GameState);
+        return client.joinById(roomId, { isGameMaster });
     }} deps={[roomId, isGameMaster]}>
         <button onClick={() => setIsGameMaster(true)}>make me game master</button>
         <Interface roomId={roomId} />
     </roomProvider.RoomProvider>;
 }
 
-function Error(): React.JSX.Element {
-    return <>foo</>;
+function CreateSessionPage(): React.JSX.Element {
+    const goto = Router.useNavigate()
+    return <Modal title="Create session">
+        <button onClick={() => {
+            client.create("game").then(async (room) => {
+                await goto(`/session/${room.roomId}`);
+                await room.leave();
+            }).catch(e => { throw e; });
+        }}>Create</button>
+    </Modal>;
 }
 
 function App(): React.JSX.Element {
@@ -60,6 +68,7 @@ function App(): React.JSX.Element {
                 <Router.Route path="error" element={<>Login Error</>} />
             </Router.Route>
             <Router.Route path="session">
+                <Router.Route path="create" element={<CreateSessionPage />} />
                 <Router.Route path=":roomId" element={<SessionPage />} />
             </Router.Route>
         </Router.Routes>

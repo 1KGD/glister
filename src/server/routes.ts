@@ -15,8 +15,7 @@ const login = Colyseus.createEndpoint("/api/login", {
     } catch (e) {
         return ctx.redirect("/login/error");
     }
-}
-);
+});
 
 export default Colyseus.createRouter({
     login,
