@@ -1,6 +1,7 @@
 import * as Colyseus from 'colyseus';
 import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
+import config from '../../config';
 
 interface Metadata { }
 
@@ -22,6 +23,8 @@ export default class GameRoom extends Colyseus.Room<{
 
     public override readonly autoDispose = false;
 
+    private disposeTimer: Colyseus.Delayed;
+
     public override messages = {
         "moveCreature": (client: Colyseus.Client, payload: { id: string, x: number, y: number }): void => {
             if (client.sessionId !== this.state.gameMaster.id) return;
@@ -40,6 +43,7 @@ export default class GameRoom extends Colyseus.Room<{
     }
 
     public override onJoin(client: Client, options?: { isGameMaster: boolean, name?: string }): void {
+        if (this.disposeTimer) this.disposeTimer.clear();
         if (options.isGameMaster) {
             if (this.state.gameMaster) {
                 client.leave(1000, "game master already exists");
@@ -60,5 +64,9 @@ export default class GameRoom extends Colyseus.Room<{
         };
         this.state.creatures.delete(this.state.players.get(client.sessionId).creatureId);
         this.state.players.delete(client.sessionId);
+
+        if (this.clients.length === 0) {
+            this.disposeTimer = this.clock.setTimeout(() => this.disconnect(), config.multiplayer.roomTimeout);
+        }
     }
 }

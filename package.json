@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "concurrently --kill-others --names vite,colyseus -c green,blue 'pnpm run client-dev' 'pnpm run server-dev'",
     "client-dev": "vite",
-    "server-dev": "tsx watch src/server/index.ts",
+    "server-dev": "tsx watch --clear-screen=false src/server/index.ts",
     "build-client": "vite build",
     "build-server": "rollup -c"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
