@@ -48,7 +48,7 @@ function SessionPage(): React.JSX.Element {
 }
 
 function CreateSessionPage(): React.JSX.Element {
-    const goto = Router.useNavigate()
+    const goto = Router.useNavigate();
     return <Modal title="Create session">
         <button onClick={() => {
             client.create("game").then(async (room) => {
