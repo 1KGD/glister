@@ -58,9 +58,7 @@ export default class GameRoom extends Colyseus.Room<{
     }
 
     public override onLeave(client: Client): void {
-        if (this.clients.length === 0) {
-            this.disposeTimer = this.clock.setTimeout(() => this.disconnect(), config.multiplayer.roomTimeout);
-        }
+        if (this.clients.length === 0) this.disposeTimer = this.clock.setTimeout(() => this.disconnect(), config.multiplayer.roomTimeout);
         if (this.state.gameMaster?.id === client.sessionId) {
             this.state.gameMaster = null;
             return;
