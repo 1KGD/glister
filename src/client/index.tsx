@@ -59,6 +59,16 @@ function CreateSessionPage(): React.JSX.Element {
     </Modal>;
 }
 
+function CreateAccountPage(): React.JSX.Element {
+    return <Modal title="Create account">
+        <form method="post" action="/api/createAccount">
+            <input type="text" name="username" />
+            <input type="password" name="password" />
+            <input type="submit" />
+        </form>
+    </Modal>;
+}
+
 function App(): React.JSX.Element {
     return <Router.BrowserRouter>
         <Router.Routes>
@@ -71,6 +81,7 @@ function App(): React.JSX.Element {
                 <Router.Route path="create" element={<CreateSessionPage />} />
                 <Router.Route path=":roomId" element={<SessionPage />} />
             </Router.Route>
+            <Router.Route path="createAccount" element={<CreateAccountPage />} />
         </Router.Routes>
     </Router.BrowserRouter>;
 }
