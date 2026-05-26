@@ -2,7 +2,6 @@
 import * as Colyseus from 'colyseus';
 import GameRoom from './gameRoom';
 import config from '../../config';
-import accountManager from './accountManager';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
