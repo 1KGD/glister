@@ -29,8 +29,8 @@ function Interface({ roomId }: { roomId: string }): React.JSX.Element {
 function LoginPage(): React.JSX.Element {
     return <Modal title="Login">
         <form method="post" action="/api/login">
-            <input type="text" name="username" />
-            <input type="password" name="password" />
+            <input type="text" name="username" autoComplete="username" />
+            <input type="password" name="password" autoComplete="current-password" />
             <input type="submit" />
         </form>
     </Modal>;
