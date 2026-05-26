@@ -37,12 +37,25 @@ const userData = Colyseus.createEndpoint("/api/userData", {
     const token = ctx.getCookie("token");
     if (!token) return ctx.json({ loggedIn: false });
     const account: AccountClientData & { loggedIn?: boolean } = await accountManager.getUserData(token);
+    if (!account) return ctx.json({ loggedIn: false });
     account.loggedIn = true;
-    return await ctx.json(account);
+    return ctx.json(account);
+});
+
+const logout = Colyseus.createEndpoint("/api/logout", {
+    method: "GET",
+    disableBody: true
+}, async (ctx): Promise<unknown> => {
+    const token = ctx.getCookie("token");
+    if (!token) return ctx.redirect("/");
+    await accountManager.logout(token);
+    ctx.setCookie("token", null);
+    return ctx.redirect("/");
 });
 
 export default Colyseus.createRouter({
     login,
     createAccount,
     userData,
+    logout
 });

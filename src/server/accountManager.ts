@@ -30,13 +30,21 @@ export class AccountManager {
     public async cleanDeadSessions(): Promise<void> {
         for (const token of await ormDataSource.manager.find(SessionToken)) {
             if ((new Date).valueOf() - token.creationTime.valueOf() >= config.multiplayer.sessionTokenExperationTime) {
-                await ormDataSource.manager.delete(SessionToken, token.value);
+                await this.logout(token.value);
             }
         }
     }
 
     public async getUserData(token: string): Promise<AccountClientData> {
-        return (await ormDataSource.manager.findOneBy(Account, { token })).asClientData();
+        await this.cleanDeadSessions();
+        return (await ormDataSource.manager.findOneBy(Account, { token }))?.asClientData();
+    }
+
+    public async logout(token: string): Promise<void> {
+        const account = await ormDataSource.manager.findOneBy(Account, { token: token });
+        account.token = null;
+        await ormDataSource.manager.save(account);
+        await ormDataSource.manager.delete(SessionToken, token);
     }
 }
 
