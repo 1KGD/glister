@@ -69,6 +69,26 @@ function CreateAccountPage(): React.JSX.Element {
     </Modal>;
 }
 
+function SessionList(): React.JSX.Element {
+    const lobby = roomProvider.useLobby();
+    if (lobby.isConnecting) return <>connecting...</>;
+    return <>
+        {lobby.rooms.map(room => <div key={room.roomId}>
+            <Router.Link to={`/session/${room.roomId}`}>{room.roomId}</Router.Link>
+        </div>)}
+    </>;
+}
+
+function FindSessionPage(): React.JSX.Element {
+    const [refreshCounter, setRefreshCounter] = React.useState(0);
+    return <roomProvider.LobbyProvider connect={() => client.joinOrCreate("lobby")} deps={[refreshCounter]}>
+        <Modal title="Session list">
+            <SessionList />
+            <button onClick={() => setRefreshCounter(refreshCounter + 1)}>refresh</button>
+        </Modal>
+    </roomProvider.LobbyProvider>;
+}
+
 function App(): React.JSX.Element {
     return <Router.BrowserRouter>
         <Router.Routes>
@@ -79,6 +99,7 @@ function App(): React.JSX.Element {
             </Router.Route>
             <Router.Route path="session">
                 <Router.Route path="create" element={<CreateSessionPage />} />
+                <Router.Route path="find" element={<FindSessionPage />} />
                 <Router.Route path=":roomId" element={<SessionPage />} />
             </Router.Route>
             <Router.Route path="createAccount" element={<CreateAccountPage />} />

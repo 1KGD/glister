@@ -1,3 +1,4 @@
 import * as ColyseusReact from '@colyseus/react';
 import type GameRoom from '../server/gameRoom';
-export default ColyseusReact.createRoomContext<GameRoom>();
+import { type Metadata } from '../server/gameRoom';
+export default { ...ColyseusReact.createRoomContext<GameRoom>(), ...ColyseusReact.createLobbyContext<Metadata>() };

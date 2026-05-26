@@ -7,16 +7,14 @@ import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
 await ormDataSource.initialize();
-console.log(accountManager);
-//await accountManager.addAccount("john","foo");
-//await accountManager.login("john","foo");
-const server =  Colyseus.defineServer({
+const server = Colyseus.defineServer({
     routes,
-    express: (app)=>{
+    express: (app) => {
         app.use(cookieParser());
     },
     transport: new Colyseus.WebSocketTransport(),
     rooms: {
+        lobby: Colyseus.defineRoom(Colyseus.LobbyRoom),
         game: Colyseus.defineRoom(GameRoom),
     },
     greet: !config.dev,

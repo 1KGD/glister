@@ -11,6 +11,17 @@ export default function Homepage(): React.JSX.Element {
         <div>
             {loggedIn ? account.name : "not logged in"}
         </div>
-        {loggedIn ? <Router.Link to={"/api/logout"} reloadDocument>logout</Router.Link> : <Router.Link to={"/login"}>Login</Router.Link>}
+        {
+            loggedIn ?
+                <>
+                    <Router.Link to="/api/logout" reloadDocument>logout</Router.Link><br />
+                    <Router.Link to="/session/create">Start new game session</Router.Link><br />
+                    <Router.Link to="/session/find">Find a game session</Router.Link>
+                </> :
+                <>
+                    <Router.Link to="/login">Login</Router.Link><br />
+                    <Router.Link to="/createAccount">Create Account</Router.Link>
+                </>
+        }
     </div>;
 }

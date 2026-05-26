@@ -3,7 +3,7 @@ import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
 import config from '../../config';
 
-interface Metadata { }
+export interface Metadata { }
 
 type ClientAuth = { name: string }
 
