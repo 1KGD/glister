@@ -21,9 +21,11 @@ RUN pnpm run build-server
 
 FROM nginx:alpine AS final
 WORKDIR /app
+VOLUME [ "/app/data" ]
 RUN apk add nodejs npm
 RUN npm i -g concurrently
 RUN npm i typeorm better-sqlite3
+RUN apk del npm
 COPY nginx.conf /etc/nginx
 COPY --from=client /app/dist /data/www
 COPY --from=server /app/build .
