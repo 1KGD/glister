@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+//import 'reflect-metadata';
 import * as Colyseus from 'colyseus';
 import GameRoom from './gameRoom';
 import config from '../../config';

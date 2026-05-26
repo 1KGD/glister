@@ -20,10 +20,11 @@ COPY rollup.config.mjs .
 RUN pnpm run build-server
 
 FROM nginx:alpine AS final
+WORKDIR /app
 RUN apk add nodejs npm
 RUN npm i -g concurrently
+RUN npm i typeorm better-sqlite3
 COPY nginx.conf /etc/nginx
-COPY --from=common /app/node_modules/ .
 COPY --from=client /app/dist /data/www
 COPY --from=server /app/build .
 ENV PRODUCTION_SERVER=true

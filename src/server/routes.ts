@@ -2,7 +2,7 @@ import * as Colyseus from 'colyseus';
 import accountManager from './accountManager';
 import { AccountClientData } from './account';
 
-const login = Colyseus.createEndpoint("/api/login", {
+const login = Colyseus.createEndpoint("/login", {
     method: "POST",
     disableBody: true
 }, async (ctx): Promise<unknown> => {
@@ -18,7 +18,7 @@ const login = Colyseus.createEndpoint("/api/login", {
     }
 });
 
-const createAccount = Colyseus.createEndpoint("/api/createAccount", {
+const createAccount = Colyseus.createEndpoint("/createAccount", {
     method: "POST",
     disableBody: true
 }, async (ctx): Promise<unknown> => {
@@ -30,7 +30,7 @@ const createAccount = Colyseus.createEndpoint("/api/createAccount", {
     return ctx.redirect("/login");
 });
 
-const userData = Colyseus.createEndpoint("/api/userData", {
+const userData = Colyseus.createEndpoint("/userData", {
     method: "GET",
     disableBody: true
 }, async (ctx): Promise<unknown> => {
@@ -42,7 +42,7 @@ const userData = Colyseus.createEndpoint("/api/userData", {
     return ctx.json(account);
 });
 
-const logout = Colyseus.createEndpoint("/api/logout", {
+const logout = Colyseus.createEndpoint("/logout", {
     method: "GET",
     disableBody: true
 }, async (ctx): Promise<unknown> => {

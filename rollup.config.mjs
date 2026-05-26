@@ -10,13 +10,13 @@ export default {
         dir: './build',
         format: 'es',
     },
-    external: [
-        /node_modules/
-    ],
     plugins: [
         commonjs(),
         typescript(),
         terser(),
+        resolve({
+            custom: { 'node-resolve': { isRequire: true } }
+        }),
         json()
     ]
 };

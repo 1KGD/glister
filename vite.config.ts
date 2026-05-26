@@ -11,12 +11,13 @@ export default defineConfig({
             '^/api/matchmake/.*': {
                 target: `http://localhost:${config.multiplayer.port}/matchmake/`,
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api\/matchmake/, ''),
+                rewrite: path => path.replace(/^\/api\/matchmake/, ''),
             },
             '/api': {
                 target: `ws://localhost:${config.multiplayer.port}`,
                 ws: true,
                 rewriteWsOrigin: true,
+                rewrite: path => path.replace(/^\/api/, ''),
             },
         }
     },
