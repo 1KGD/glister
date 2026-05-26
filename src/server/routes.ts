@@ -1,5 +1,6 @@
 import * as Colyseus from 'colyseus';
 import accountManager from './accountManager';
+import { AccountClientData } from './account';
 
 const login = Colyseus.createEndpoint("/api/login", {
     method: "POST",
@@ -33,7 +34,11 @@ const userData = Colyseus.createEndpoint("/api/userData", {
     method: "GET",
     disableBody: true
 }, async (ctx): Promise<unknown> => {
-    return ((await ctx.json(await accountManager.getUserData(ctx.getCookie("token")))));
+    const token = ctx.getCookie("token");
+    if (!token) return ctx.json({ loggedIn: false });
+    const account: AccountClientData & { loggedIn?: boolean } = await accountManager.getUserData(token);
+    account.loggedIn = true;
+    return await ctx.json(account);
 });
 
 export default Colyseus.createRouter({
