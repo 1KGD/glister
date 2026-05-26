@@ -9,7 +9,7 @@ export default {
     input: 'src/server/index.ts',
     output: {
         dir: './build',
-        format: 'es',
+        format: 'cjs',
     },
     plugins: [
         commonjs(),
