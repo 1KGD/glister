@@ -34,7 +34,7 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
-    public override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
+    public static override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
         if (!tokenRegex) return false;
         const account = await accountManager.verify(tokenRegex.groups.token);
@@ -57,8 +57,12 @@ export default class GameRoom extends Colyseus.Room<{
         this.state.players.set(client.sessionId, new State.PlayerState(options.name, this.state.addCreature(creature)));
     }
 
-    public override onLeave(client: Client): void {
+    private attemptTimeout(): void {
         if (this.clients.length === 0) this.disposeTimer = this.clock.setTimeout(() => this.disconnect(), config.multiplayer.roomTimeout);
+    }
+
+    public override onLeave(client: Client): void {
+        this.attemptTimeout();
         if (this.state.gameMaster?.id === client.sessionId) {
             this.state.gameMaster = null;
             return;
