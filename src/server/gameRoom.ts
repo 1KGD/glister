@@ -3,7 +3,9 @@ import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
 import config from '../../config';
 
-export interface Metadata { }
+export interface Metadata {
+    name: string
+}
 
 type ClientAuth = { name: string }
 
@@ -33,6 +35,10 @@ export default class GameRoom extends Colyseus.Room<{
             position.y = payload.y;
         }
     };
+
+    public override onCreate(): void {
+        this.metadata = {name: "Debug Adventure"};
+    }
 
     public static override async onAuth(_token: string, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));

@@ -51,7 +51,7 @@ function CreateSessionPage(): React.JSX.Element {
     const goto = Router.useNavigate();
     return <Modal title="Create session">
         <button onClick={() => {
-            client.create("game").then(async (room) => {
+            client.create("game", {}).then(async (room) => {
                 await goto(`/session/${room.roomId}`);
                 await room.leave();
             }).catch(e => { throw e; });
@@ -74,7 +74,7 @@ function SessionList(): React.JSX.Element {
     if (lobby.isConnecting) return <>connecting...</>;
     return <>
         {lobby.rooms.map(room => <div key={room.roomId}>
-            <Router.Link to={`/session/${room.roomId}`}>{room.roomId}</Router.Link>
+            <Router.Link to={`/session/${room.roomId}`}>{room.metadata?.name}</Router.Link>
         </div>)}
     </>;
 }
