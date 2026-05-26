@@ -34,7 +34,7 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
-    public static override async onAuth(_client: Client, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
+    public static override async onAuth(_token: string, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
         if (!tokenRegex) return false;
         const account = await accountManager.verify(tokenRegex.groups.token);
