@@ -29,7 +29,15 @@ const createAccount = Colyseus.createEndpoint("/api/createAccount", {
     return ctx.redirect("/login");
 });
 
+const userData = Colyseus.createEndpoint("/api/userData", {
+    method: "GET",
+    disableBody: true
+}, async (ctx): Promise<unknown> => {
+    return ctx.json({ name: ctx.getCookie("token") });
+});
+
 export default Colyseus.createRouter({
     login,
-    createAccount
+    createAccount,
+    userData,
 });
