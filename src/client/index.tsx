@@ -53,7 +53,7 @@ function CreateSessionPage(): React.JSX.Element {
         <button onClick={() => {
             client.create("game", {}).then(async (room) => {
                 await goto(`/session/${room.roomId}`);
-                await room.leave();
+                await room.leave(); // This is so cursed
             }).catch(e => { throw e; });
         }}>Create</button>
     </Modal>;
@@ -70,10 +70,11 @@ function CreateAccountPage(): React.JSX.Element {
 }
 
 function SessionList(): React.JSX.Element {
-    const lobby = roomProvider.useLobby();
-    if (lobby.isConnecting) return <>connecting...</>;
+    const { isConnecting, error, rooms } = roomProvider.useLobby();
+    if (isConnecting) return <>connecting...</>;
+    if (error) return <>error {error.message}</>;
     return <>
-        {lobby.rooms.map(room => <div key={room.roomId}>
+        {rooms.map(room => <div key={room.roomId}>
             <Router.Link to={`/session/${room.roomId}`}>{room.metadata?.name}</Router.Link>
         </div>)}
     </>;
