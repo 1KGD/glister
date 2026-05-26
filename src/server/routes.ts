@@ -33,7 +33,7 @@ const userData = Colyseus.createEndpoint("/api/userData", {
     method: "GET",
     disableBody: true
 }, async (ctx): Promise<unknown> => {
-    return ctx.json({ name: ctx.getCookie("token") });
+    return ((await ctx.json(await accountManager.getUserData(ctx.getCookie("token")))));
 });
 
 export default Colyseus.createRouter({

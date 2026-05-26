@@ -13,6 +13,10 @@ export class SessionToken {
     }
 }
 
+export type AccountClientData = {
+    name: string
+};
+
 @ORM.Entity()
 export default class Account {
     @ORM.PrimaryGeneratedColumn()
@@ -30,5 +34,11 @@ export default class Account {
     public constructor(name: string, password: string) {
         this.name = name;
         this.password = password;
+    }
+
+    public asClientData(): AccountClientData {
+        return {
+            name: this.name
+        };
     }
 }

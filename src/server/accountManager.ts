@@ -1,5 +1,5 @@
 import ormDataSource from './ormDataSource';
-import Account, { SessionToken } from './account';
+import Account, { AccountClientData, SessionToken } from './account';
 import config from '../../config';
 
 export class LoginError extends Error { }
@@ -33,6 +33,10 @@ export class AccountManager {
                 await ormDataSource.manager.delete(SessionToken, token.value);
             }
         }
+    }
+
+    public async getUserData(token: string): Promise<AccountClientData> {
+        return (await ormDataSource.manager.findOneBy(Account, { token })).asClientData();
     }
 }
 

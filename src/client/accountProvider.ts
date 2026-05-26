@@ -1,13 +1,14 @@
 import React from 'react';
+import { type AccountClientData } from '../server/account';
 
-export default function useAccount(): { name: string } {
-    const [accountData, setAccountData] = React.useState(null);
+export default function useAccount(): AccountClientData {
+    const [accountData, setAccountData] = React.useState<AccountClientData>(null);
 
     React.useEffect(() => {
         fetch("/api/userData")
-            .then((response) => response.json())
-            .then((response) => setAccountData(response))
-            .catch((error) => console.error(error));
+            .then(response => response.json())
+            .then(response => setAccountData(response))
+            .catch(e => { throw e; });
     }, []);
 
     return accountData;
