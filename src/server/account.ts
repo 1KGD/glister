@@ -1,4 +1,6 @@
 import * as ORM from 'typeorm';
+import Adventure from './adventure';
+import ormDataSource from './ormDataSource';
 
 @ORM.Entity()
 export class SessionToken {
@@ -13,8 +15,13 @@ export class SessionToken {
     }
 }
 
-export type AccountClientData = {
+export type AdventureClientData = {
     name: string
+}
+
+export type AccountClientData = {
+    name: string,
+    adventures: AdventureClientData[]
 };
 
 @ORM.Entity()
@@ -31,6 +38,9 @@ export default class Account {
     @ORM.Column("text", { nullable: true, unique: true })
     public token: string;
 
+    @ORM.OneToMany(() => Adventure, adventure => adventure.owner, { eager: true })
+    public adventures: Adventure[];
+
     public constructor(name: string, password: string) {
         this.name = name;
         this.password = password;
@@ -38,7 +48,8 @@ export default class Account {
 
     public asClientData(): AccountClientData {
         return {
-            name: this.name
+            name: this.name,
+            adventures: this.adventures ? this.adventures.map(adventure => adventure.asClientData()) : []
         };
     }
 }

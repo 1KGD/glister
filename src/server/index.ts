@@ -5,6 +5,7 @@ import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
+import accountManager from './accountManager';
 const server = Colyseus.defineServer({
     routes,
     express: (app) => {
@@ -17,5 +18,9 @@ const server = Colyseus.defineServer({
     },
     greet: !config.dev,
 });
-ormDataSource.initialize().then(async () => await server.listen(config.multiplayer.port)).catch(e => { throw e; });
+ormDataSource.initialize().then(async () => {
+    await accountManager.createAdventure(1, "foo");
+    await server.listen(config.multiplayer.port);
+}
+).catch(e => { throw e; });
 export default server;

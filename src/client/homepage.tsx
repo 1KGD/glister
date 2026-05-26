@@ -14,6 +14,7 @@ export default function Homepage(): React.JSX.Element {
         {
             loggedIn ?
                 <>
+                    {account.adventures.map(adventure=><>{adventure.name}</>)}
                     <Router.Link to="/api/logout" reloadDocument>logout</Router.Link><br />
                     <Router.Link to="/session/create">Start new game session</Router.Link><br />
                     <Router.Link to="/session/find">Find a game session</Router.Link>
