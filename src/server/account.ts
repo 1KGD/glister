@@ -1,5 +1,5 @@
 import * as ORM from 'typeorm';
-import Adventure, { AdventureClientData } from './adventure';
+import Adventure, { type AdventureClientData } from './adventure';
 
 @ORM.Entity()
 export class SessionToken {
@@ -33,18 +33,19 @@ export default class Account {
     @ORM.Column("text", { nullable: true, unique: true })
     public token: string;
 
-    @ORM.OneToMany(() => Adventure, adventure => adventure.owner, { eager: true })
-    public adventures: Adventure[];
+    @ORM.OneToMany(() => Adventure, adventure => adventure.owner, { lazy: true })
+    public adventures: Promise<Adventure[]>;
 
     public constructor(name: string, password: string) {
         this.name = name;
         this.password = password;
     }
 
-    public asClientData(): AccountClientData {
+    public async asClientData(): Promise<AccountClientData> {
+        const adventures = await this.adventures;
         return {
             name: this.name,
-            adventures: this.adventures ? this.adventures.map(adventure => adventure.asClientData()) : []
+            adventures: adventures ? adventures.map(adventure => adventure.asClientData()) : []
         };
     }
 }

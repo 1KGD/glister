@@ -14,11 +14,11 @@ export default class Adventure {
     @ORM.Column("text")
     public name: string;
 
-    @ORM.ManyToOne(() => Account, account => account.adventures, { cascade: true })
-    public owner: Account;
+    @ORM.ManyToOne(() => Account, account => account.adventures, { cascade: true, lazy: true })
+    public owner: Promise<Account>;
 
     public constructor(owner: Account, name: string) {
-        this.owner = owner;
+        this.owner = Promise.resolve(owner);
         this.name = name;
     }
 

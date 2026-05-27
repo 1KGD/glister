@@ -1,5 +1,5 @@
 import ormDataSource from './ormDataSource';
-import Account, { AccountClientData, SessionToken } from './account';
+import Account, { type AccountClientData, SessionToken } from './account';
 import config from '../../config';
 import Adventure from './adventure';
 
@@ -12,9 +12,7 @@ export class AccountManager {
 
     public async login(name: string, password: string): Promise<string> {
         const account = await ormDataSource.manager.findOneBy(Account, { name });
-        if (account.password !== password) {
-            throw new LoginError("Bad username or password");
-        }
+        if (account.password !== password) throw new LoginError("Bad username or password");
         const token = new SessionToken;
         await ormDataSource.manager.save(token);
         account.token = token.value;
