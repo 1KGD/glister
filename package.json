@@ -54,6 +54,7 @@
         "react-konva": "^19.2.4",
         "react-router": "^7.15.1",
         "reflect-metadata": "^0.2.2",
+        "tesseract": "link:tesseract",
         "typeorm": "^1.0.0",
         "uuid": "^14.0.0"
     }
