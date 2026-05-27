@@ -41,6 +41,10 @@ export class AccountManager {
         return (await ormDataSource.manager.findOneBy(Account, { token }))?.asClientData();
     }
 
+    public async getUserId(token: string): Promise<number> {
+        return (await ormDataSource.manager.findOneBy(Account, { token })).id;
+    }
+
     public async logout(token: string): Promise<void> {
         const account = await ormDataSource.manager.findOneBy(Account, { token: token });
         account.token = null;

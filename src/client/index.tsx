@@ -12,6 +12,8 @@ import Modal from './modal';
 import * as Router from 'react-router';
 import Homepage from './homepage';
 import type server from '../server/index';
+import { AdventureClientData } from '../server/adventure';
+import { useAdventure } from './dataProvider';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
@@ -90,6 +92,23 @@ function FindSessionPage(): React.JSX.Element {
     </roomProvider.LobbyProvider>;
 }
 
+function CreateAdventurePage(): React.JSX.Element {
+    return <Modal title="create adventure">
+        <form method="post" action="/api/createAdventure">
+            <input type="text" name="name" />
+            <input type="submit" />
+        </form>
+    </Modal>;
+}
+
+function AdventurePage(): React.JSX.Element {
+    const { adventureId } = Router.useParams();
+    const { loading, adventure } = useAdventure(adventureId);
+
+    if (loading) return <Modal title="Loading...">Loading Adventure Data</Modal>;
+    return <div>{adventure.name}</div>;
+}
+
 function App(): React.JSX.Element {
     return <Router.BrowserRouter>
         <Router.Routes>
@@ -102,6 +121,10 @@ function App(): React.JSX.Element {
                 <Router.Route path="create" element={<CreateSessionPage />} />
                 <Router.Route path="find" element={<FindSessionPage />} />
                 <Router.Route path=":roomId" element={<SessionPage />} />
+            </Router.Route>
+            <Router.Route path="adventure">
+                <Router.Route path="create" element={<CreateAdventurePage />} />
+                <Router.Route path=":adventureId" element={<AdventurePage />} />
             </Router.Route>
             <Router.Route path="createAccount" element={<CreateAccountPage />} />
         </Router.Routes>

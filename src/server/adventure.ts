@@ -1,5 +1,10 @@
 import * as ORM from 'typeorm';
-import Account, { AdventureClientData } from './account';
+import Account from './account';
+
+export type AdventureClientData = {
+    id: string,
+    name: string
+}
 
 @ORM.Entity()
 export default class Adventure {
@@ -9,7 +14,7 @@ export default class Adventure {
     @ORM.Column("text")
     public name: string;
 
-    @ORM.ManyToOne(() => Account, account => account.adventures, { cascade: true, eager: true })
+    @ORM.ManyToOne(() => Account, account => account.adventures, { cascade: true })
     public owner: Account;
 
     public constructor(owner: Account, name: string) {
@@ -19,6 +24,7 @@ export default class Adventure {
 
     public asClientData(): AdventureClientData {
         return {
+            id: this.id,
             name: this.name
         };
     }

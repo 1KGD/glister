@@ -1,6 +1,5 @@
 import * as ORM from 'typeorm';
-import Adventure from './adventure';
-import ormDataSource from './ormDataSource';
+import Adventure, { AdventureClientData } from './adventure';
 
 @ORM.Entity()
 export class SessionToken {
@@ -13,10 +12,6 @@ export class SessionToken {
     public constructor() {
         this.creationTime = new Date;
     }
-}
-
-export type AdventureClientData = {
-    name: string
 }
 
 export type AccountClientData = {
