@@ -105,7 +105,7 @@ function AdventurePage(): React.JSX.Element {
     const { adventureId } = Router.useParams();
     const { loading, adventure } = useAdventure(adventureId);
 
-    if (loading) return <Modal title="Loading...">Loading Adventure Data</Modal>;
+    if (loading) return <Modal title="Loading...">Loading adventure data</Modal>;
     return <div>{adventure.name}</div>;
 }
 
