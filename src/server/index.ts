@@ -5,6 +5,7 @@ import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
+
 const server = Colyseus.defineServer({
     routes,
     express: (app) => {
@@ -17,8 +18,10 @@ const server = Colyseus.defineServer({
     },
     greet: !config.dev,
 });
+
 ormDataSource.initialize().then(async () => {
     await server.listen(config.multiplayer.port);
 }
 ).catch(e => { throw e; });
+
 export default server;

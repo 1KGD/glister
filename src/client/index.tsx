@@ -12,7 +12,6 @@ import Modal from './modal';
 import * as Router from 'react-router';
 import Homepage from './homepage';
 import type server from '../server/index';
-import { AdventureClientData } from '../server/adventure';
 import { useAdventure } from './dataProvider';
 
 const client = new Colyseus.Client<typeof server>("/api");
