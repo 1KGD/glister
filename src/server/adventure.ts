@@ -3,7 +3,7 @@ import Account from './account';
 
 export type AdventureClientData = {
     id: string,
-    name: string
+    name: string,
 }
 
 @ORM.Entity()

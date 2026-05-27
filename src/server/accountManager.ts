@@ -53,7 +53,6 @@ export class AccountManager {
     public async createAdventure(ownerId: number, name: string): Promise<void> {
         const owner = await ormDataSource.manager.findOneBy(Account, { id: ownerId });
         const adventure = new Adventure(owner, name);
-        adventure.owner = owner;
         await ormDataSource.manager.save(adventure);
     }
 }

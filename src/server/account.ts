@@ -45,7 +45,7 @@ export default class Account {
         const adventures = await this.adventures;
         return {
             name: this.name,
-            adventures: adventures ? adventures.map(adventure => adventure.asClientData()) : []
+            adventures: adventures ? await Promise.all(adventures.map(async (adventure) => await adventure.asClientData())) : []
         };
     }
 }
