@@ -8,33 +8,33 @@ if (config.dev) await import("@colyseus/sdk/debug");
 import './colors.css';
 import './index.css';
 import PlayerInterface from './player/playerInterface';
-import Modal from './modal';
 import * as Router from 'react-router';
 import Homepage from './homepage';
 import type server from '../server/index';
 import { useAdventure } from './dataProvider';
+import * as Tesseract from 'tesseract';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
 function Interface({ roomId }: { roomId: string }): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
     const state = roomProvider.useRoomState();
-    if (error) return <Modal blocking title={"Error: " + error.name}>{error.message}</Modal>;
-    if (isConnecting) return <Modal blocking title="Connecting">Joining {roomId}...</Modal>;
-    if (!state) return <Modal blocking title="Connecting">Fetching State...</Modal>;
+    if (error) return <Tesseract.Modal blocking title={"Error: " + error.name}>{error.message}</Tesseract.Modal>;
+    if (isConnecting) return <Tesseract.Modal blocking title="Connecting">Joining {roomId}...</Tesseract.Modal>;
+    if (!state) return <Tesseract.Modal blocking title="Connecting">Fetching State...</Tesseract.Modal>;
 
     if (state.gameMaster?.id === room.sessionId) return <GameMasterInterface />;
     return <PlayerInterface />;
 }
 
 function LoginPage(): React.JSX.Element {
-    return <Modal title="Login">
+    return <Tesseract.Modal title="Login">
         <form method="post" action="/api/login">
             <input type="text" name="username" autoComplete="username" />
             <input type="password" name="password" autoComplete="current-password" />
             <input type="submit" />
         </form>
-    </Modal>;
+    </Tesseract.Modal>;
 }
 
 function SessionPage(): React.JSX.Element {
@@ -50,24 +50,24 @@ function SessionPage(): React.JSX.Element {
 
 function CreateSessionPage(): React.JSX.Element {
     const goto = Router.useNavigate();
-    return <Modal title="Create session">
+    return <Tesseract.Modal title="Create session">
         <button onClick={() => {
             client.create("game", {}).then(async (room) => {
                 await goto(`/session/${room.roomId}`);
                 await room.leave(); // This is so cursed
             }).catch(e => { throw e; });
         }}>Create</button>
-    </Modal>;
+    </Tesseract.Modal>;
 }
 
 function CreateAccountPage(): React.JSX.Element {
-    return <Modal title="Create account">
+    return <Tesseract.Modal title="Create account">
         <form method="post" action="/api/createAccount">
             <input type="text" name="username" />
             <input type="password" name="password" />
             <input type="submit" />
         </form>
-    </Modal>;
+    </Tesseract.Modal>;
 }
 
 function SessionList(): React.JSX.Element {
@@ -84,50 +84,52 @@ function SessionList(): React.JSX.Element {
 function FindSessionPage(): React.JSX.Element {
     const [refreshCounter, setRefreshCounter] = React.useState(0);
     return <roomProvider.LobbyProvider connect={() => client.joinOrCreate("lobby")} deps={[refreshCounter]}>
-        <Modal title="Session list">
+        <Tesseract.Modal title="Session list">
             <SessionList />
             <button onClick={() => setRefreshCounter(refreshCounter + 1)}>refresh</button>
-        </Modal>
+        </Tesseract.Modal>
     </roomProvider.LobbyProvider>;
 }
 
 function CreateAdventurePage(): React.JSX.Element {
-    return <Modal title="create adventure">
+    return <Tesseract.Modal title="create adventure">
         <form method="post" action="/api/createAdventure">
             <input type="text" name="name" />
             <input type="submit" />
         </form>
-    </Modal>;
+    </Tesseract.Modal>;
 }
 
 function AdventurePage(): React.JSX.Element {
     const { adventureId } = Router.useParams();
     const { loading, adventure } = useAdventure(adventureId);
 
-    if (loading) return <Modal title="Loading...">Loading adventure data</Modal>;
+    if (loading) return <Tesseract.Modal title="Loading...">Loading adventure data</Tesseract.Modal>;
     return <div>{adventure.name}</div>;
 }
 
 function App(): React.JSX.Element {
-    return <Router.BrowserRouter>
-        <Router.Routes>
-            <Router.Route index element={<Homepage />} />
-            <Router.Route path="login">
-                <Router.Route index element={<LoginPage />} />
-                <Router.Route path="error" element={<>Login Error</>} />
-            </Router.Route>
-            <Router.Route path="session">
-                <Router.Route path="create" element={<CreateSessionPage />} />
-                <Router.Route path="find" element={<FindSessionPage />} />
-                <Router.Route path=":roomId" element={<SessionPage />} />
-            </Router.Route>
-            <Router.Route path="adventure">
-                <Router.Route path="create" element={<CreateAdventurePage />} />
-                <Router.Route path=":adventureId" element={<AdventurePage />} />
-            </Router.Route>
-            <Router.Route path="createAccount" element={<CreateAccountPage />} />
-        </Router.Routes>
-    </Router.BrowserRouter>;
+    return <Tesseract.Wrapper>
+        <Router.BrowserRouter>
+            <Router.Routes>
+                <Router.Route index element={<Homepage />} />
+                <Router.Route path="login">
+                    <Router.Route index element={<LoginPage />} />
+                    <Router.Route path="error" element={<>Login Error</>} />
+                </Router.Route>
+                <Router.Route path="session">
+                    <Router.Route path="create" element={<CreateSessionPage />} />
+                    <Router.Route path="find" element={<FindSessionPage />} />
+                    <Router.Route path=":roomId" element={<SessionPage />} />
+                </Router.Route>
+                <Router.Route path="adventure">
+                    <Router.Route path="create" element={<CreateAdventurePage />} />
+                    <Router.Route path=":adventureId" element={<AdventurePage />} />
+                </Router.Route>
+                <Router.Route path="createAccount" element={<CreateAccountPage />} />
+            </Router.Routes>
+        </Router.BrowserRouter>
+    </Tesseract.Wrapper>;
 }
 
 createRoot(document.getElementById("root")).render(<App />);

@@ -27,6 +27,7 @@
     "include": [
         "src",
         "*.config.*",
-        "config.ts"
+        "config.ts",
+        "tesseract"
     ]
 }

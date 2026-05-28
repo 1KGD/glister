@@ -1,13 +1,14 @@
 import React from 'react';
 import * as Router from 'react-router';
 import { useAccount } from './dataProvider';
-import Modal from './modal';
 import './homepage.css';
+import * as Tesseract from 'tesseract';
 
 export default function Homepage(): React.JSX.Element {
+    const navigate = Router.useNavigate();
     const { loading, loggedIn, account } = useAccount();
-    if (loading) return <Modal title={"Loading..."}>Loading account...</Modal>;
-    return <div className="homepage">
+    if (loading) return <Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>;
+    return <Tesseract.Page>
         <div>
             {loggedIn ? account.name : "not logged in"}
         </div>
@@ -15,18 +16,18 @@ export default function Homepage(): React.JSX.Element {
             loggedIn ?
                 <>
                     {account.adventures.map(adventure => <div key={adventure.name}>
-                        <Router.Link to={`/adventure/${adventure.id}`}>
+                        <Tesseract.Link navigate={navigate} to={`/adventure/${adventure.id}`}>
                             {adventure.name}
-                        </Router.Link>
+                        </Tesseract.Link>
                     </div>)}
-                    <Router.Link to="/api/logout" reloadDocument>logout</Router.Link><br />
-                    <Router.Link to="/session/create">Start new game session</Router.Link><br />
-                    <Router.Link to="/session/find">Find a game session</Router.Link>
+                    <Tesseract.Link navigate={navigate} to="/api/logout" refresh>logout</Tesseract.Link><br />
+                    <Tesseract.Link navigate={navigate} to="/session/create">Start new game session</Tesseract.Link><br />
+                    <a href="/session/find">Find a game session</a>
                 </> :
                 <>
-                    <Router.Link to="/login">Login</Router.Link><br />
-                    <Router.Link to="/createAccount">Create Account</Router.Link>
+                    <a href="/login">Login</a><br />
+                    <a href="/createAccount">Create Account</a>
                 </>
         }
-    </div>;
+    </Tesseract.Page>;
 }
