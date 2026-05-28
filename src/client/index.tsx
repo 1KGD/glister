@@ -49,11 +49,11 @@ function SessionPage(): React.JSX.Element {
 }
 
 function CreateSessionPage(): React.JSX.Element {
-    const goto = Router.useNavigate();
+    const navigate = Router.useNavigate();
     return <Tesseract.Modal title="Create session">
         <button onClick={() => {
             client.create("game", {}).then(async (room) => {
-                await goto(`/session/${room.roomId}`);
+                await navigate(`/session/${room.roomId}`);
                 await room.leave(); // This is so cursed
             }).catch(e => { throw e; });
         }}>Create</button>
@@ -71,12 +71,13 @@ function CreateAccountPage(): React.JSX.Element {
 }
 
 function SessionList(): React.JSX.Element {
+    const navigate = Router.useNavigate();
     const { isConnecting, error, rooms } = roomProvider.useLobby();
     if (isConnecting) return <>connecting...</>;
     if (error) return <>error {error.message}</>;
     return <>
         {rooms.map(room => <div key={room.roomId}>
-            <Router.Link to={`/session/${room.roomId}`}>{room.metadata?.name}</Router.Link>
+            <Tesseract.Link navigate={navigate} to={`/session/${room.roomId}`}>{room.metadata?.name}</Tesseract.Link>
         </div>)}
     </>;
 }

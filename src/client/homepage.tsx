@@ -22,11 +22,11 @@ export default function Homepage(): React.JSX.Element {
                     </div>)}
                     <Tesseract.Link navigate={navigate} to="/api/logout" refresh>logout</Tesseract.Link><br />
                     <Tesseract.Link navigate={navigate} to="/session/create">Start new game session</Tesseract.Link><br />
-                    <a href="/session/find">Find a game session</a>
+                    <Tesseract.Link navigate={navigate} to="/session/find">Find a game session</Tesseract.Link>
                 </> :
                 <>
-                    <a href="/login">Login</a><br />
-                    <a href="/createAccount">Create Account</a>
+                    <Tesseract.Link navigate={navigate} to="/login">Login</Tesseract.Link><br />
+                    <Tesseract.Link navigate={navigate} to="/createAccount">Create Account</Tesseract.Link>
                 </>
         }
     </Tesseract.Page>;
