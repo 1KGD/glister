@@ -45,8 +45,10 @@ export class AccountManager {
 
     public async logout(token: string): Promise<void> {
         const account = await ormDataSource.manager.findOneBy(Account, { token: token });
-        account.token = null;
-        await ormDataSource.manager.save(account);
+        if (account) {
+            account.token = null;
+            await ormDataSource.manager.save(account);
+        }
         await ormDataSource.manager.delete(SessionToken, token);
     }
 
