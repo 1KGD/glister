@@ -31,6 +31,7 @@
         "@types/cookie-parser": "^1.4.10",
         "@types/react": "^19.2.15",
         "@types/react-dom": "^19.2.3",
+        "@types/three": "^0.184.1",
         "concurrently": "^9.2.1",
         "eslint": "^10.4.0",
         "rollup": "^4.60.4",
@@ -55,6 +56,8 @@
         "react-router": "^7.15.1",
         "reflect-metadata": "^0.2.2",
         "tesseract": "link:tesseract",
+        "three": "^0.184.0",
+        "three.quarks": "^0.17.1",
         "typeorm": "^1.0.0",
         "uuid": "^14.0.0"
     }

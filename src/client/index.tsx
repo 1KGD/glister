@@ -43,7 +43,6 @@ function SessionPage(): React.JSX.Element {
     return <roomProvider.RoomProvider connect={() => {
         return client.joinById(roomId, { isGameMaster });
     }} deps={[roomId, isGameMaster]}>
-        <button onClick={() => setIsGameMaster(true)}>make me game master</button>
         <Interface roomId={roomId} />
     </roomProvider.RoomProvider>;
 }
@@ -70,8 +69,7 @@ function CreateAccountPage(): React.JSX.Element {
     </Tesseract.Modal>;
 }
 
-function SessionList(): React.JSX.Element {
-    const navigate = Router.useNavigate();
+function SessionList({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     const { isConnecting, error, rooms } = roomProvider.useLobby();
     if (isConnecting) return <>connecting...</>;
     if (error) return <>error {error.message}</>;
@@ -83,10 +81,11 @@ function SessionList(): React.JSX.Element {
 }
 
 function FindSessionPage(): React.JSX.Element {
+    const navigate = Router.useNavigate();
     const [refreshCounter, setRefreshCounter] = React.useState(0);
     return <roomProvider.LobbyProvider connect={() => client.joinOrCreate("lobby")} deps={[refreshCounter]}>
         <Tesseract.Modal title="Session list">
-            <SessionList />
+            <SessionList navigate={navigate} />
             <button onClick={() => setRefreshCounter(refreshCounter + 1)}>refresh</button>
         </Tesseract.Modal>
     </roomProvider.LobbyProvider>;
@@ -113,21 +112,22 @@ function App(): React.JSX.Element {
     return <Tesseract.Wrapper>
         <Router.BrowserRouter>
             <Router.Routes>
-                <Router.Route index element={<Homepage />} />
-                <Router.Route path="login">
-                    <Router.Route index element={<LoginPage />} />
-                    <Router.Route path="error" element={<>Login Error</>} />
+                <Router.Route path="/" element={<Homepage />}>
+                    <Router.Route path="login">
+                        <Router.Route index element={<LoginPage />} />
+                        <Router.Route path="error" element={<>Login Error</>} />
+                    </Router.Route>
+                    <Router.Route path="adventure">
+                        <Router.Route path="create" element={<CreateAdventurePage />} />
+                        <Router.Route path=":adventureId" element={<AdventurePage />} />
+                    </Router.Route>
+                    <Router.Route path="createAccount" element={<CreateAccountPage />} />
+                    <Router.Route path="session">
+                        <Router.Route path="create" element={<CreateSessionPage />} />
+                        <Router.Route path="find" element={<FindSessionPage />} />
+                        <Router.Route path=":roomId" element={<SessionPage />} />
+                    </Router.Route>
                 </Router.Route>
-                <Router.Route path="session">
-                    <Router.Route path="create" element={<CreateSessionPage />} />
-                    <Router.Route path="find" element={<FindSessionPage />} />
-                    <Router.Route path=":roomId" element={<SessionPage />} />
-                </Router.Route>
-                <Router.Route path="adventure">
-                    <Router.Route path="create" element={<CreateAdventurePage />} />
-                    <Router.Route path=":adventureId" element={<AdventurePage />} />
-                </Router.Route>
-                <Router.Route path="createAccount" element={<CreateAccountPage />} />
             </Router.Routes>
         </Router.BrowserRouter>
     </Tesseract.Wrapper>;
