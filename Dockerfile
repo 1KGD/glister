@@ -1,14 +1,21 @@
 FROM node:alpine AS common
 WORKDIR /app
+RUN apk add git
 RUN npm i -g pnpm
 COPY package.json .
-COPY pnpm-*.yaml .
+COPY pnpm-workspace.yaml .
 RUN pnpm i
 COPY src/common src/common
 COPY tsconfig.json .
 COPY config.ts .
 
-FROM common AS client
+FROM common as tesseract
+COPY tesseract tesseract
+WORKDIR /app/tesseract
+RUN pnpm i .
+WORKDIR /app
+
+FROM tesseract AS client
 COPY src/client src/client
 COPY index.html .
 COPY vite.config.ts .

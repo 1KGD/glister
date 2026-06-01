@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import * as Colyseus from '@colyseus/sdk';
+import * as THREE from 'three';
 import roomProvider from './roomProvider';
 import config from '../../config';
 import GameMasterInterface from './gameMaster/gameMasterInterface';
@@ -105,7 +106,7 @@ function AdventurePage(): React.JSX.Element {
     const { loading, adventure } = useAdventure(adventureId);
 
     if (loading) return <Tesseract.Modal title="Loading...">Loading adventure data</Tesseract.Modal>;
-    return <div>{adventure.name}</div>;
+    return <Tesseract.Page focused position={new THREE.Vector3(2, 0, 5)}>{adventure.name}</Tesseract.Page>;
 }
 
 function App(): React.JSX.Element {
