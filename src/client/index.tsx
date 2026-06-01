@@ -14,9 +14,11 @@ import Homepage from './homepage';
 import type server from '../server/index';
 import { useAdventure } from './dataProvider';
 import * as Tesseract from 'tesseract';
-import GameRoom from '../server/gameRoom';
+import { type AccountClientData } from '../server/account';
 
 const client = new Colyseus.Client<typeof server>("/api");
+
+export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
 function Interface({ roomId }: { roomId: string }): React.JSX.Element {
     const { room, error, isConnecting } = roomProvider.useRoom();
@@ -51,14 +53,20 @@ function SessionPage(): React.JSX.Element {
 
 function CreateSessionPage(): React.JSX.Element {
     const navigate = Router.useNavigate();
-    const [adventureId, setAdventureId] = React.useState("821acfde-7e3f-468b-8bd5-1fd8c3a355dd");
+    const context = Router.useOutletContext<OutletContext>();
+    const [adventureId, setAdventureId] = React.useState<string>(null);
     return <Tesseract.Modal title="Create session">
+        {context.account?.adventures.map(adventure =>
+            <button key={adventure.id} onClick={() => setAdventureId(adventure.id)} style={{ backgroundColor: adventureId === adventure.id ? "red" : "inherit" }}>
+                {adventure.name}
+            </button>
+        )}
         <button onClick={() => {
             client.create("game", { adventureId }).then(async (room) => {
                 await navigate(`/session/${room.roomId}`);
                 await room.leave(); // This is so cursed
             }).catch(e => { throw e; });
-        }}>Create</button>
+        }} disabled={!adventureId}>Create</button>
     </Tesseract.Modal>;
 }
 
