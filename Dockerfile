@@ -9,7 +9,7 @@ COPY src/common src/common
 COPY tsconfig.json .
 COPY config.ts .
 
-FROM common as tesseract
+FROM common AS tesseract
 COPY tesseract tesseract
 WORKDIR /app/tesseract
 RUN pnpm i .

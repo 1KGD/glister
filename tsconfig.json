@@ -14,7 +14,7 @@
         "useDefineForClassFields": false,
         "noImplicitOverride": true,
         "strictNullChecks": false,
-        "emitDecoratorMetadata": true,
+        //"emitDecoratorMetadata": true,
         "forceConsistentCasingInFileNames": true,
         "types": [
             "vite/client"
