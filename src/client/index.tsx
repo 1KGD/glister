@@ -71,7 +71,7 @@ function CreateAccountPage(): React.JSX.Element {
 
 function SessionList({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     const { isConnecting, error, rooms } = roomProvider.useLobby();
-    if (isConnecting) return <>connecting...</>;
+    if (isConnecting) return <>Loading...</>;
     if (error) return <>error {error.message}</>;
     return <>
         {rooms.map(room => <div key={room.roomId}>
@@ -85,7 +85,7 @@ function FindSessionPage(): React.JSX.Element {
     const [refreshCounter, setRefreshCounter] = React.useState(0);
     return <roomProvider.LobbyProvider connect={() => client.joinOrCreate("lobby")} deps={[refreshCounter]}>
         <Tesseract.Modal title="Session list">
-            <SessionList navigate={navigate} />
+            <SessionList navigate={navigate} /><br />
             <button onClick={() => setRefreshCounter(refreshCounter + 1)}>refresh</button>
         </Tesseract.Modal>
     </roomProvider.LobbyProvider>;

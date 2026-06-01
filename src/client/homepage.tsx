@@ -11,7 +11,7 @@ export default function Homepage(): React.JSX.Element {
     const outlet = Router.useOutlet();
     if (loading) return <><Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>{outlet}</>;
     return <>
-        <Tesseract.Page position={new THREE.Vector3(5, 0, -4)} focused={!outlet}>
+        <Tesseract.Page position={new THREE.Vector3(0, 4, -4)} focused={!outlet}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>
