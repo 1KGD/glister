@@ -57,6 +57,10 @@ export class AccountManager {
         const adventure = new Adventure(owner, name);
         await ormDataSource.manager.save(adventure);
     }
+
+    public async getAdventure(id: string): Promise<Adventure> {
+        return ormDataSource.manager.findOneBy(Adventure, { id });
+    }
 }
 
 export default new AccountManager;

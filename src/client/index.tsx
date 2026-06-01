@@ -14,6 +14,7 @@ import Homepage from './homepage';
 import type server from '../server/index';
 import { useAdventure } from './dataProvider';
 import * as Tesseract from 'tesseract';
+import GameRoom from '../server/gameRoom';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
@@ -50,9 +51,10 @@ function SessionPage(): React.JSX.Element {
 
 function CreateSessionPage(): React.JSX.Element {
     const navigate = Router.useNavigate();
+    const [adventureId, setAdventureId] = React.useState("821acfde-7e3f-468b-8bd5-1fd8c3a355dd");
     return <Tesseract.Modal title="Create session">
         <button onClick={() => {
-            client.create("game", {}).then(async (room) => {
+            client.create("game", { adventureId }).then(async (room) => {
                 await navigate(`/session/${room.roomId}`);
                 await room.leave(); // This is so cursed
             }).catch(e => { throw e; });

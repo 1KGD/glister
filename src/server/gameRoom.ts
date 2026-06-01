@@ -36,15 +36,16 @@ export default class GameRoom extends Colyseus.Room<{
         }
     };
 
-    public override onCreate(): void {
-        this.metadata = {name: "Debug Adventure"};
+    public override async onCreate(options: { adventureId: string }): Promise<void> {
+        this.metadata = { name: (await accountManager.getAdventure(options.adventureId)).name };
     }
 
-    public static override async onAuth(_token: string, _options: {}, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
+    public static override async onAuth(_token: string, options: { adventureId: string }, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
         if (!tokenRegex) return false;
         const account = await accountManager.verify(tokenRegex.groups.token);
         if (!account) return false;
+        //if ((await (await accountManager.getAdventure(options.adventureId)).owner).id !== account.id) return false;
         return { name: account.name };
     }
 
