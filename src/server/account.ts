@@ -1,5 +1,6 @@
 import * as ORM from 'typeorm';
-import Ship from './ship';
+import Ship from './celestialObject';
+import ormDataSource from './ormDataSource';
 
 @ORM.Entity()
 export class SessionToken {
@@ -44,5 +45,10 @@ export default class Account {
         return {
             name: this.name,
         };
+    }
+
+    public async createShip(): Promise<void> {
+        const ship = new Ship(this);
+        await ormDataSource.manager.save(ship);
     }
 }

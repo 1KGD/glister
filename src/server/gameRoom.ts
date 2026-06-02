@@ -22,21 +22,22 @@ export default class GameRoom extends Colyseus.Room<{
     public override state: GameState = new GameState();
 
     public override messages = {
-        
+
     };
 
     public override async onCreate(options: { adventureId: string }): Promise<void> {
     }
 
+    /*
     public static override async onAuth(_token: string, options: { adventureId: string }, context: Colyseus.AuthContext): Promise<ClientAuth | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
-        if (!tokenRegex) return false;
+        if (!tokenRegex || !tokenRegex.groups.token) return false;
         const account = await accountManager.verify(tokenRegex.groups.token);
         if (!account) return false;
         return { name: account.name };
-    }
+    }*/
 
-    public override onJoin(client: Client, options?: { }): void {
+    public override onJoin(client: Client, options?: {}): void {
     }
 
     public override onLeave(client: Client): void {

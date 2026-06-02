@@ -6,7 +6,9 @@ export class LoginError extends Error { }
 
 export class AccountManager {
     public async addAccount(name: string, password: string): Promise<void> {
-        await ormDataSource.manager.save(new Account(name, password));
+        const account = new Account(name, password);
+        await account.createShip();
+        await ormDataSource.manager.save(account);
     }
 
     public async login(name: string, password: string): Promise<string> {

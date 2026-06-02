@@ -1,7 +1,7 @@
 import * as ORM from 'typeorm';
 import Account, { SessionToken } from './account';
 import config from '../../config';
-import Ship from './ship';
+import Ship from './celestialObject';
 import CelestialSystem, { Position } from './celestialSystem';
 
 export default new ORM.DataSource({
