@@ -12,6 +12,8 @@ const client = new Colyseus.Client<typeof server>("/api");
 
 function StagingHandler({ seatReservation, setSeatReservation }: { seatReservation: Colyseus.SeatReservation, setSeatReservation: (value: Colyseus.SeatReservation) => void }): React.JSX.Element {
     roomProvider.staging.useRoomMessage("switch", setSeatReservation);
+    const { room } = roomProvider.staging.useRoom();
+    React.useEffect(() => { if (seatReservation && room) void room.leave(); }, [seatReservation, room]);
     return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
 }
 
