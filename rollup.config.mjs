@@ -14,7 +14,7 @@ export default {
     plugins: [
         commonjs(),
         typescript(),
-        //terser(),
+        terser(),
         resolve({
             custom: { 'node-resolve': { isRequire: true } }
         }),
