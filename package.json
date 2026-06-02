@@ -1,7 +1,7 @@
 {
-    "name": "mud",
+    "name": "glister",
     "version": "1.0.0",
-    "description": "",
+    "description": "A browser-based spaceship game",
     "main": "index.js",
     "scripts": {
         "dev": "concurrently --kill-others --names vite,colyseus -c green,blue 'pnpm run client-dev' 'pnpm run server-dev'",
