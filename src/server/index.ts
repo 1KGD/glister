@@ -29,7 +29,7 @@ const server = Colyseus.defineServer({
 
 ormDataSource.initialize().then(async () => {
     setTimeout(() => {
-        void (async (): Promise<string> =>
+        void (async (): Promise<unknown> =>
             await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession())();
     }, 5000);
     await server.listen(config.multiplayer.port);

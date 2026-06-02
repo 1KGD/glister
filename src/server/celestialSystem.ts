@@ -23,9 +23,7 @@ export default class CelestialSystem {
     public async createSession(): Promise<Colyseus.SeatReservation> {
         if (this.sessionId) {
             const room = await matchMaker.getRoomById(this.sessionId);
-            if (room) {
-                return matchMaker.reserveSeatFor(room, {});
-            }
+            if (room) return matchMaker.reserveSeatFor(room, {});
         }
         const room = await matchMaker.create("game");
         this.sessionId = room.roomId;
