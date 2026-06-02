@@ -13,9 +13,14 @@ export default class CelestialObject {
 
     @ORM.OneToOne(() => Position, { lazy: true, cascade: true, nullable: true })
     @ORM.JoinColumn()
-    public readonly position: Promise<Position>;
+    public position: Promise<Position>;
 
     public constructor(owner: Account) {
         this.owner = Promise.resolve(owner);
+    }
+
+    public async setupPosition(): Promise<void> {
+        this.position = ormDataSource.manager.save(new Position);
+        await ormDataSource.manager.save(this);
     }
 }

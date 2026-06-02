@@ -50,5 +50,6 @@ export default class Account {
     public async createShip(): Promise<void> {
         const ship = new Ship(this);
         await ormDataSource.manager.save(ship);
+        await ship.setupPosition();
     }
 }

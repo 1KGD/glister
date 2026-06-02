@@ -28,7 +28,6 @@ const server = Colyseus.defineServer({
 });
 
 ormDataSource.initialize().then(async () => {
-    await createCelestialSystem();
     await server.listen(config.multiplayer.port);
 }
 ).catch(e => { throw e; });
