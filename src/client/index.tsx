@@ -1,17 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import * as Colyseus from '@colyseus/sdk';
 import config from '../../config';
 if (config.dev) await import("@colyseus/sdk/debug");
 import './colors.css';
 import './index.css';
 import * as Router from 'react-router';
 import Homepage from './homepage';
-import type server from '../server/index';
 import * as Tesseract from 'tesseract';
 import { type AccountClientData } from '../server/account';
-
-const client = new Colyseus.Client<typeof server>("/api");
 
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
@@ -34,7 +30,6 @@ function CreateAccountPage(): React.JSX.Element {
         </form>
     </Tesseract.Modal>;
 }
-
 
 function App(): React.JSX.Element {
     return <Tesseract.Wrapper>

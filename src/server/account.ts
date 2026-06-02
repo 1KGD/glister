@@ -1,4 +1,5 @@
 import * as ORM from 'typeorm';
+import Ship from './ship';
 
 @ORM.Entity()
 export class SessionToken {
@@ -30,6 +31,9 @@ export default class Account {
 
     @ORM.Column("text", { nullable: true, unique: true })
     public token: string;
+
+    @ORM.OneToMany(() => Ship, ship => ship.owner, { lazy: true })
+    public ships: Promise<Ship[]>;
 
     public constructor(name: string, password: string) {
         this.name = name;

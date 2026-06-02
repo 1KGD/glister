@@ -5,6 +5,7 @@ import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
+import { createCelestialSystem } from './celestialSystem';
 
 const server = Colyseus.defineServer({
     routes,
@@ -20,6 +21,7 @@ const server = Colyseus.defineServer({
 });
 
 ormDataSource.initialize().then(async () => {
+    await createCelestialSystem();
     await server.listen(config.multiplayer.port);
 }
 ).catch(e => { throw e; });
