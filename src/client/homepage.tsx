@@ -4,21 +4,29 @@ import * as THREE from 'three';
 import { useAccount } from './dataProvider';
 import './homepage.css';
 import * as Tesseract from 'tesseract';
-import RoomProvider from './roomProvider';
 import * as Colyseus from '@colyseus/sdk';
 import type server from '../server/index';
+import roomProvider from './roomProvider';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
-function MainGame(): React.JSX.Element {
-    const [sessionId, setSessionId] = React.useState("");
+function StagingHandler({ seatReservation, setSeatReservation }: { seatReservation: Colyseus.SeatReservation, setSeatReservation: (value: Colyseus.SeatReservation) => void }): React.JSX.Element {
+    roomProvider.staging.useRoomMessage("switch", setSeatReservation);
+    return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
+}
 
-    return <RoomProvider.RoomProvider connect={() => client.joinById(sessionId)}>
-        <mesh>
-            <sphereGeometry />
-            <meshNormalMaterial />
-        </mesh>
-    </RoomProvider.RoomProvider>;
+function MainGame(): React.JSX.Element {
+    const [seatReservation, setSeatReservation] = React.useState<Colyseus.SeatReservation>(null);
+
+    return <roomProvider.staging.RoomProvider connect={() => client.joinOrCreate("staging")}>
+        <StagingHandler seatReservation={seatReservation} setSeatReservation={setSeatReservation} />
+        <roomProvider.game.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
+            <mesh>
+                <sphereGeometry />
+                <meshNormalMaterial />
+            </mesh>
+        </roomProvider.game.RoomProvider>
+    </roomProvider.staging.RoomProvider>;
 }
 
 export default function Homepage(): React.JSX.Element {

@@ -5,7 +5,13 @@ import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
-import CelestialSystem, { createCelestialSystem } from './celestialSystem';
+import CelestialSystem from './celestialSystem';
+
+export class StagingRoom extends Colyseus.Room {
+    public override async onJoin(client: Colyseus.Client): Promise<void> {
+        client.send("switch", await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession());
+    }
+}
 
 const server = Colyseus.defineServer({
     routes,
@@ -16,6 +22,7 @@ const server = Colyseus.defineServer({
     rooms: {
         lobby: Colyseus.defineRoom(Colyseus.LobbyRoom),
         game: Colyseus.defineRoom(GameRoom),
+        staging: Colyseus.defineRoom(StagingRoom)
     },
     greet: !config.dev,
 });
@@ -23,7 +30,7 @@ const server = Colyseus.defineServer({
 ormDataSource.initialize().then(async () => {
     setTimeout(() => {
         void (async (): Promise<string> =>
-            await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession())()
+            await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession())();
     }, 5000);
     await server.listen(config.multiplayer.port);
 }

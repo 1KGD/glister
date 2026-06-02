@@ -20,11 +20,11 @@ export default class CelestialSystem {
     @ORM.Column("text", { nullable: true })
     public sessionId: string;
 
-    public async createSession(): Promise<string> {
+    public async createSession(): Promise<Colyseus.SeatReservation> {
         const room = await matchMaker.create("game");
         this.sessionId = room.sessionId;
         await ormDataSource.manager.save(this);
-        return this.sessionId;
+        return room;
     }
 }
 
