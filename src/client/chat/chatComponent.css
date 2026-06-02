@@ -1,9 +1,0 @@
-.chat-container {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 30%;
-    height: 30%;
-    background-color: var(--bg-1);
-    border-radius: 20px;
-}

@@ -1,7 +1,6 @@
 import ormDataSource from './ormDataSource';
 import Account, { type AccountClientData, SessionToken } from './account';
 import config from '../../config';
-import Adventure from './adventure';
 
 export class LoginError extends Error { }
 
@@ -50,16 +49,6 @@ export class AccountManager {
             await ormDataSource.manager.save(account);
         }
         await ormDataSource.manager.delete(SessionToken, token);
-    }
-
-    public async createAdventure(ownerId: number, name: string): Promise<void> {
-        const owner = await ormDataSource.manager.findOneBy(Account, { id: ownerId });
-        const adventure = new Adventure(owner, name);
-        await ormDataSource.manager.save(adventure);
-    }
-
-    public async getAdventure(id: string): Promise<Adventure> {
-        return ormDataSource.manager.findOneBy(Adventure, { id });
     }
 }
 

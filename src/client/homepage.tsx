@@ -18,14 +18,7 @@ export default function Homepage(): React.JSX.Element {
             {
                 loggedIn ?
                     <>
-                        {account.adventures.map(adventure => <div key={adventure.name}>
-                            <Tesseract.Link navigate={navigate} to={`/adventure/${adventure.id}`} disabled={!!outlet}>
-                                {adventure.name}
-                            </Tesseract.Link>
-                        </div>)}
-                        <Tesseract.Link navigate={navigate} to="/api/logout" refresh disabled={!!outlet}>logout</Tesseract.Link><br />
-                        <Tesseract.Link navigate={navigate} to="/session/create" disabled={!!outlet}>Start new game session</Tesseract.Link><br />
-                        <Tesseract.Link navigate={navigate} to="/session/find" disabled={!!outlet}>Find a game session</Tesseract.Link>
+                        <Tesseract.Link navigate={navigate} to="/api/logout" refresh disabled={!!outlet}>logout</Tesseract.Link>
                     </> :
                     <>
                         <Tesseract.Link navigate={navigate} to="/login" disabled={!!outlet}>Login</Tesseract.Link><br />
