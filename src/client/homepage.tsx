@@ -1,12 +1,14 @@
 import React from 'react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
+import * as DREI from '@react-three/drei'
 import { useAccount } from './dataProvider';
 import './homepage.css';
 import * as Tesseract from 'tesseract';
 import * as Colyseus from '@colyseus/sdk';
 import type server from '../server/index';
 import roomProvider from './roomProvider';
+import CelestialSystem from './celestialSystem';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
@@ -17,18 +19,33 @@ function StagingHandler({ seatReservation, setSeatReservation }: { seatReservati
     return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
 }
 
+enum Controls {
+    forward = 'forward',
+    back = 'back',
+    left = 'left',
+    right = 'right',
+    jump = 'jump',
+}
+
 function MainGame(): React.JSX.Element {
     const [seatReservation, setSeatReservation] = React.useState<Colyseus.SeatReservation>(null);
+
+    const controls = React.useMemo<DREI.KeyboardControlsEntry<Controls>[]>(() => [
+        { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
+        { name: Controls.back, keys: ['ArrowDown', 'KeyS'] },
+        { name: Controls.left, keys: ['ArrowLeft', 'KeyA'] },
+        { name: Controls.right, keys: ['ArrowRight', 'KeyD'] },
+        { name: Controls.jump, keys: ['Space'] },
+    ], []);
 
     return <roomProvider.staging.RoomProvider connect={() => client.joinOrCreate("staging")}>
         <StagingHandler seatReservation={seatReservation} setSeatReservation={setSeatReservation} />
         <roomProvider.game.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
-            <mesh>
-                <sphereGeometry />
-                <meshNormalMaterial />
-            </mesh>
+            <DREI.KeyboardControls map={controls}>
+                {seatReservation && <CelestialSystem />}
+            </DREI.KeyboardControls>
         </roomProvider.game.RoomProvider>
-    </roomProvider.staging.RoomProvider>;
+    </roomProvider.staging.RoomProvider >;
 }
 
 export default function Homepage(): React.JSX.Element {

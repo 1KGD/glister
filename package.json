@@ -46,6 +46,7 @@
         "@colyseus/react": "^0.1.15",
         "@colyseus/schema": "^4.0.26",
         "@colyseus/sdk": "^0.17.42",
+        "@react-three/drei": "^10.7.7",
         "better-sqlite3": "^12.10.0",
         "colyseus": "^0.17.10",
         "cookie-parser": "^1.4.7",
