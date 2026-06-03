@@ -8,8 +8,8 @@ import cookieParser from 'cookie-parser';
 import CelestialSystem, { createCelestialSystem } from './celestialSystem';
 
 export class StagingRoom extends Colyseus.Room {
-    public override async onJoin(client: Colyseus.Client): Promise<void> {
-        client.send("switch", await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession());
+    public override onJoin(client: Colyseus.Client): void {
+        this.clock.setTimeout(async () => client.send("switch", await (await ormDataSource.manager.findOneBy(CelestialSystem, {})).createSession()), 1000);
     }
 }
 
