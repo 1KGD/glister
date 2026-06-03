@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Arwes from '@arwes/react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei'
@@ -45,7 +46,7 @@ function MainGame(): React.JSX.Element {
                 {seatReservation && <CelestialSystem />}
             </DREI.KeyboardControls>
         </roomProvider.game.RoomProvider>
-    </roomProvider.staging.RoomProvider >;
+    </roomProvider.staging.RoomProvider>;
 }
 
 export default function Homepage(): React.JSX.Element {
@@ -55,7 +56,7 @@ export default function Homepage(): React.JSX.Element {
     if (loading) return <><Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>{outlet}</>;
     return <>
         {loggedIn && <MainGame />}
-        <Tesseract.Page position={new THREE.Vector3(0, 4, -4)} focused={!outlet}>
+        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>

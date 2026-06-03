@@ -1,4 +1,6 @@
 import React from 'react';
+import * as Arwes from '@arwes/react';
+import * as Emotion from '@emotion/react';
 import { createRoot } from 'react-dom/client';
 import config from '../../config';
 if (config.dev) await import("@colyseus/sdk/debug");
@@ -32,19 +34,38 @@ function CreateAccountPage(): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
-    return <Tesseract.Wrapper>
-        <Router.BrowserRouter>
-            <Router.Routes>
-                <Router.Route path="/" element={<Homepage />}>
-                    <Router.Route path="login">
-                        <Router.Route index element={<LoginPage />} />
-                        <Router.Route path="error" element={<>Login Error</>} />
-                    </Router.Route>
-                    <Router.Route path="createAccount" element={<CreateAccountPage />} />
-                </Router.Route>
-            </Router.Routes>
-        </Router.BrowserRouter>
-    </Tesseract.Wrapper>;
+    return <>
+        <Arwes.AnimatorGeneralProvider>
+            <Arwes.BleepsProvider master={{ volume: 0.5 }} bleeps={{
+                intro: {
+                    sources: [
+                        { src: 'https://arwes.dev/assets/sounds/intro.mp3', type: 'audio/mpeg' }
+                    ]
+                },
+                click: {
+                    sources: [
+                        { src: 'https://arwes.dev/assets/sounds/click.mp3', type: 'audio/mpeg' }
+                    ]
+                }
+            }}>
+                <Arwes.Animator combine manager="stagger" active>
+                    <Tesseract.Wrapper>
+                        <Router.BrowserRouter>
+                            <Router.Routes>
+                                <Router.Route path="/" element={<Homepage />}>
+                                    <Router.Route path="login">
+                                        <Router.Route index element={<LoginPage />} />
+                                        <Router.Route path="error" element={<>Login Error</>} />
+                                    </Router.Route>
+                                    <Router.Route path="createAccount" element={<CreateAccountPage />} />
+                                </Router.Route>
+                            </Router.Routes>
+                        </Router.BrowserRouter>
+                    </Tesseract.Wrapper>
+                </Arwes.Animator>
+            </Arwes.BleepsProvider>
+        </Arwes.AnimatorGeneralProvider>
+    </>;
 }
 
 createRoot(document.getElementById("root")).render(<App />);
