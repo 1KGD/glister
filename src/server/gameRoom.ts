@@ -38,10 +38,13 @@ export default class GameRoom extends Colyseus.Room<{
         return { name: account.name };
     }
 
-    public override onJoin(client: Client, options?: {}): void {
-        this.state.players.set(client.sessionId, new PlayerState(client.auth.name));
+    public override onJoin(client: Client): void {
+        const player = new PlayerState(client.auth.name);
+        player.updateSystem = this.clock.setInterval(() => player.position.y += 0.01, 1);
+        this.state.players.set(client.sessionId, player);
     }
 
     public override onLeave(client: Client): void {
+        this.state.players.delete(client.sessionId);
     }
 }
