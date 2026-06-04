@@ -7,4 +7,4 @@ services:
       - data:/app/data
 volumes:
   data:
-    external: true
+    external: false
