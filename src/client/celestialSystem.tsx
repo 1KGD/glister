@@ -18,7 +18,7 @@ export default function CelestialSystem(): React.JSX.Element {
 
     return <>
         <Post.EffectComposer>
-            <Post.Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
+            {/*<Post.Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />*/}
             <Post.Noise opacity={0.02} />
         </Post.EffectComposer>
         <DREI.Stars />
