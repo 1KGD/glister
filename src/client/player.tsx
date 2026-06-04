@@ -8,7 +8,7 @@ export default function Player({ name, position }: { name: string, position: Pos
         <DREI.CameraControls />
         <mesh>
             <torusKnotGeometry />
-            <meshPhongMaterial />
+            <meshPhysicalMaterial metalness={0.8} roughness={0.2} />
         </mesh>
         <DREI.Text position={[0, 2.5, 0]}>
             {name}

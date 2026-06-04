@@ -12,7 +12,7 @@ export default class CelestialSystem {
     public readonly id: string;
 
     @ORM.Column("simple-enum")
-    public readonly starType: StarType = StarType.NORMAL;
+    public readonly starType: StarType = StarType.DWARF;
 
     @ORM.ManyToMany(() => CelestialSystem, celestialSystem => celestialSystem.routes, { lazy: true })
     public routes: Promise<CelestialSystem[]>;
