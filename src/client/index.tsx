@@ -3,14 +3,13 @@ import * as Arwes from '@arwes/react';
 import * as DREI from '@react-three/drei';
 import { createRoot } from 'react-dom/client';
 import config from '../../config';
-if (config.dev) await import("@colyseus/sdk/debug");
+if (import.meta.env.DEV) await import("@colyseus/sdk/debug");
 import './colors.css';
 import './index.css';
 import * as Router from 'react-router';
 import Homepage from './homepage';
 import * as Tesseract from 'tesseract';
 import { type AccountClientData } from '../server/account';
-import { DriverFactory } from 'typeorm/driver/DriverFactory.js';
 import Editor from './editor/editor';
 
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
@@ -52,7 +51,7 @@ function App(): React.JSX.Element {
             }}>
                 <Arwes.Animator combine manager="stagger" active>
                     <Tesseract.Wrapper>
-                        {config.dev && <DREI.Stats />}
+                        {import.meta.env.DEV && <DREI.Stats />}
                         <Router.BrowserRouter>
                             <Router.Routes>
                                 <Router.Route path="/" element={<Homepage />}>
