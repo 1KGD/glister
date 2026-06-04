@@ -11,6 +11,7 @@ import Homepage from './homepage';
 import * as Tesseract from 'tesseract';
 import { type AccountClientData } from '../server/account';
 import { DriverFactory } from 'typeorm/driver/DriverFactory.js';
+import Editor from './editor/editor';
 
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
@@ -60,6 +61,7 @@ function App(): React.JSX.Element {
                                         <Router.Route path="error" element={<>Login Error</>} />
                                     </Router.Route>
                                     <Router.Route path="createAccount" element={<CreateAccountPage />} />
+                                    <Router.Route path="editor" element={<Editor />} />
                                 </Router.Route>
                             </Router.Routes>
                         </Router.BrowserRouter>
