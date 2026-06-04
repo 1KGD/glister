@@ -24,4 +24,14 @@ export default defineConfig({
     plugins: [
         preloadPlugin()
     ],
+    build: {
+        chunkSizeWarningLimit: 1000,
+        rolldownOptions: {
+            output: {
+                codeSplitting: {
+                    groups: [{ name: "react-three-fiber", test: /@react-three\/fiber/ }, { name: "tesseract", test: /tesseract/ }, { name: "vendor", test: /node_modules/ }]
+                }
+            }
+        }
+    }
 });
