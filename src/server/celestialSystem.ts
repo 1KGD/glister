@@ -3,6 +3,8 @@ import * as Colyseus from '@colyseus/sdk';
 import ormDataSource from './ormDataSource';
 import { matchMaker } from 'colyseus';
 
+const systemCount = 1000;
+
 @ORM.Entity()
 export default class CelestialSystem {
     @ORM.PrimaryGeneratedColumn("uuid")
@@ -29,8 +31,11 @@ export default class CelestialSystem {
     }
 }
 
-export async function createCelestialSystem(): Promise<void> {
-    await ormDataSource.manager.save(new CelestialSystem);
+export async function createCelestialSystems(): Promise<void> {
+    while (await ormDataSource.manager.count(CelestialSystem) < systemCount) {
+        const system = new CelestialSystem;
+        await ormDataSource.manager.save(system);
+    }
 }
 
 @ORM.Entity()
