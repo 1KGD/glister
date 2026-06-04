@@ -28,7 +28,6 @@ RUN pnpm run build-server
 
 FROM nginx:alpine AS final
 WORKDIR /app
-VOLUME [ "/app/data" ]
 RUN apk add nodejs npm
 RUN npm i -g concurrently
 RUN npm i typeorm better-sqlite3
