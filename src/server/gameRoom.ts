@@ -3,6 +3,8 @@ import GameState, * as State from '../common/gameState';
 import accountManager from './accountManager';
 import config from '../../config';
 import PlayerState from '../common/playerState';
+import ormDataSource from './ormDataSource';
+import CelestialSystem from './celestialSystem';
 
 export interface Metadata {
 }
@@ -26,8 +28,9 @@ export default class GameRoom extends Colyseus.Room<{
 
     };
 
-    public override onCreate(options: { systemId: string }): void {
-        this.state = new GameState(options.systemId);
+    public override async onCreate(options: { systemId: string }): Promise<void> {
+        const system = await ormDataSource.manager.findOneBy(CelestialSystem, { id: options.systemId });
+        this.state = new GameState(system);
     }
 
     public override async onAuth(_client: Colyseus.Client, _options: unknown, context: Colyseus.AuthContext): Promise<ClientAuth | boolean> {

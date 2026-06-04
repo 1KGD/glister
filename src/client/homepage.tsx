@@ -2,7 +2,7 @@ import React from 'react';
 import * as Arwes from '@arwes/react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
-import * as DREI from '@react-three/drei'
+import * as DREI from '@react-three/drei';
 import { useAccount } from './dataProvider';
 import './homepage.css';
 import * as Tesseract from 'tesseract';
@@ -56,7 +56,7 @@ export default function Homepage(): React.JSX.Element {
     if (loading) return <><Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>{outlet}</>;
     return <>
         {loggedIn && <MainGame />}
-        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet}>
+        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>

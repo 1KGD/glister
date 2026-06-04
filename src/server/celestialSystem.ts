@@ -2,6 +2,7 @@ import * as ORM from 'typeorm';
 import * as Colyseus from '@colyseus/sdk';
 import ormDataSource from './ormDataSource';
 import { matchMaker } from 'colyseus';
+import { StarType } from '../common/gameState';
 
 const systemCount = 1000;
 
@@ -9,6 +10,9 @@ const systemCount = 1000;
 export default class CelestialSystem {
     @ORM.PrimaryGeneratedColumn("uuid")
     public readonly id: string;
+
+    @ORM.Column("simple-enum")
+    public readonly starType: StarType = StarType.NORMAL;
 
     @ORM.ManyToMany(() => CelestialSystem, celestialSystem => celestialSystem.routes, { lazy: true })
     public routes: Promise<CelestialSystem[]>;
