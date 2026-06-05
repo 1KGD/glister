@@ -2,7 +2,7 @@ import * as ORM from 'typeorm';
 import * as Colyseus from '@colyseus/sdk';
 import ormDataSource from './ormDataSource';
 import { matchMaker } from 'colyseus';
-import { StarType } from '../common/gameState';
+import { StarType } from '../common/celestialSystemState';
 
 const systemCount = 1000;
 
@@ -28,7 +28,7 @@ export default class CelestialSystem {
             const room = await matchMaker.getRoomById(this.sessionId);
             if (room) return matchMaker.reserveSeatFor(room, {});
         }
-        const room = await matchMaker.create("game", { systemId: this.id });
+        const room = await matchMaker.create("celestialSystem", { systemId: this.id });
         this.sessionId = room.roomId;
         await ormDataSource.manager.save(this);
         return room;

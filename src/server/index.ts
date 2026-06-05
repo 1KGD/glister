@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import * as Colyseus from 'colyseus';
-import GameRoom from './gameRoom';
+import CelestialSystemRoom from './celestialSystemRoom';
 import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
@@ -21,7 +21,7 @@ const server = Colyseus.defineServer({
     transport: new Colyseus.WebSocketTransport(),
     rooms: {
         lobby: Colyseus.defineRoom(Colyseus.LobbyRoom),
-        game: Colyseus.defineRoom(GameRoom),
+        celestialSystem: Colyseus.defineRoom(CelestialSystemRoom),
         staging: Colyseus.defineRoom(StagingRoom)
     },
     greet: !config.dev,

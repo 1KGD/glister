@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Arwes from '@arwes/react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
@@ -9,7 +8,7 @@ import * as Tesseract from 'tesseract';
 import * as Colyseus from '@colyseus/sdk';
 import type server from '../server/index';
 import roomProvider from './roomProvider';
-import CelestialSystem from './celestialSystem';
+import  CelestialSystem from './celestialSystem';
 
 const client = new Colyseus.Client<typeof server>("/api");
 

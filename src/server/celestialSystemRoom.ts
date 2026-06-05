@@ -1,5 +1,5 @@
 import * as Colyseus from 'colyseus';
-import GameState, * as State from '../common/gameState';
+import CelestialSystemState, * as State from '../common/celestialSystemState';
 import accountManager from './accountManager';
 import config from '../../config';
 import PlayerState from '../common/playerState';
@@ -17,12 +17,12 @@ type Client = Colyseus.Client<{
     auth: ClientAuth,
 }>
 
-export default class GameRoom extends Colyseus.Room<{
-    state: GameState,
+export default class CelestialSystemRoom extends Colyseus.Room<{
+    state: CelestialSystemState,
     metadata: Metadata,
     client: Client,
 }> {
-    public override state: GameState;
+    public override state: CelestialSystemState;
 
     public override messages = {
 
@@ -30,7 +30,7 @@ export default class GameRoom extends Colyseus.Room<{
 
     public override async onCreate(options: { systemId: string }): Promise<void> {
         const system = await ormDataSource.manager.findOneBy(CelestialSystem, { id: options.systemId });
-        this.state = new GameState(system);
+        this.state = new CelestialSystemState(system);
     }
 
     public override async onAuth(_client: Colyseus.Client, _options: unknown, context: Colyseus.AuthContext): Promise<ClientAuth | boolean> {
@@ -42,12 +42,12 @@ export default class GameRoom extends Colyseus.Room<{
     }
 
     public override onJoin(client: Client): void {
-        const player = new PlayerState(client.auth.name);
-        player.updateSystem = this.clock.setInterval(() => player.position.y += 0.01, 1);
-        this.state.players.set(client.sessionId, player);
+        const ship = new State.CelestialShipState(client.auth.name);
+        ship.updateSystem = this.clock.setInterval(() => ship.position.y += 0.01, 1);
+        this.state.ships.set(client.sessionId, ship);
     }
 
     public override onLeave(client: Client): void {
-        this.state.players.delete(client.sessionId);
+        this.state.ships.delete(client.sessionId);
     }
 }

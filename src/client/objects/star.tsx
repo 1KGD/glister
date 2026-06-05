@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import { StarType } from '../../common/gameState';
+import { StarType } from '../../common/celestialSystemState';
 import * as Tesseract from 'tesseract';
 import * as Post from '@react-three/postprocessing';
 
