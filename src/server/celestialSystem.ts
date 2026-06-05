@@ -3,6 +3,7 @@ import * as Colyseus from '@colyseus/sdk';
 import ormDataSource from './ormDataSource';
 import { matchMaker } from 'colyseus';
 import { StarType } from '../common/celestialSystemState';
+import Ship from './ship';
 
 const systemCount = 1000;
 
@@ -17,8 +18,8 @@ export default class CelestialSystem {
     @ORM.ManyToMany(() => CelestialSystem, celestialSystem => celestialSystem.routes, { lazy: true })
     public routes: Promise<CelestialSystem[]>;
 
-    @ORM.OneToMany(() => Position, position => position.system)
-    public readonly positions: Position[];
+    @ORM.OneToMany(() => Ship, ship => ship.system, { lazy: true })
+    public readonly ships: Promise<Ship[]>;
 
     @ORM.Column("text", { nullable: true })
     public sessionId: string;
@@ -40,22 +41,4 @@ export async function createCelestialSystems(): Promise<void> {
         const system = new CelestialSystem;
         await ormDataSource.manager.save(system);
     }
-}
-
-@ORM.Entity()
-export class Position {
-    @ORM.PrimaryGeneratedColumn("rowid")
-    private readonly id: string;
-
-    @ORM.Column("float")
-    public x: number = 0;
-
-    @ORM.Column("float")
-    public y: number = 0;
-
-    @ORM.Column("float")
-    public z: number = 0;
-
-    @ORM.ManyToOne(() => CelestialSystem, celestialSystem => celestialSystem.positions, { lazy: true, cascade: true })
-    public readonly system: Promise<CelestialSystem>;
 }

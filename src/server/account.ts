@@ -1,5 +1,5 @@
 import * as ORM from 'typeorm';
-import Ship from './celestialObject';
+import Ship from './ship';
 import ormDataSource from './ormDataSource';
 
 @ORM.Entity()
