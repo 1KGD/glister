@@ -30,7 +30,7 @@ const server = Colyseus.defineServer({
 });
 
 ormDataSource.initialize().then(async () => {
-    try { await (await ormDataSource.manager.findOneBy(Account, {})).boardShip(await ormDataSource.manager.findOneBy(Ship, {})) } catch (e) { console.error(e) };
+    try { await (await ormDataSource.manager.findOneBy(Account, {})).boardShip(await ormDataSource.manager.findOneBy(Ship, {})); } catch (e) { console.error(e); };
     if (!await ormDataSource.manager.findOneBy(CelestialSystem, {})) await createCelestialSystems();
     await server.listen(config.multiplayer.port);
 }
