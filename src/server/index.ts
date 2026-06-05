@@ -6,6 +6,8 @@ import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
 import CelestialSystem, { createCelestialSystems } from './celestialSystem';
+import Account from './account';
+import Ship from './ship';
 
 export class StagingRoom extends Colyseus.Room {
     public override onJoin(client: Colyseus.Client): void {
@@ -28,6 +30,7 @@ const server = Colyseus.defineServer({
 });
 
 ormDataSource.initialize().then(async () => {
+    try { await (await ormDataSource.manager.findOneBy(Account, {})).boardShip(await ormDataSource.manager.findOneBy(Ship, {})) } catch (e) { console.error(e) };
     if (!await ormDataSource.manager.findOneBy(CelestialSystem, {})) await createCelestialSystems();
     await server.listen(config.multiplayer.port);
 }

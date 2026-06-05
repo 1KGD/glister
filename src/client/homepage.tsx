@@ -22,7 +22,7 @@ function StagingHandler({ seatReservation, setSeatReservation }: { seatReservati
 function ShipRoom({ children }: React.PropsWithChildren): React.JSX.Element {
     const { room, isConnecting } = roomProvider.celestialSystem.useRoom();
     const state = roomProvider.celestialSystem.useRoomState();
-    if (isConnecting || !state) return;
+    if (isConnecting || !state?.players) return;
     return <roomProvider.ship.RoomProvider connect={() => client.joinById(state.players[room.sessionId].shipSessionId)} deps={[room, state]}>
         {children}
     </roomProvider.ship.RoomProvider>;
