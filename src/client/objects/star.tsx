@@ -7,7 +7,7 @@ import * as Post from '@react-three/postprocessing';
 export default function Star({ type, ref }: { type: StarType, ref?: React.Ref<THREE.Mesh> }): React.JSX.Element {
     switch (Number(type)) {
         case StarType.NORMAL:
-            return <mesh ref={ref} transparent>
+            return <mesh ref={ref}>
                 <sphereGeometry />
                 <meshPhysicalMaterial transparent />
 
