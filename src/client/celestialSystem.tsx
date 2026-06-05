@@ -12,8 +12,8 @@ import Ship from './objects/ship';
 export default function CelestialSystem(): React.JSX.Element {
     const starRef = React.useRef<THREE.Mesh>(null);
 
-    const { isConnecting, room } = roomProvider.game.useRoom();
-    const state = roomProvider.game.useRoomState();
+    const { isConnecting, room } = roomProvider.celestialSystem.useRoom();
+    const state = roomProvider.celestialSystem.useRoomState();
     if (isConnecting || !room) return <Tesseract.Modal title="Loading...">Loading system...</Tesseract.Modal>;
     if (!state.ships) return <Tesseract.Modal title="Loading...">Loading players...</Tesseract.Modal>;
 

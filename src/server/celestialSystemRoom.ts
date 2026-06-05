@@ -4,22 +4,21 @@ import accountManager from './accountManager';
 import ormDataSource from './ormDataSource';
 import CelestialSystem from './celestialSystem';
 import Ship from './ship';
+import Account from './account';
 
-export interface Metadata {
+export interface CelestialSystemMetadata {
 }
 
-type ClientAuth = { name: string }
-
-type Client = Colyseus.Client<{
+type CelestialSystemClient = Colyseus.Client<{
     messages: {
     },
-    auth: ClientAuth,
+    auth: Account,
 }>
 
 export default class CelestialSystemRoom extends Colyseus.Room<{
     state: CelestialSystemState,
-    metadata: Metadata,
-    client: Client,
+    metadata: CelestialSystemMetadata,
+    client: CelestialSystemClient,
 }> {
     public override state: CelestialSystemState;
 
@@ -52,17 +51,21 @@ export default class CelestialSystemRoom extends Colyseus.Room<{
         }
     }
 
-    public override async onAuth(_client: Colyseus.Client, _options: unknown, context: Colyseus.AuthContext): Promise<ClientAuth | boolean> {
+    public override async onAuth(_client: Colyseus.Client, _options: unknown, context: Colyseus.AuthContext): Promise<Account | false> {
         const tokenRegex = /token=(?<token>[\w\d-]*)/gm.exec(context.headers.get("cookie"));
         if (!tokenRegex || !tokenRegex.groups?.token) return false;
         const account = await accountManager.verify(tokenRegex.groups.token);
         if (!account) return false;
-        return { name: account.name };
+        return account;
     }
 
-    public override onJoin(client: Client): void {
+    public override async onJoin(client: CelestialSystemClient): Promise<void> {
+        const state = new State.CelestialPlayerState;
+        state.shipSessionId = (await client.auth.currentShip).sessionId;
+        this.state.players.set(client.sessionId, state);
     }
 
-    public override onLeave(client: Client): void {
+    public override onLeave(client: CelestialSystemClient): void {
+        this.state.players.delete(client.sessionId);
     }
 }

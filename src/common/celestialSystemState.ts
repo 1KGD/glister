@@ -16,12 +16,21 @@ export class CelestialShipState extends $.Schema {
     public updateSystem: Colyseus.Delayed;
 }
 
+@$.entity
+export class CelestialPlayerState extends $.Schema {
+    @$.type("string")
+    public shipSessionId: string;
+}
+
 export default class CelestialSystemState extends $.Schema {
     @$.type("string")
     public readonly systemId: string;
 
     @$.type({ map: CelestialShipState })
     public readonly ships: $.MapSchema<CelestialShipState>;
+
+    @$.type(({ map: CelestialPlayerState }))
+    public readonly players: $.MapSchema<CelestialPlayerState>;
 
     @$.type("string")
     public readonly starType: StarType;
@@ -31,5 +40,6 @@ export default class CelestialSystemState extends $.Schema {
         this.systemId = system.id;
         this.starType = system.starType;
         this.ships = new $.MapSchema;
+        this.players = new $.MapSchema;
     }
 }

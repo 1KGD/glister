@@ -1,9 +1,11 @@
 import * as ColyseusReact from '@colyseus/react';
 import type CelestialSystemRoom from '../server/celestialSystemRoom';
-import { type Metadata } from '../server/celestialSystemRoom';
-import { StagingRoom } from '../server';
+import type ShipRoom from '../server/shipRoom';
+import { type CelestialSystemMetadata } from '../server/celestialSystemRoom';
+import { type StagingRoom } from '../server';
 export default {
     staging: ColyseusReact.createRoomContext<StagingRoom>(),
-    game: ColyseusReact.createRoomContext<CelestialSystemRoom>(),
-    lobby: ColyseusReact.createLobbyContext<Metadata>()
+    celestialSystem: ColyseusReact.createRoomContext<CelestialSystemRoom>(),
+    ship: ColyseusReact.createRoomContext<ShipRoom>(),
+    lobby: ColyseusReact.createLobbyContext<CelestialSystemMetadata>()
 };

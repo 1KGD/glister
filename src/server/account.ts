@@ -33,8 +33,8 @@ export default class Account {
     @ORM.Column("text", { nullable: true, unique: true })
     public token: string;
 
-    @ORM.OneToMany(() => Ship, ship => ship.owner, { lazy: true })
-    public ships: Promise<Ship[]>;
+    @ORM.ManyToOne(() => Ship, ship => ship.players, { lazy: true, cascade: true, nullable: true })
+    public currentShip: Promise<Ship>;
 
     public constructor(name: string, password: string) {
         this.name = name;
@@ -48,8 +48,10 @@ export default class Account {
     }
 
     public async createShip(): Promise<void> {
-        const ship = new Ship(this);
+        const ship = new Ship;
         await ormDataSource.manager.save(ship);
         await ship.setupPosition();
+        this.currentShip = Promise.resolve(ship);
+        await ormDataSource.manager.save(this);
     }
 }

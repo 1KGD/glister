@@ -8,7 +8,7 @@ import * as Tesseract from 'tesseract';
 import * as Colyseus from '@colyseus/sdk';
 import type server from '../server/index';
 import roomProvider from './roomProvider';
-import  CelestialSystem from './celestialSystem';
+import CelestialSystem from './celestialSystem';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
@@ -17,6 +17,15 @@ function StagingHandler({ seatReservation, setSeatReservation }: { seatReservati
     const { room } = roomProvider.staging.useRoom();
     React.useEffect(() => { if (seatReservation && room) void room.leave(); }, [seatReservation, room]);
     return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
+}
+
+function ShipRoom({ children }: React.PropsWithChildren): React.JSX.Element {
+    const { room, isConnecting } = roomProvider.celestialSystem.useRoom();
+    const state = roomProvider.celestialSystem.useRoomState();
+    if (isConnecting || !state) return;
+    return <roomProvider.ship.RoomProvider connect={() => client.joinById(state.players[room.sessionId].shipSessionId)} deps={[room, state]}>
+        {children}
+    </roomProvider.ship.RoomProvider>;
 }
 
 enum Controls {
@@ -40,11 +49,13 @@ function MainGame(): React.JSX.Element {
 
     return <roomProvider.staging.RoomProvider connect={() => client.joinOrCreate("staging")}>
         <StagingHandler seatReservation={seatReservation} setSeatReservation={setSeatReservation} />
-        <roomProvider.game.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
-            <DREI.KeyboardControls map={controls}>
-                {seatReservation && <CelestialSystem />}
-            </DREI.KeyboardControls>
-        </roomProvider.game.RoomProvider>
+        <roomProvider.celestialSystem.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
+            <ShipRoom>
+                <DREI.KeyboardControls map={controls}>
+                    {seatReservation && <CelestialSystem />}
+                </DREI.KeyboardControls>
+            </ShipRoom>
+        </roomProvider.celestialSystem.RoomProvider>
     </roomProvider.staging.RoomProvider>;
 }
 

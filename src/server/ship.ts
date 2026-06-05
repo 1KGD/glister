@@ -12,9 +12,6 @@ export default class Ship {
     @ORM.PrimaryGeneratedColumn("uuid")
     public readonly id: string;
 
-    @ORM.ManyToOne(() => Account, account => account.ships, { lazy: true, cascade: true, nullable: true })
-    public readonly owner: Promise<Account>;
-
     @ORM.Column("float")
     public x: number = 0;
 
@@ -27,8 +24,14 @@ export default class Ship {
     @ORM.ManyToOne(() => CelestialSystem, celestialSystem => celestialSystem.ships, { lazy: true, cascade: true, nullable: true })
     public system: Promise<CelestialSystem>;
 
-    public constructor(owner: Account) {
-        this.owner = Promise.resolve(owner);
+    @ORM.OneToMany(() => Account, account => account.currentShip, { lazy: true })
+    public players: Promise<Account[]>;
+
+    @ORM.Column("text", { nullable: true })
+    public sessionId: string;
+
+    public constructor() {
+        this.players = Promise.resolve([]);
     }
 
     public async setupPosition(): Promise<void> {
