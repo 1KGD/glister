@@ -34,7 +34,7 @@ export default class CelestialSystemRoom extends Colyseus.Room<{
         for (const ship of await system.ships) {
             const schema = ship.toSchemaState();
             this.state.ships.set(ship.id, schema);
-            schema.updateSystem = this.clock.setInterval(() => schema.position.set(schema.position.x + Math.sin(this.clock.elapsedTime / 10000), 0, schema.position.y + Math.cos(this.clock.elapsedTime / 10000)), 1000 / 20);
+            schema.updateSystem = this.clock.setInterval(() => schema.position.set(Math.sin(this.clock.elapsedTime / 10000) * 10, 0, Math.cos(this.clock.elapsedTime / 10000) * 10), 1000 / 20);
         }
 
         this.clock.setInterval(async () => await this.saveState(), 60000);
