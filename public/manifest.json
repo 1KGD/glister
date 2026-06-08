@@ -3,7 +3,7 @@
     "name": "CODENAME GLISTER",
     "icons": [
         {
-            "src": "/favicon.png",
+            "src": "/manifest/favicon.png",
             "sizes": "192x192",
             "type": "image/png"
         }

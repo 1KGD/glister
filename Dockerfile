@@ -17,6 +17,7 @@ WORKDIR /app
 
 FROM tesseract AS client
 COPY src/client src/client
+COPY public public
 COPY index.html .
 COPY vite.config.ts .
 RUN pnpm run build-client
