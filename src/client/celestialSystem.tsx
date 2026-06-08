@@ -10,8 +10,6 @@ import Star from './objects/star';
 import Ship from './objects/ship';
 
 export default function CelestialSystem(): React.JSX.Element {
-    const starRef = React.useRef<THREE.Mesh>(null);
-
     const { isConnecting, room } = roomProvider.celestialSystem.useRoom();
     const state = roomProvider.celestialSystem.useRoomState();
     if (isConnecting || !room) return <Tesseract.Modal title="Loading...">Loading system...</Tesseract.Modal>;
@@ -24,7 +22,7 @@ export default function CelestialSystem(): React.JSX.Element {
             <Post.Noise opacity={0.02} />
         </Post.EffectComposer >
         <DREI.Stars />
-        <Star type={state.starType} ref={starRef} />
+        <Star type={state.starType} />
         {Object.values(state.ships).map((ship, i) => <Ship key={i} position={ship.position as PositionState} />)}
     </>;
 }

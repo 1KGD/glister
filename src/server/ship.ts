@@ -1,6 +1,5 @@
 import * as ORM from 'typeorm';
 import Account from './account';
-import * as $ from '@colyseus/schema';
 import * as Colyseus from 'colyseus';
 import CelestialSystem from './celestialSystem';
 import ormDataSource from './ormDataSource';
@@ -24,15 +23,11 @@ export default class Ship {
     @ORM.ManyToOne(() => CelestialSystem, celestialSystem => celestialSystem.ships, { lazy: true, cascade: true, nullable: true })
     public system: Promise<CelestialSystem>;
 
-    @ORM.OneToMany(() => Account, account => account.currentShip, { lazy: true })
-    public players: Promise<Account[]>;
+    @ORM.OneToMany(() => Account, account => account.currentShip, { eager: true })
+    public players: Account[];
 
     @ORM.Column("text", { nullable: true })
-    public sessionId: string;
-
-    public constructor() {
-        this.players = Promise.resolve([]);
-    }
+    public roomId: string;
 
     public async setupPosition(): Promise<void> {
         this.system = Promise.resolve(await ormDataSource.manager.findOneBy(CelestialSystem, {}));
@@ -49,5 +44,16 @@ export default class Ship {
         this.x = state.x;
         this.y = state.y;
         this.z = state.z;
+    }
+
+    public async getOrCreateSession(): Promise<Colyseus.matchMaker.ISeatReservation> {
+        if (this.roomId) {
+            const room = await Colyseus.matchMaker.getRoomById(this.roomId);
+            if (room) return Colyseus.matchMaker.reserveSeatFor(room, {});
+        }
+        const room = await Colyseus.matchMaker.create("ship");
+        this.roomId = room.roomId;
+        await ormDataSource.manager.save(this);
+        return room;
     }
 }

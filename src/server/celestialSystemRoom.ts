@@ -11,6 +11,7 @@ export interface CelestialSystemMetadata {
 
 type CelestialSystemClient = Colyseus.Client<{
     messages: {
+        joinShip: Colyseus.matchMaker.ISeatReservation,
     },
     auth: Account,
 }>
@@ -59,10 +60,12 @@ export default class CelestialSystemRoom extends Colyseus.Room<{
         return account;
     }
 
-    public override onJoin(client: CelestialSystemClient): void {
-        const state = new State.CelestialPlayerState;
-        state.shipSessionId = client.auth.currentShip?.sessionId;
-        this.state.players.set(client.sessionId, state);
+    public override async onJoin(client: CelestialSystemClient): Promise<void> {
+        const player = new State.CelestialPlayerState;
+        const ship = await client.auth.currentShip;
+        if (!ship) return;
+        client.send("joinShip", await ship.getOrCreateSession());
+        this.state.players.set(client.sessionId, player);
     }
 
     public override onLeave(client: CelestialSystemClient): void {

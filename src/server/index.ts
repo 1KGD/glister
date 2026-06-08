@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import CelestialSystem, { createCelestialSystems } from './celestialSystem';
 import Account from './account';
 import Ship from './ship';
+import ShipRoom from './shipRoom';
 
 export class StagingRoom extends Colyseus.Room {
     public override onJoin(client: Colyseus.Client): void {
@@ -24,6 +25,7 @@ const server = Colyseus.defineServer({
     rooms: {
         lobby: Colyseus.defineRoom(Colyseus.LobbyRoom),
         celestialSystem: Colyseus.defineRoom(CelestialSystemRoom),
+        ship: Colyseus.defineRoom(ShipRoom),
         staging: Colyseus.defineRoom(StagingRoom)
     },
     greet: !config.dev,

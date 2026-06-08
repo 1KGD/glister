@@ -1,5 +1,5 @@
 import * as $ from "@colyseus/schema";
-import * as Colyseus from 'colyseus';
+import type * as Colyseus from 'colyseus';
 import CelestialSystem from "../server/celestialSystem";
 import PositionState from "./positionState";
 
@@ -17,10 +17,7 @@ export class CelestialShipState extends $.Schema {
 }
 
 @$.entity
-export class CelestialPlayerState extends $.Schema {
-    @$.type("string")
-    public shipSessionId: string;
-}
+export class CelestialPlayerState extends $.Schema { }
 
 export default class CelestialSystemState extends $.Schema {
     @$.type("string")
