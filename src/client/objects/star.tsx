@@ -4,22 +4,28 @@ import { StarType } from '../../common/celestialSystemState';
 import * as Tesseract from 'tesseract';
 import * as Post from '@react-three/postprocessing';
 
-export default function Star({ type, ref }: { type: StarType, ref?: React.Ref<THREE.Mesh> }): React.JSX.Element {
+export default function Star({ type }: { type: StarType }): React.JSX.Element {
+    const ref = React.useRef<THREE.Mesh>(new THREE.Mesh);
+    let sun = <Tesseract.Page position={new THREE.Vector3}>Something went disastrously wrong with the star</Tesseract.Page>;
     switch (Number(type)) {
         case StarType.NORMAL:
-            return <mesh ref={ref}>
+            sun = <mesh ref={ref}>
                 <sphereGeometry />
                 <meshPhysicalMaterial transparent />
 
                 <pointLight intensity={100} />
             </mesh>;
+            break;
         case StarType.DWARF:
-            return <mesh ref={ref}>
+            sun = <mesh ref={ref}>
                 <sphereGeometry />
-                <meshPhysicalMaterial transparent />
+                <meshPhysicalMaterial />
 
-                <pointLight intensity={10} />
+                <pointLight intensity={100} />
             </mesh>;
+            break;
     }
-    return <Tesseract.Page position={new THREE.Vector3}>Something went disastrously wrong with the star</Tesseract.Page>;
+    return <>
+        {sun}
+    </>;
 }
