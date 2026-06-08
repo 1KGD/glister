@@ -51,7 +51,7 @@ export default class Ship {
             const room = await Colyseus.matchMaker.getRoomById(this.roomId);
             if (room) return Colyseus.matchMaker.reserveSeatFor(room, {});
         }
-        const room = await Colyseus.matchMaker.create("ship");
+        const room = await Colyseus.matchMaker.create("ship", { shipId: this.id });
         this.roomId = room.roomId;
         await ormDataSource.manager.save(this);
         return room;

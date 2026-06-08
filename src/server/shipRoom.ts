@@ -3,6 +3,7 @@ import Account from './account';
 import ShipState from '../common/shipState';
 
 interface ShipMetadata {
+    readonly shipId: string;
 }
 
 type CelestialSystemClient = Colyseus.Client<{
@@ -17,4 +18,9 @@ export default class ShipRoom extends Colyseus.Room<{
     client: CelestialSystemClient,
 }> {
     public override state: ShipState;
+
+    public override onCreate(options: { shipId: string }): void {
+        this.metadata = { shipId: options.shipId };
+        this.state = new ShipState;
+    }
 }
