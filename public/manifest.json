@@ -1,0 +1,19 @@
+{
+    "short_name": "GLISTER",
+    "name": "CODENAME GLISTER",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "start_url": ".",
+    "display_override": [
+        "fullscreen",
+        "minimal-ui"
+    ],
+    "display": "standalone",
+    "theme_color": "black",
+    "background_color": "white"
+}

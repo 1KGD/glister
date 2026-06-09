@@ -10,8 +10,13 @@ export default class PositionState extends $.Schema {
 
     public constructor(x: number, y: number, z: number) {
         super();
+        this.set(x,y,z);
+    }
+
+    public set(x: number, y: number, z:number): this {
         this.x = x;
         this.y = y;
         this.z = z;
+        return this;
     }
 }

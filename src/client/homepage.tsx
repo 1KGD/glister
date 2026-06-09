@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Arwes from '@arwes/react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
@@ -18,6 +17,16 @@ function StagingHandler({ seatReservation, setSeatReservation }: { seatReservati
     const { room } = roomProvider.staging.useRoom();
     React.useEffect(() => { if (seatReservation && room) void room.leave(); }, [seatReservation, room]);
     return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
+}
+
+function ShipRoom({ children }: React.PropsWithChildren): React.JSX.Element {
+    const { room, isConnecting } = roomProvider.celestialSystem.useRoom();
+    const [shipRoomSeat, setShipRoomSeat] = React.useState<Colyseus.SeatReservation>(null);
+    roomProvider.celestialSystem.useRoomMessage("joinShip", seatReservation => setShipRoomSeat(seatReservation));
+    if (isConnecting) return null;
+    return <roomProvider.ship.RoomProvider connect={() => client.consumeSeatReservation(shipRoomSeat)} deps={[shipRoomSeat]}>
+        {children}
+    </roomProvider.ship.RoomProvider>;
 }
 
 enum Controls {
@@ -41,11 +50,13 @@ function MainGame(): React.JSX.Element {
 
     return <roomProvider.staging.RoomProvider connect={() => client.joinOrCreate("staging")}>
         <StagingHandler seatReservation={seatReservation} setSeatReservation={setSeatReservation} />
-        <roomProvider.game.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
-            <DREI.KeyboardControls map={controls}>
-                {seatReservation && <CelestialSystem />}
-            </DREI.KeyboardControls>
-        </roomProvider.game.RoomProvider>
+        <roomProvider.celestialSystem.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
+            <ShipRoom>
+                <DREI.KeyboardControls map={controls}>
+                    {seatReservation && <CelestialSystem />}
+                </DREI.KeyboardControls>
+            </ShipRoom>
+        </roomProvider.celestialSystem.RoomProvider>
     </roomProvider.staging.RoomProvider>;
 }
 
@@ -55,7 +66,7 @@ export default function Homepage(): React.JSX.Element {
     const outlet = Router.useOutlet({ loading, loggedIn, account });
     if (loading) return <><Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>{outlet}</>;
     return <>
-        {loggedIn && <MainGame />}
+        {loggedIn && !outlet && <MainGame />}
         <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}

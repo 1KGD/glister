@@ -1,11 +1,14 @@
 import 'reflect-metadata';
 import * as Colyseus from 'colyseus';
-import GameRoom from './gameRoom';
+import CelestialSystemRoom from './celestialSystemRoom';
 import config from '../../config';
 import ormDataSource from './ormDataSource';
 import routes from './routes';
 import cookieParser from 'cookie-parser';
 import CelestialSystem, { createCelestialSystems } from './celestialSystem';
+import Account from './account';
+import Ship from './ship';
+import ShipRoom from './shipRoom';
 
 export class StagingRoom extends Colyseus.Room {
     public override onJoin(client: Colyseus.Client): void {
@@ -21,13 +24,15 @@ const server = Colyseus.defineServer({
     transport: new Colyseus.WebSocketTransport(),
     rooms: {
         lobby: Colyseus.defineRoom(Colyseus.LobbyRoom),
-        game: Colyseus.defineRoom(GameRoom),
+        celestialSystem: Colyseus.defineRoom(CelestialSystemRoom),
+        ship: Colyseus.defineRoom(ShipRoom),
         staging: Colyseus.defineRoom(StagingRoom)
     },
     greet: !config.dev,
 });
 
 ormDataSource.initialize().then(async () => {
+    try { await (await ormDataSource.manager.findOneBy(Account, {})).boardShip(await ormDataSource.manager.findOneBy(Ship, {})); } catch (e) { console.error(e); };
     if (!await ormDataSource.manager.findOneBy(CelestialSystem, {})) await createCelestialSystems();
     await server.listen(config.multiplayer.port);
 }

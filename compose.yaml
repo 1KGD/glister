@@ -3,3 +3,8 @@ services:
     build: .
     ports:
       - "80:80"
+    volumes:
+      - data:/app/data
+volumes:
+  data:
+    external: false

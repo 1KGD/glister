@@ -5,7 +5,6 @@ import roomProvider from './roomProvider';
 
 export default function Player({ name, position }: { name: string, position: PositionState }): React.JSX.Element {
     return <group scale={0.4} position={[position.x, position.y, position.z]}>
-        <DREI.CameraControls />
         <mesh>
             <torusKnotGeometry />
             <meshPhysicalMaterial metalness={0.8} roughness={0.2} />
