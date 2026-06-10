@@ -5,6 +5,7 @@ import config from './config';
 export default defineConfig({
     clearScreen: false,
     server: {
+        watch: { usePolling: true },
         allowedHosts: true,
         proxy: {
             '^/api/matchmake/.*': {
