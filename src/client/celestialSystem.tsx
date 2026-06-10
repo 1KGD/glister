@@ -8,6 +8,7 @@ import Player from './player';
 import type PositionState from '../common/positionState';
 import Star from './objects/star';
 import Ship from './objects/ship';
+import PlayerHUD from './playerHud';
 
 export default function CelestialSystem(): React.JSX.Element {
     const { isConnecting, room } = roomProvider.celestialSystem.useRoom();
@@ -21,6 +22,7 @@ export default function CelestialSystem(): React.JSX.Element {
             <Post.Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
             <Post.Noise opacity={0.02} />
         </Post.EffectComposer >
+        <PlayerHUD />
         <DREI.Stars />
         <Star type={state.starType} />
         {Object.values(state.ships).map((ship, i) => <Ship key={i} position={ship.position as PositionState} />)}
