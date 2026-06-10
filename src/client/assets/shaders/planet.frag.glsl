@@ -41,5 +41,5 @@ float perlin(vec2 p, float dim) {
 }
 
 void main() {
-    gl_FragColor = vec4(vec2(perlin(vUv, 12.)), vUv.x, 1.0);
+    gl_FragColor = vec4(perlin(vUv, 12.));
 }
