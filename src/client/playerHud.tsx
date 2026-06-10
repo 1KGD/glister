@@ -24,7 +24,7 @@ export default function PlayerHUD(): React.JSX.Element {
     React.useEffect(() => {
         if (!message) return;
         speechSynthesis.speak(new SpeechSynthesisUtterance(message));
-        const timeout = setTimeout(() => setMessage(null), 2000);
+        const timeout = setTimeout(() => setMessage(null), 2500);
         return (): void => { speechSynthesis.cancel(); clearTimeout(timeout); };
     }, [message]);
 
