@@ -39,7 +39,7 @@ float perlin(vec2 p, float dim) {
 }
 
 float offset(vec2 p) {
-    return perlin(p, 12.) * .1 + .9;
+    return perlin(p, 12.) * .01 + .99;
 }
 
 void main() {
