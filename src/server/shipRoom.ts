@@ -2,6 +2,7 @@ import * as Colyseus from 'colyseus';
 import Account from './account';
 import ShipState from '../common/shipState';
 import accountManager from './accountManager';
+import PlayerState from '../common/playerState';
 
 interface ShipMetadata {
     readonly shipId: string;
@@ -35,7 +36,12 @@ export default class ShipRoom extends Colyseus.Room<{
     }
 
     public override onJoin(client: CelestialSystemClient): void {
+        this.state.players.set(client.sessionId, new PlayerState(client.auth.name));
         this.broadcast("notify", `welcome aboard, ${client.auth.name}`);
         this.clock.setTimeout(() => client.send("notify", "The Quick Brown Fox Jumped Over The Lazy Dog"), 4000);
+    }
+
+    public override onLeave(client: CelestialSystemClient): void {
+        this.state.players.delete(client.sessionId);
     }
 }

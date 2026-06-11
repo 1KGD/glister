@@ -37,6 +37,8 @@ export default class CelestialSystemRoom extends Colyseus.Room<{
             schema.updateSystem = this.clock.setInterval(() => schema.position.set(Math.sin(this.clock.elapsedTime / 10000) * 10, 0, Math.cos(this.clock.elapsedTime / 10000) * 10), 1000 / 20);
         }
 
+        this.clock.setInterval(() => this.state.time = this.clock.currentTime / 1000, 1000 / 20)
+
         this.clock.setInterval(async () => await this.saveState(), 60000);
     }
 
