@@ -19,13 +19,20 @@ export class CelestialShipState extends $.Schema {
 @$.entity
 export class CelestialPlanetState extends $.Schema {
     @$.type("number")
-    public readonly orbitDistance: number = 350;
+    public readonly orbitDistance: number;
 
     @$.type("number")
-    public readonly orbitTime: number = 60 * 20;
+    public readonly orbitTime: number;
 
     @$.type("number")
-    public readonly size: number = 30;
+    public readonly size: number;
+
+    public constructor(orbitDistance: number, orbitTime: number, size: number) {
+        super();
+        this.orbitDistance = orbitDistance;
+        this.orbitTime = orbitTime;
+        this.size = size;
+    }
 }
 
 @$.entity
@@ -60,6 +67,11 @@ export default class CelestialSystemState extends $.Schema {
         this.ships = new $.MapSchema;
         this.players = new $.MapSchema;
         this.planets = new $.MapSchema;
-        this.planets.set("foo", new CelestialPlanetState);
+    }
+
+    public async populatePlanets(system: CelestialSystem): Promise<void> {
+        for (const planet of await system.planets) {
+            this.planets.set(planet.id, new CelestialPlanetState(planet.orbitRadius, planet.orbitSpeed, planet.size));
+        }
     }
 }

@@ -21,7 +21,6 @@ export default function CelestialSystem(): React.JSX.Element {
     return <>
         <Post.EffectComposer>
             <Post.Bloom />
-            <Post.ASCII />
         </Post.EffectComposer>
         <PlayerHUD />
         <DREI.Stars />

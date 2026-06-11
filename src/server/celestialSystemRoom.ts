@@ -30,6 +30,7 @@ export default class CelestialSystemRoom extends Colyseus.Room<{
     public override async onCreate(options: { systemId: string }): Promise<void> {
         const system = await ormDataSource.manager.findOneBy(CelestialSystem, { id: options.systemId });
         this.state = new CelestialSystemState(system);
+        await this.state.populatePlanets(system);
 
         for (const ship of await system.ships) {
             const schema = ship.toSchemaState();

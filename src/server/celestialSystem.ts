@@ -1,9 +1,9 @@
 import * as ORM from 'typeorm';
-import * as Colyseus from '@colyseus/sdk';
+import * as Colyseus from 'colyseus';
 import ormDataSource from './ormDataSource';
-import { matchMaker } from 'colyseus';
 import { StarType } from '../common/celestialSystemState';
 import Ship from './ship';
+import Planet from './planet';
 
 const systemCount = 1000;
 
@@ -21,15 +21,25 @@ export default class CelestialSystem {
     @ORM.OneToMany(() => Ship, ship => ship.system, { lazy: true })
     public readonly ships: Promise<Ship[]>;
 
+    @ORM.OneToMany(() => Planet, planet => planet.system, { lazy: true })
+    public readonly planets: Promise<Planet[]>;
+
     @ORM.Column("text", { nullable: true })
     public sessionId: string;
 
-    public async createSession(): Promise<Colyseus.SeatReservation> {
-        if (this.sessionId) {
-            const room = await matchMaker.getRoomById(this.sessionId);
-            if (room) return matchMaker.reserveSeatFor(room, {});
+    public async populatePlanets(): Promise<void> {
+        for (let i = 0; i < 10; i++) {
+            const newPlanet = new Planet(this);
+            await ormDataSource.manager.save(newPlanet);
         }
-        const room = await matchMaker.create("celestialSystem", { systemId: this.id });
+    }
+
+    public async createSession(): Promise<Colyseus.matchMaker.ISeatReservation> {
+        if (this.sessionId) {
+            const room = await Colyseus.matchMaker.getRoomById(this.sessionId);
+            if (room) return Colyseus.matchMaker.reserveSeatFor(room, {});
+        }
+        const room = await Colyseus.matchMaker.create("celestialSystem", { systemId: this.id });
         this.sessionId = room.roomId;
         await ormDataSource.manager.save(this);
         return room;
@@ -40,5 +50,6 @@ export async function createCelestialSystems(): Promise<void> {
     while (await ormDataSource.manager.count(CelestialSystem) < systemCount) {
         const system = new CelestialSystem;
         await ormDataSource.manager.save(system);
+        await system.populatePlanets();
     }
 }
