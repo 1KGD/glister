@@ -13,10 +13,12 @@ import Planet from './objects/planet';
 import { CelestialPlanetState } from '../common/celestialSystemState';
 
 export default function CelestialSystem(): React.JSX.Element {
-    const { isConnecting, room } = roomProvider.celestialSystem.useRoom();
+    const { isConnecting } = roomProvider.celestialSystem.useRoom();
     const state = roomProvider.celestialSystem.useRoomState();
-    if (isConnecting || !room) return <Tesseract.Modal title="Loading...">Loading system...</Tesseract.Modal>;
-    if (!state.ships) return <Tesseract.Modal title="Loading...">Loading players...</Tesseract.Modal>;
+    Tesseract.useModal({ title: "Connecting..." }, isConnecting);
+    Tesseract.useModal({ title: "Loading..." }, !state);
+
+    if (isConnecting || !state) return;
 
     return <>
         <Post.EffectComposer>
@@ -25,7 +27,7 @@ export default function CelestialSystem(): React.JSX.Element {
         <PlayerHUD />
         <DREI.Stars />
         <Star type={state.starType} size={state.starSize} />
-        {Object.values(state.planets).map((planet, i) => <Planet key={i} state={planet as CelestialPlanetState} />)}
-        {Object.values(state.ships).map((ship, i) => <Ship key={i} position={ship.position as PositionState} />)}
+        {state.planets && Object.values(state.planets).map((planet, i) => <Planet key={i} state={planet as CelestialPlanetState} />)}
+        {state.ships && Object.values(state.ships).map((ship, i) => <Ship key={i} position={ship.position as PositionState} />)}
     </>;
 }

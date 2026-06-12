@@ -12,17 +12,19 @@ import CelestialSystem from './celestialSystem';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
-function StagingHandler({ seatReservation, setSeatReservation }: { seatReservation: Colyseus.SeatReservation, setSeatReservation: (value: Colyseus.SeatReservation) => void }): React.JSX.Element {
+function StagingHandler({ seatReservation, setSeatReservation }: { seatReservation: Colyseus.SeatReservation, setSeatReservation: (value: Colyseus.SeatReservation) => void }): null {
     roomProvider.staging.useRoomMessage("switch", setSeatReservation);
     const { room } = roomProvider.staging.useRoom();
     React.useEffect(() => { if (seatReservation && room) void room.leave(); }, [seatReservation, room]);
-    return seatReservation ? null : <Tesseract.Modal title="Loading..." > Staging...</Tesseract.Modal>;
+    Tesseract.useModal({ title: "Loading...", body: "Staging..." }, !seatReservation);
+    return null;
 }
 
 function ShipRoom({ children }: React.PropsWithChildren): React.JSX.Element {
-    const { room, isConnecting } = roomProvider.celestialSystem.useRoom();
+    const { isConnecting } = roomProvider.celestialSystem.useRoom();
     const [shipRoomSeat, setShipRoomSeat] = React.useState<Colyseus.SeatReservation>(null);
     roomProvider.celestialSystem.useRoomMessage("joinShip", seatReservation => setShipRoomSeat(seatReservation));
+    Tesseract.useModal({ title: "Loading...", body: "Boarding Ship" }, isConnecting);
     if (isConnecting) return null;
     return <roomProvider.ship.RoomProvider connect={() => client.consumeSeatReservation(shipRoomSeat)} deps={[shipRoomSeat]}>
         {children}
@@ -64,7 +66,8 @@ export default function Homepage(): React.JSX.Element {
     const navigate = Router.useNavigate();
     const { loading, loggedIn, account } = useAccount();
     const outlet = Router.useOutlet({ loading, loggedIn, account });
-    if (loading) return <><Tesseract.Modal title={"Loading..."}>Loading account...</Tesseract.Modal>{outlet}</>;
+    Tesseract.useModal({ title: "Loading...", body: "Logging in..." }, loading);
+    if (loading) return <>{outlet}</>;
     return <>
         {loggedIn && !outlet && <MainGame />}
         <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>

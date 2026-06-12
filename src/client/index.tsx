@@ -2,7 +2,7 @@ import React from 'react';
 import * as Arwes from '@arwes/react';
 import * as DREI from '@react-three/drei';
 import { createRoot } from 'react-dom/client';
-import config from '../../config';
+import * as THREE from 'three';
 if (import.meta.env.DEV) await import("@colyseus/sdk/debug");
 import './colors.css';
 import './index.css';
@@ -15,23 +15,24 @@ import Editor from './editor/editor';
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
 function LoginPage(): React.JSX.Element {
-    return <Tesseract.Modal title="Login">
+    return <Tesseract.Page position={new THREE.Vector3(0, 0, -1)}>
+        <Arwes.Text as="h1">Login</Arwes.Text>
         <form method="post" action="/api/login">
             <input type="text" name="username" autoComplete="username" />
             <input type="password" name="password" autoComplete="current-password" />
             <input type="submit" />
-        </form>
-    </Tesseract.Modal>;
+        </form></Tesseract.Page>;
 }
 
 function CreateAccountPage(): React.JSX.Element {
-    return <Tesseract.Modal title="Create account">
+    return <Tesseract.Page position={new THREE.Vector3(0, 0, -1)}>
+        <Arwes.Text as="h1">Create Account</Arwes.Text>
         <form method="post" action="/api/createAccount">
             <input type="text" name="username" />
             <input type="password" name="password" />
             <input type="submit" />
         </form>
-    </Tesseract.Modal>;
+    </Tesseract.Page>;
 }
 
 function App(): React.JSX.Element {
