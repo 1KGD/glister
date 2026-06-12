@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
-import PositionState from '../common/positionState';
-import roomProvider from './roomProvider';
+import PositionState from '../../common/positionState';
+import roomProvider from '../roomProvider';
 
 export default function Player({ name, position, isLocal }: { name: string, position: PositionState, isLocal?: boolean }): React.JSX.Element {
     const [cameraRef, setCameraRef] = React.useState<THREE.PerspectiveCamera>(null);
     return <group position={[position.x, position.y, position.z]}>
         {isLocal && <>
-            <DREI.PerspectiveCamera ref={setCameraRef} makeDefault />
+            <DREI.PerspectiveCamera ref={setCameraRef} makeDefault far={100000} />
             {cameraRef && <DREI.CameraControls camera={cameraRef} />}
         </>}
         <mesh scale={0.4}>

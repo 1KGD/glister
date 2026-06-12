@@ -1,7 +1,7 @@
 import React from 'react';
 import PositionState from '../../common/positionState';
 import roomProvider from '../roomProvider';
-import Player from '../player';
+import Player from './player';
 
 export default function Ship({ position }: { position: PositionState }): React.JSX.Element {
     const state = roomProvider.ship.useRoomState();

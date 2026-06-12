@@ -15,7 +15,7 @@ import Editor from './editor/editor';
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
 function LoginPage(): React.JSX.Element {
-    return <Tesseract.Page position={new THREE.Vector3(0, 0, -1)}>
+    return <Tesseract.Page focused position={new THREE.Vector3(0, 0, -1)}>
         <Arwes.Text as="h1">Login</Arwes.Text>
         <form method="post" action="/api/login">
             <input type="text" name="username" autoComplete="username" />
@@ -25,7 +25,7 @@ function LoginPage(): React.JSX.Element {
 }
 
 function CreateAccountPage(): React.JSX.Element {
-    return <Tesseract.Page position={new THREE.Vector3(0, 0, -1)}>
+    return <Tesseract.Page focused position={new THREE.Vector3(0, 0, -1)}>
         <Arwes.Text as="h1">Create Account</Arwes.Text>
         <form method="post" action="/api/createAccount">
             <input type="text" name="username" />
