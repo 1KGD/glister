@@ -12,6 +12,7 @@ export default function Planet({ state }: { state: CelestialPlanetState }): Reac
         Math.cos(time * 2 * Math.PI / state.orbitTime) * state.orbitDistance
     ]} scale={state.size}>
         <sphereGeometry />
-        <shaderMaterial transparent fragmentShader={planetFragShader} vertexShader={planetVertShader} />
+        <meshPhongMaterial />
+        {/*<shaderMaterial transparent fragmentShader={planetFragShader} vertexShader={planetVertShader} />*/}
     </mesh>;
 }

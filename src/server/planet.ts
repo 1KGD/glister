@@ -20,7 +20,7 @@ export default class Planet {
 
     public constructor(system: CelestialSystem) {
         this.system = Promise.resolve(system);
-        this.orbitRadius = Math.random() * 2000;
+        this.orbitRadius = 4000 + Math.random() * 20000;
         this.orbitSpeed = 1000 + Math.random() * 1000;
         this.size = 50 + Math.random() * 500;
     }

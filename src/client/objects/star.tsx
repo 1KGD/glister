@@ -13,7 +13,7 @@ export default function Star({ type, size }: { type: StarType, size: number }): 
                 <sphereGeometry />
                 <meshPhysicalMaterial transparent />
 
-                <pointLight intensity={1000} />
+                <pointLight intensity={50000000} />
             </mesh>;
             break;
         case StarType.DWARF:
@@ -21,7 +21,7 @@ export default function Star({ type, size }: { type: StarType, size: number }): 
                 <sphereGeometry />
                 <meshPhysicalMaterial />
 
-                <pointLight intensity={1000} />
+                <pointLight intensity={50000000 /* That is one bright sun */} />
             </mesh>;
             break;
     }
