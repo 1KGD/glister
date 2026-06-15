@@ -58,7 +58,7 @@ export default class CelestialSystemState extends $.Schema {
     public readonly starType: StarType;
 
     @$.type("number")
-    public readonly starSize: number = 100;
+    public readonly starSize: number = 1000;
 
     public constructor(system: CelestialSystem) {
         super();
