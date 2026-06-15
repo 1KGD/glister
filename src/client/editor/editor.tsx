@@ -1,13 +1,21 @@
 import React from 'react';
-import * as THREE from 'three';
-import * as Tesseract from 'tesseract';
-import * as Arwes from '@arwes/react';
-import debug from '../index.tsx?raw';
+import * as DREI from '@react-three/drei';
+import EditorShip from './editorShip';
+
+export interface IEditorCameraControls {
+    active: boolean
+}
+
+export const EditorCameraControlProvider = React.createContext<{
+    editorCameraControls: IEditorCameraControls,
+    setEditorCameraControls: (value: IEditorCameraControls) => void
+}>(null);
 
 export default function Editor(): React.JSX.Element {
-    return <Tesseract.Page position={new THREE.Vector3(1, 1, -15)} focused>
-        <Arwes.Animator>
-            <Arwes.Text easing="outSine" as="pre">{debug}</Arwes.Text>
-        </Arwes.Animator>
-    </Tesseract.Page >;
+    const [editorCameraControls, setEditorCameraControls] = React.useState<IEditorCameraControls>({ active: true });
+    return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
+        <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
+        <EditorShip />
+        <DREI.Grid followCamera infiniteGrid/>
+    </EditorCameraControlProvider>;
 }
