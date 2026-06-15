@@ -1,6 +1,7 @@
 import React from 'react';
 import * as DREI from '@react-three/drei';
 import EditorShip from './editorShip';
+import './editor.css';
 
 export interface IEditorCameraControls {
     active: boolean
@@ -16,6 +17,6 @@ export default function Editor(): React.JSX.Element {
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
         <EditorShip />
-        <DREI.Grid followCamera infiniteGrid/>
+        <DREI.Grid infiniteGrid sectionColor="white" cellColor="lightgrey" />
     </EditorCameraControlProvider>;
 }
