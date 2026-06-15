@@ -70,7 +70,7 @@ export default function Homepage(): React.JSX.Element {
     if (loading) return <>{outlet}</>;
     return <>
         {loggedIn && !outlet && <MainGame />}
-        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>
+        <Tesseract.Page position={new THREE.Vector3(0, 4, 12)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>
