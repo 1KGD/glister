@@ -40,7 +40,7 @@ function Schematic({ children }: React.PropsWithChildren): React.JSX.Element {
         <mesh>
             <planeGeometry />
             <meshPhongMaterial>
-                <DREI.RenderTexture attach="map">
+                <DREI.RenderTexture attach="map" frames={1}>
                     <ambientLight intensity={5} />
                     <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
                     <SchematicContext value={true}>
