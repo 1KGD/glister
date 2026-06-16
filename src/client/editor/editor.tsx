@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
 import * as Arwes from '@arwes/react';
@@ -15,15 +16,17 @@ export const EditorCameraControlProvider = React.createContext<{
     setEditorCameraControls: (value: IEditorCameraControls) => void
 }>(null);
 
-function MainPage(): React.JSX.Element {
+function MainPage({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     return <Tesseract.Page xray position={new THREE.Vector3(0, 5, -5)}>
-        <Arwes.Text as="h1">test</Arwes.Text>
+        <Arwes.Text as="div">Editor</Arwes.Text>
+        <Tesseract.Link navigate={navigate} to="/">Back</Tesseract.Link>
     </Tesseract.Page>;
 }
 
 export default function Editor(): React.JSX.Element {
     const [editorCameraControls, setEditorCameraControls] = React.useState<IEditorCameraControls>({ active: true });
     const { tesseractContext, setTesseractContext } = Tesseract.useTessractContext();
+    const navigate = Router.useNavigate();
 
     React.useEffect(() => {
         setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });
@@ -31,8 +34,8 @@ export default function Editor(): React.JSX.Element {
     }, []);
 
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
-        <MainPage />
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
+        <MainPage navigate={navigate} />
         <EditorShip />
         <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
     </EditorCameraControlProvider>;
