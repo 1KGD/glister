@@ -37,18 +37,21 @@ export function useIsSchematic(): boolean {
 
 function Schematic({ children }: React.PropsWithChildren): React.JSX.Element {
     return <>
-        <mesh>
-            <planeGeometry />
-            <meshPhongMaterial>
-                <DREI.RenderTexture attach="map" frames={1}>
-                    <ambientLight intensity={5} />
-                    <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                    <SchematicContext value={true}>
-                        {children}
-                    </SchematicContext>
-                </DREI.RenderTexture>
-            </meshPhongMaterial>
-        </mesh>
+        <DREI.Hud>
+            <DREI.PerspectiveCamera makeDefault />
+            <mesh position={[0.75, 0.5, -2]}>
+                <planeGeometry />
+                <meshBasicMaterial>
+                    <DREI.RenderTexture attach="map" frames={1}>
+                        <ambientLight intensity={5} />
+                        <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                        <SchematicContext value={true}>
+                            {children}
+                        </SchematicContext>
+                    </DREI.RenderTexture>
+                </meshBasicMaterial>
+            </mesh>
+        </DREI.Hud>
         <SchematicContext value={false}>
             {children}
         </SchematicContext>
@@ -71,6 +74,7 @@ export default function Editor(): React.JSX.Element {
 
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
+        <directionalLight />
         <MainPage navigate={navigate} />
         <Schematic>
             <EditorShip components={components} setComponents={setComponents} />
