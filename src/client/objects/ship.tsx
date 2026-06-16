@@ -11,8 +11,8 @@ export default function Ship({ position, navigate }: { position: PositionState, 
     return <mesh position={[position.x, position.y, position.z]}>
         <Tesseract.Page xray position={new THREE.Vector3(0, 0, -2)}>
             <>
-                <Tesseract.Link navigate={navigate} to="/api/logout" refresh>Logout</Tesseract.Link>
-                <Tesseract.Link navigate={navigate} to="/editor" refresh>Ship Editor</Tesseract.Link>
+                <Tesseract.Link navigate={navigate} to="/api/logout" viewTransition refresh>Logout</Tesseract.Link>
+                <Tesseract.Link navigate={navigate} to="/editor" viewTransition refresh>Ship Editor</Tesseract.Link>
             </>
         </Tesseract.Page>
         <torusKnotGeometry />

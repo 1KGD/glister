@@ -19,7 +19,7 @@ export const EditorCameraControlProvider = React.createContext<{
 function MainPage({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     return <Tesseract.Page xray position={new THREE.Vector3(0, 5, -5)}>
         <Arwes.Text as="div">Editor</Arwes.Text>
-        <Tesseract.Link navigate={navigate} to="/">Back</Tesseract.Link>
+        <Tesseract.Link navigate={navigate} to="/" viewTransition refresh>Back</Tesseract.Link>
     </Tesseract.Page>;
 }
 

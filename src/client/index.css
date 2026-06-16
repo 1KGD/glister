@@ -17,3 +17,8 @@ button {
     position: relative;
     z-index: 1000;
 }
+
+@view-transition {
+    navigation: auto;
+    types: slide;
+}
