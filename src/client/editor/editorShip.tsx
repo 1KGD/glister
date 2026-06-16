@@ -1,7 +1,9 @@
 import React from 'react';
+import * as Fiber from '@react-three/fiber';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
 import EditorReactor from './components/reactor';
+import { useIsSchematic } from './editor';
 
 interface IEditorComponentData {
     children: React.JSX.Element,
@@ -25,23 +27,33 @@ export function useEditorComponentContext(): IEditorComponentContext {
 }
 
 function EditorComponent({ componentId, position, children }: { componentId: number, position: THREE.Vector3 } & React.PropsWithChildren): React.JSX.Element {
+    const { components, setComponents } = React.useContext(ShipComponentsProvider);
     const [context, setContext] = React.useState<IEditorComponentContext>({ hovered: false });
+    const isSchematic = useIsSchematic();
 
     const groupRef = React.useRef<THREE.Group>(null);
 
+    Fiber.useFrame(() => {
+        if (groupRef.current) {
+            components[componentId].position = groupRef.current.position.clone();
+            setComponents(components);
+        }
+    });
+
     return <EditorComponentContext value={context}>
-        {groupRef.current && <DREI.TransformControls
+        {isSchematic ? children : <>{groupRef.current && <DREI.TransformControls
             mode="translate"
             object={groupRef}
         />}
-        <group
-            ref={groupRef}
-            position={position}
-            onPointerOver={() => setContext({ ...context, hovered: true })}
-            onPointerLeave={() => setContext({ ...context, hovered: false })}
-        >
-            {children}
-        </group>
+            <group
+                ref={groupRef}
+                position={position}
+                onPointerOver={() => setContext({ ...context, hovered: true })}
+                onPointerLeave={() => setContext({ ...context, hovered: false })}
+            >
+                {children}
+            </group>
+        </>}
     </EditorComponentContext >;
 }
 

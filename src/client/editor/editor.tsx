@@ -23,6 +23,32 @@ function MainPage({ navigate }: { navigate: Router.NavigateFunction }): React.JS
     </Tesseract.Page>;
 }
 
+const SchematicContext = React.createContext<boolean>(null);
+
+export function useIsSchematic(): boolean {
+    return React.useContext(SchematicContext);
+}
+
+function Schematic({ children }: React.PropsWithChildren): React.JSX.Element {
+    return <>
+        <mesh>
+            <planeGeometry />
+            <meshPhongMaterial>
+                <DREI.RenderTexture attach="map">
+                    <ambientLight intensity={5} />
+                    <DREI.PerspectiveCamera makeDefault position={[0, 0, 1]} />
+                    <SchematicContext value={true}>
+                        {children}
+                    </SchematicContext>
+                </DREI.RenderTexture>
+            </meshPhongMaterial>
+        </mesh>
+        <SchematicContext value={false}>
+            {children}
+        </SchematicContext>
+    </>;
+}
+
 export default function Editor(): React.JSX.Element {
     const [editorCameraControls, setEditorCameraControls] = React.useState<IEditorCameraControls>({ active: true });
     const { tesseractContext, setTesseractContext } = Tesseract.useTessractContext();
@@ -36,7 +62,9 @@ export default function Editor(): React.JSX.Element {
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
         <MainPage navigate={navigate} />
-        <EditorShip />
+        <Schematic>
+            <EditorShip />
+        </Schematic>
         <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
     </EditorCameraControlProvider>;
 }
