@@ -2,13 +2,8 @@ import React from 'react';
 import * as Fiber from '@react-three/fiber';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
-import EditorReactor from './components/reactor';
-import { useIsSchematic } from './editor';
-
-interface IEditorComponentData {
-    children: React.JSX.Element,
-    position: THREE.Vector3,
-}
+import { IEditorComponentData, useIsSchematic } from './editor';
+import { Value } from 'three/examples/jsm/inspector/ui/Values.js';
 
 const ShipComponentsProvider = React.createContext<{ components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void }>(null);
 
@@ -33,34 +28,36 @@ function EditorComponent({ componentId, position, children }: { componentId: num
 
     const groupRef = React.useRef<THREE.Group>(null);
 
-    Fiber.useFrame(() => {
-        if (groupRef.current) {
-            components[componentId].position = groupRef.current.position.clone();
-            setComponents(components);
-        }
-    });
-
     return <EditorComponentContext value={context}>
-        {isSchematic ? children : <>{groupRef.current && <DREI.TransformControls
-            mode="translate"
-            object={groupRef}
-        />}
-            <group
-                ref={groupRef}
-                position={position}
-                onPointerOver={() => setContext({ ...context, hovered: true })}
-                onPointerLeave={() => setContext({ ...context, hovered: false })}
-            >
-                {children}
-            </group>
-        </>}
+        {isSchematic ?
+            <group position={position}>{children}</group> :
+            <>
+                {groupRef.current && <DREI.TransformControls
+                    mode="translate"
+                    object={groupRef}
+                    onObjectChange={() => {
+                        if (groupRef.current) {
+                            setComponents(components.map((component, i) => {
+                                if (i === componentId) return { ...component, position: groupRef.current.position.clone() }; // Incredebly cursed but works
+                                return component;
+                            }));
+                        }
+                    }}
+                />}
+                <group
+                    ref={groupRef}
+                    position={position}
+                    onPointerOver={() => setContext({ ...context, hovered: true })}
+                    onPointerLeave={() => setContext({ ...context, hovered: false })}
+                >
+                    {children}
+                </group>
+            </>
+        }
     </EditorComponentContext >;
 }
 
-export default function EditorShip(): React.JSX.Element {
-    const [components, setComponents] = React.useState<IEditorComponentData[]>([
-        { children: <EditorReactor />, position: new THREE.Vector3 },
-    ]);
+export default function EditorShip({ components, setComponents }: { components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void }): React.JSX.Element {
     return <ShipComponentsProvider value={{ components, setComponents }}>
         {components.map((component, i) => <EditorComponent key={i} componentId={i} position={component.position}>{component.children}</EditorComponent>)}
     </ShipComponentsProvider>;

@@ -6,9 +6,15 @@ import * as Arwes from '@arwes/react';
 import EditorShip from './editorShip';
 import './editor.css';
 import * as Tesseract from 'tesseract';
+import EditorReactor from './components/reactor';
 
 export interface IEditorCameraControls {
     active: boolean
+}
+
+export interface IEditorComponentData {
+    children: React.JSX.Element,
+    position: THREE.Vector3,
 }
 
 export const EditorCameraControlProvider = React.createContext<{
@@ -36,7 +42,7 @@ function Schematic({ children }: React.PropsWithChildren): React.JSX.Element {
             <meshPhongMaterial>
                 <DREI.RenderTexture attach="map">
                     <ambientLight intensity={5} />
-                    <DREI.PerspectiveCamera makeDefault position={[0, 0, 1]} />
+                    <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
                     <SchematicContext value={true}>
                         {children}
                     </SchematicContext>
@@ -54,6 +60,10 @@ export default function Editor(): React.JSX.Element {
     const { tesseractContext, setTesseractContext } = Tesseract.useTessractContext();
     const navigate = Router.useNavigate();
 
+    const [components, setComponents] = React.useState<IEditorComponentData[]>([
+        { children: <EditorReactor />, position: new THREE.Vector3 },
+    ]);
+
     React.useEffect(() => {
         setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });
         return (): void => setTesseractContext({ ...tesseractContext, backgroundColor: "black" });
@@ -63,7 +73,7 @@ export default function Editor(): React.JSX.Element {
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
         <MainPage navigate={navigate} />
         <Schematic>
-            <EditorShip />
+            <EditorShip components={components} setComponents={setComponents} />
         </Schematic>
         <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
     </EditorCameraControlProvider>;
