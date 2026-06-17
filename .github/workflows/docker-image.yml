@@ -16,4 +16,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag mrmcscreamypant/glister-server:$(date +%s)
     - name: Push the Docker image
-      run: docker push mrmcscreamypant/glister-server:tagname
+      run: docker push mrmcscreamypant/glister-server:$(date +%s)
