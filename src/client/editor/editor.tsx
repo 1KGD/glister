@@ -6,8 +6,7 @@ import * as Arwes from '@arwes/react';
 import EditorShip from './editorShip';
 import './editor.css';
 import * as Tesseract from 'tesseract';
-import EditorReactor from './components/reactor';
-import { texture } from 'three/tsl';
+import EditorReactor from '../components/reactor';
 import PartsMenu from './partsMenu';
 
 export interface IEditorCameraControls {
@@ -18,6 +17,13 @@ export interface IEditorComponentData {
     children: React.JSX.Element,
     position: THREE.Vector3,
 }
+
+export const ShipComponentsProvider = React.createContext<{ components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void }>(null);
+
+export function useShipComponents(): { components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void } {
+    return React.useContext(ShipComponentsProvider);
+}
+
 
 export const EditorCameraControlProvider = React.createContext<{
     editorCameraControls: IEditorCameraControls,
@@ -82,16 +88,18 @@ export default function Editor(): React.JSX.Element {
     }, []);
 
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
-        <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
-        <directionalLight />
-        <MainPage navigate={navigate} />
-        <PartsMenu components={components} />
-        <Schematic visible={schematicVisible}>
-            <EditorShip components={components} setComponents={setComponents} />
-        </Schematic>
-        <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
-        <mesh onClick={() => setSchematicVisible(!schematicVisible)}>
-            <sphereGeometry args={[0.1]} />
-        </mesh>
+        <ShipComponentsProvider value={{ components, setComponents }}>
+            <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
+            <directionalLight />
+            <MainPage navigate={navigate} />
+            <PartsMenu />
+            <Schematic visible={schematicVisible}>
+                <EditorShip />
+            </Schematic>
+            <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
+            <mesh onClick={() => setSchematicVisible(!schematicVisible)}>
+                <sphereGeometry args={[0.1]} />
+            </mesh>
+        </ShipComponentsProvider>
     </EditorCameraControlProvider>;
 }

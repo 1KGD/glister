@@ -1,9 +1,9 @@
 import React from 'react';
 import * as THREE from 'three';
 import * as Fiber from '@react-three/fiber';
-import { useEditorComponentContext } from '../editorShip';
+import { useEditorComponentContext } from '../editor/editorShip';
 
-export default function EditorReactor(): React.JSX.Element {
+export default function Reactor(): React.JSX.Element {
     const context = useEditorComponentContext();
 
     const reactorRef = React.useRef<THREE.Object3D>(null);

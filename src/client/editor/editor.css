@@ -7,6 +7,7 @@
 }
 
 .parts-group-header {
+    position: sticky;
     color: white;
     padding: 6px;
 }
@@ -19,4 +20,9 @@
     position: relative;
     padding: 10px;
     margin: 10px;
+}
+
+.parts-menu {
+    position: relative;
+    padding: 32px;
 }

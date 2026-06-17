@@ -1,5 +1,5 @@
 import React from "react";
-import EditorReactor from "./components/reactor";
+import DebugStructure from "./debugStructure";
 
 export enum ComponentGroup {
     STRUCTURE = "Structures",
@@ -15,17 +15,17 @@ export default {
     STRUCTURE: [
         {
             name: "Cheap Frame",
-            render: EditorReactor
+            render: DebugStructure
         },
         {
             name: "Not-so-cheap Frame",
-            render: EditorReactor
+            render: DebugStructure
         }
     ],
     ENGINE: [
         {
             name: "Debug Engine",
-            render: EditorReactor
+            render: DebugStructure
         }
     ]
 } as { [key in keyof typeof ComponentGroup]: readonly IComponentDefinition[] };

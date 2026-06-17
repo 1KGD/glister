@@ -2,14 +2,7 @@ import React from 'react';
 import * as Fiber from '@react-three/fiber';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
-import { IEditorComponentData, useIsSchematic } from './editor';
-import { Value } from 'three/examples/jsm/inspector/ui/Values.js';
-
-const ShipComponentsProvider = React.createContext<{ components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void }>(null);
-
-export function useShipComponents(): IEditorComponentData[] {
-    return React.useContext(ShipComponentsProvider).components;
-}
+import { useIsSchematic, useShipComponents } from './editor';
 
 interface IEditorComponentContext {
     hovered: boolean
@@ -22,7 +15,7 @@ export function useEditorComponentContext(): IEditorComponentContext {
 }
 
 function EditorComponent({ componentId, position, children }: { componentId: number, position: THREE.Vector3 } & React.PropsWithChildren): React.JSX.Element {
-    const { components, setComponents } = React.useContext(ShipComponentsProvider);
+    const { components, setComponents } = useShipComponents();
     const [context, setContext] = React.useState<IEditorComponentContext>({ hovered: false });
     const isSchematic = useIsSchematic();
 
@@ -57,8 +50,10 @@ function EditorComponent({ componentId, position, children }: { componentId: num
     </EditorComponentContext >;
 }
 
-export default function EditorShip({ components, setComponents }: { components: IEditorComponentData[], setComponents: (value: IEditorComponentData[]) => void }): React.JSX.Element {
-    return <ShipComponentsProvider value={{ components, setComponents }}>
+export default function EditorShip(): React.JSX.Element {
+    const { components } = useShipComponents();
+
+    return <>
         {components.map((component, i) => <EditorComponent key={i} componentId={i} position={component.position}>{component.children}</EditorComponent>)}
-    </ShipComponentsProvider>;
+    </>;
 }
