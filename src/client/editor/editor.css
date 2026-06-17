@@ -1,0 +1,28 @@
+.editor {
+    background-color: blue;
+}
+
+.parts-group {
+    position: relative;
+}
+
+.parts-group-header {
+    position: sticky;
+    color: white;
+    padding: 6px;
+}
+
+.parts-group-header:hover {
+    color: yellowgreen;
+}
+
+.part {
+    position: relative;
+    padding: 10px;
+    margin: 10px;
+}
+
+.parts-menu {
+    position: relative;
+    padding: 32px;
+}

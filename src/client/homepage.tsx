@@ -39,7 +39,7 @@ enum Controls {
     jump = 'jump',
 }
 
-function MainGame(): React.JSX.Element {
+function MainGame({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     const [seatReservation, setSeatReservation] = React.useState<Colyseus.SeatReservation>(null);
 
     const controls = React.useMemo<DREI.KeyboardControlsEntry<Controls>[]>(() => [
@@ -55,7 +55,7 @@ function MainGame(): React.JSX.Element {
         <roomProvider.celestialSystem.RoomProvider connect={() => client.consumeSeatReservation(seatReservation)} deps={[seatReservation]}>
             <ShipRoom>
                 <DREI.KeyboardControls map={controls}>
-                    {seatReservation && <CelestialSystem />}
+                    {seatReservation && <CelestialSystem navigate={navigate} />}
                 </DREI.KeyboardControls>
             </ShipRoom>
         </roomProvider.celestialSystem.RoomProvider>
@@ -69,16 +69,14 @@ export default function Homepage(): React.JSX.Element {
     Tesseract.useModal({ title: "Loading...", body: "Logging in..." }, loading);
     if (loading) return <>{outlet}</>;
     return <>
-        {loggedIn && !outlet && <MainGame />}
-        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>
+        {loggedIn && !outlet && <MainGame navigate={navigate} />}
+        <Tesseract.Page position={new THREE.Vector3(0, 4, 12)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>
             {
                 loggedIn ?
-                    <>
-                        <Tesseract.Link navigate={navigate} to="/api/logout" refresh disabled={!!outlet}>logout</Tesseract.Link>
-                    </> :
+                    null :
                     <>
                         <Tesseract.Link navigate={navigate} to="/login" disabled={!!outlet}>Login</Tesseract.Link><br />
                         <Tesseract.Link navigate={navigate} to="/createAccount" disabled={!!outlet}>Create Account</Tesseract.Link>

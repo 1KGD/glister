@@ -61,8 +61,8 @@ function App(): React.JSX.Element {
                                         <Router.Route path="error" element={<>Login Error</>} />
                                     </Router.Route>
                                     <Router.Route path="createAccount" element={<CreateAccountPage />} />
-                                    <Router.Route path="editor" element={<Editor />} />
                                 </Router.Route>
+                                <Router.Route path="editor" element={<Editor />} />
                             </Router.Routes>
                         </Router.BrowserRouter>
                     </Tesseract.Wrapper>
