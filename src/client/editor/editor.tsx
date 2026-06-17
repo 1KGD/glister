@@ -7,6 +7,8 @@ import EditorShip from './editorShip';
 import './editor.css';
 import * as Tesseract from 'tesseract';
 import EditorReactor from './components/reactor';
+import { texture } from 'three/tsl';
+import PartsMenu from './partsMenu';
 
 export interface IEditorCameraControls {
     active: boolean
@@ -35,23 +37,28 @@ export function useIsSchematic(): boolean {
     return React.useContext(SchematicContext);
 }
 
-function Schematic({ children }: React.PropsWithChildren): React.JSX.Element {
+function Schematic({ visible, children }: { visible?: boolean } & React.PropsWithChildren): React.JSX.Element {
+    const textureRef = React.useRef<THREE.Texture>(null);
+
     return <>
-        <DREI.Hud>
+        {visible && <DREI.Hud>
             <DREI.PerspectiveCamera makeDefault />
-            <mesh position={[0.75, 0.5, -2]}>
+            <mesh position={[0, 0, -1.5]} >
                 <planeGeometry />
-                <meshBasicMaterial>
-                    <DREI.RenderTexture attach="map" frames={1}>
-                        <ambientLight intensity={5} />
-                        <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                        <SchematicContext value={true}>
-                            {children}
-                        </SchematicContext>
-                    </DREI.RenderTexture>
-                </meshBasicMaterial>
+                <meshBasicMaterial color="white" />
+                <DREI.Decal>
+                    <meshBasicMaterial color="blue" transparent>
+                        <DREI.RenderTexture ref={textureRef} attach="map" frames={1}>
+                            <ambientLight intensity={5} />
+                            <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                            <SchematicContext value={true}>
+                                {children}
+                            </SchematicContext>
+                        </DREI.RenderTexture>
+                    </meshBasicMaterial>
+                </DREI.Decal>
             </mesh>
-        </DREI.Hud>
+        </DREI.Hud>}
         <SchematicContext value={false}>
             {children}
         </SchematicContext>
@@ -67,6 +74,8 @@ export default function Editor(): React.JSX.Element {
         { children: <EditorReactor />, position: new THREE.Vector3 },
     ]);
 
+    const [schematicVisible, setSchematicVisible] = React.useState<boolean>(false);
+
     React.useEffect(() => {
         setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });
         return (): void => setTesseractContext({ ...tesseractContext, backgroundColor: "black" });
@@ -76,9 +85,13 @@ export default function Editor(): React.JSX.Element {
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
         <directionalLight />
         <MainPage navigate={navigate} />
-        <Schematic>
+        <PartsMenu components={components}/>
+        <Schematic visible={schematicVisible}>
             <EditorShip components={components} setComponents={setComponents} />
         </Schematic>
         <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
+        <mesh onClick={() => setSchematicVisible(!schematicVisible)}>
+            <sphereGeometry args={[0.1]} />
+        </mesh>
     </EditorCameraControlProvider>;
 }

@@ -1,3 +1,12 @@
 .editor {
     background-color: blue;
 }
+
+.parts-group {
+    position: relative;
+}
+
+.part {
+    position: relative;
+    padding: 10px;
+}
