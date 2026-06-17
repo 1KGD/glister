@@ -9,7 +9,7 @@ export default function Player({ name, position, isLocal }: { name: string, posi
     return <group position={[position.x, position.y, position.z]}>
         {isLocal && <>
             <DREI.PerspectiveCamera ref={setCameraRef} makeDefault far={100000} />
-            {cameraRef && <DREI.CameraControls camera={cameraRef} />}
+            {cameraRef && <DREI.OrbitControls makeDefault />}
         </>}
         <mesh scale={0.4}>
             <torusKnotGeometry />

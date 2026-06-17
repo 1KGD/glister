@@ -2,19 +2,30 @@ import React from "react";
 import EditorReactor from "./components/reactor";
 
 export enum ComponentGroup {
-    STRUCTURE = "Structure"
+    STRUCTURE = "Structures",
+    ENGINE = "Engines",
 }
 
 export interface IComponentDefinition {
-    name: string,
-    render: () => React.JSX.Element,
+    readonly name: string,
+    readonly render: () => React.JSX.Element,
 }
 
 export default {
     STRUCTURE: [
         {
-            name: "Debug Structure",
+            name: "Cheap Frame",
+            render: EditorReactor
+        },
+        {
+            name: "Not-so-cheap Frame",
+            render: EditorReactor
+        }
+    ],
+    ENGINE: [
+        {
+            name: "Debug Engine",
             render: EditorReactor
         }
     ]
-} as { [key in keyof typeof ComponentGroup]: IComponentDefinition[] };
+} as { [key in keyof typeof ComponentGroup]: readonly IComponentDefinition[] };

@@ -85,7 +85,7 @@ export default function Editor(): React.JSX.Element {
         <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
         <directionalLight />
         <MainPage navigate={navigate} />
-        <PartsMenu components={components}/>
+        <PartsMenu components={components} />
         <Schematic visible={schematicVisible}>
             <EditorShip components={components} setComponents={setComponents} />
         </Schematic>

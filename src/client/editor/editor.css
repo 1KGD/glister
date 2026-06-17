@@ -6,7 +6,17 @@
     position: relative;
 }
 
+.parts-group-header {
+    color: white;
+    padding: 6px;
+}
+
+.parts-group-header:hover {
+    color: yellowgreen;
+}
+
 .part {
     position: relative;
     padding: 10px;
+    margin: 10px;
 }
