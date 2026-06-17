@@ -14,6 +14,6 @@ jobs:
     - name: Fetch Submodules
       run: git submodule init && git submodule update
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag mrmcscreamypant/glister-server:$(date +%s)
+      run: docker build . --file Dockerfile --tag mrmcscreamypant/glister-server:latest
     - name: Push the Docker image
-      run: docker push mrmcscreamypant/glister-server:$(date +%s)
+      run: docker push mrmcscreamypant/glister-server:latest
