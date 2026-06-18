@@ -47,10 +47,12 @@ export default class CelestialSystem {
 }
 
 export async function createCelestialSystems(): Promise<void> {
-    while (await ormDataSource.manager.count(CelestialSystem) < systemCount) {
+    let count = await ormDataSource.manager.count(CelestialSystem);
+    while (count < systemCount) {
         const system = new CelestialSystem;
         await ormDataSource.manager.save(system);
         await system.populatePlanets();
-        console.log(system);
+        count = await ormDataSource.manager.count(CelestialSystem)
+        console.log(`Populating Systems: ${Math.round(count/systemCount)}%`);
     }
 }
