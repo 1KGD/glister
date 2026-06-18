@@ -12,6 +12,8 @@
 
     margin: auto;
     padding: 20px;
+
+    overflow: clip;
 }
 
 .schematic-view {

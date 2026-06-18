@@ -51,8 +51,8 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
             <div className="schematic" style={{ pointerEvents: visible ? "all" : "none" }}>
                 <Arwes.Animator active={visible}>
                     <Arwes.FrameKranox animated />
-                    <Arwes.Text as="h1">Schematic</Arwes.Text>
-                    {visible && <Fiber.Canvas linear className="schematic-view">
+                    <Arwes.Text as="h1" manager="decipher">Schematic</Arwes.Text>
+                    {visible && <Fiber.Canvas linear flat className="schematic-view">
                         <ShipComponentsProvider value={components}>
                             <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
                             <ambientLight intensity={5} color="white" />
@@ -72,7 +72,6 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
 
 export default function Editor(): React.JSX.Element {
     const [editorCameraControls, setEditorCameraControls] = React.useState<IEditorCameraControls>({ active: true });
-    const { tesseractContext, setTesseractContext } = Tesseract.useTessractContext();
     const navigate = Router.useNavigate();
 
     const [components, setComponents] = React.useState<IEditorComponentData[]>([
@@ -80,11 +79,6 @@ export default function Editor(): React.JSX.Element {
     ]);
 
     const [schematicVisible, setSchematicVisible] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-        setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });
-        return (): void => setTesseractContext({ ...tesseractContext, backgroundColor: "black" });
-    }, []);
 
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
         <ShipComponentsProvider value={{ components, setComponents }}>

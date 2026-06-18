@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Fiber from '@react-three/fiber';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
 import { useIsSchematic, useShipComponents } from './editor';

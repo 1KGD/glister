@@ -37,7 +37,7 @@ function CreateAccountPage(): React.JSX.Element {
 
 function App(): React.JSX.Element {
     return <>
-        <Arwes.AnimatorGeneralProvider>
+        <Arwes.AnimatorGeneralProvider duration={{ enter: 5, exit: 5, stagger: 5, limit: 5 }} disabled={false}>
             <Arwes.BleepsProvider master={{ volume: 0.5 }} bleeps={{
                 intro: {
                     sources: [
@@ -50,23 +50,21 @@ function App(): React.JSX.Element {
                     ]
                 }
             }}>
-                <Arwes.Animator combine manager="stagger" active>
-                    <Tesseract.Wrapper>
-                        {import.meta.env.DEV && <DREI.Stats />}
-                        <Router.BrowserRouter>
-                            <Router.Routes>
-                                <Router.Route path="/" element={<Homepage />}>
-                                    <Router.Route path="login">
-                                        <Router.Route index element={<LoginPage />} />
-                                        <Router.Route path="error" element={<>Login Error</>} />
-                                    </Router.Route>
-                                    <Router.Route path="createAccount" element={<CreateAccountPage />} />
+                <Tesseract.Wrapper>
+                    {import.meta.env.DEV && <DREI.Stats />}
+                    <Router.BrowserRouter>
+                        <Router.Routes>
+                            <Router.Route path="/" element={<Homepage />}>
+                                <Router.Route path="login">
+                                    <Router.Route index element={<LoginPage />} />
+                                    <Router.Route path="error" element={<>Login Error</>} />
                                 </Router.Route>
-                                <Router.Route path="editor" element={<Editor />} />
-                            </Router.Routes>
-                        </Router.BrowserRouter>
-                    </Tesseract.Wrapper>
-                </Arwes.Animator>
+                                <Router.Route path="createAccount" element={<CreateAccountPage />} />
+                            </Router.Route>
+                            <Router.Route path="editor" element={<Editor />} />
+                        </Router.Routes>
+                    </Router.BrowserRouter>
+                </Tesseract.Wrapper>
             </Arwes.BleepsProvider>
         </Arwes.AnimatorGeneralProvider>
     </>;
