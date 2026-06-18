@@ -41,3 +41,25 @@
     padding: 32px;
     max-width: 200px;
 }
+
+.editor-header {
+    position: relative;
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+    height: min-content;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.editor-button {
+    position: relative;
+    width: max-content;
+    height: min-content;
+    padding: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -46,22 +46,22 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
     const components = useShipComponents();
 
     return <>
-        {visible && <Tesseract.Overlay>
-            <div className="schematic">
-                <Arwes.Animator>
+        <Tesseract.Overlay>
+            <div className="schematic" style={{ pointerEvents: visible ? "all" : "none" }}>
+                <Arwes.Animator active={visible}>
                     <Arwes.FrameKranox animated />
-                    <DREI.View className="schematic-view">
+                    {visible && <DREI.View className="schematic-view">
                         <ShipComponentsProvider value={components}>
                             <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                            <ambientLight intensity={5} color="green"/>
+                            <ambientLight intensity={5} color="green" />
                             <SchematicContext value={true}>
                                 {children}
                             </SchematicContext>
                         </ShipComponentsProvider>
-                    </DREI.View>
+                    </DREI.View>}
                 </Arwes.Animator>
             </div>
-        </Tesseract.Overlay>}
+        </Tesseract.Overlay>
         <SchematicContext value={false}>
             {children}
         </SchematicContext>
@@ -77,7 +77,7 @@ export default function Editor(): React.JSX.Element {
         { children: <EditorReactor />, position: new THREE.Vector3 },
     ]);
 
-    const [schematicVisible, setSchematicVisible] = React.useState<boolean>(true);
+    const [schematicVisible, setSchematicVisible] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });
@@ -93,10 +93,17 @@ export default function Editor(): React.JSX.Element {
             <Schematic visible={schematicVisible}>
                 <EditorShip />
             </Schematic>
+            <Tesseract.Overlay>
+                <div className="editor-header">
+                    <Arwes.FrameUnderline animated />
+                    <Arwes.Text as="h2">Editor</Arwes.Text>
+                    <div onClick={() => setSchematicVisible(!schematicVisible)} className="editor-button">
+                        <Arwes.FrameNefrex />
+                        Toggle Schematic
+                    </div>
+                </div>
+            </Tesseract.Overlay>
             <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
-            <mesh onClick={() => setSchematicVisible(!schematicVisible)}>
-                <sphereGeometry args={[0.1]} />
-            </mesh>
         </ShipComponentsProvider>
     </EditorCameraControlProvider>;
 }
