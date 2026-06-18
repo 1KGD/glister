@@ -51,5 +51,6 @@ export async function createCelestialSystems(): Promise<void> {
         const system = new CelestialSystem;
         await ormDataSource.manager.save(system);
         await system.populatePlanets();
+        console.log(system);
     }
 }
