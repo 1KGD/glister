@@ -25,9 +25,10 @@ function Part({ component, active }: { component: IComponentDefinition, active: 
 
     return <div className="part" onClick={() => setComponents(components.concat([{ children: React.createElement(component.render), position: new THREE.Vector3 }]))}>
         <Arwes.FrameUnderline animated />
-        <Arwes.Text>{component.name}</Arwes.Text>
+        <Arwes.Text manager="decipher">{component.name}</Arwes.Text>
         {active && <DREI.View style={{ width: "100%", height: "100px" }}>
             <directionalLight />
+            <ambientLight />
             <DREI.PerspectiveCamera makeDefault position={[0, 0, 2]} />
             <PartPreview>
                 {React.createElement(component.render)}
@@ -43,7 +44,6 @@ function PartsGroup({ name, components }: { name: string, components: readonly I
         <Arwes.FrameHeader animated />
         <Arwes.Text className="parts-group-header" as="h2" onClick={() => setCollapsed(!collapsed)}>{name}</Arwes.Text>
         <Arwes.Animator active={!collapsed}>
-            <Arwes.Text>{JSON.stringify(collapsed)}</Arwes.Text>
             {components.map(component => <Part key={component.name} component={component} active={!collapsed} />)}
         </Arwes.Animator>
     </div>;

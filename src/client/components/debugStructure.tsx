@@ -1,7 +1,8 @@
 import React from 'react';
 
 export default function DebugStructure(): React.JSX.Element {
-    return <line>
+    return <mesh castShadow receiveShadow>
         <boxGeometry />
-    </line>;
+        <meshPhysicalMaterial metalness={0.6} roughness={0.2} />
+    </mesh>;
 }

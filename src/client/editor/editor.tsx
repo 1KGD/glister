@@ -24,7 +24,6 @@ export function useShipComponents(): { components: IEditorComponentData[], setCo
     return React.useContext(ShipComponentsProvider);
 }
 
-
 export const EditorCameraControlProvider = React.createContext<{
     editorCameraControls: IEditorCameraControls,
     setEditorCameraControls: (value: IEditorCameraControls) => void
@@ -44,27 +43,25 @@ export function useIsSchematic(): boolean {
 }
 
 function Schematic({ visible, children }: { visible?: boolean } & React.PropsWithChildren): React.JSX.Element {
-    const textureRef = React.useRef<THREE.Texture>(null);
+    const components = useShipComponents();
 
     return <>
-        {visible && <DREI.Hud>
-            <DREI.PerspectiveCamera makeDefault />
-            <mesh position={[0, 0, -1.5]} >
-                <planeGeometry />
-                <meshBasicMaterial color="white" />
-                <DREI.Decal>
-                    <meshBasicMaterial color="blue" transparent>
-                        <DREI.RenderTexture ref={textureRef} attach="map" frames={1}>
-                            <ambientLight intensity={5} />
+        {visible && <Tesseract.Overlay>
+            <div className="schematic">
+                <Arwes.Animator>
+                    <Arwes.FrameKranox animated />
+                    <DREI.View className="schematic-view">
+                        <ShipComponentsProvider value={components}>
                             <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                            <ambientLight intensity={5} color="green"/>
                             <SchematicContext value={true}>
                                 {children}
                             </SchematicContext>
-                        </DREI.RenderTexture>
-                    </meshBasicMaterial>
-                </DREI.Decal>
-            </mesh>
-        </DREI.Hud>}
+                        </ShipComponentsProvider>
+                    </DREI.View>
+                </Arwes.Animator>
+            </div>
+        </Tesseract.Overlay>}
         <SchematicContext value={false}>
             {children}
         </SchematicContext>
@@ -80,7 +77,7 @@ export default function Editor(): React.JSX.Element {
         { children: <EditorReactor />, position: new THREE.Vector3 },
     ]);
 
-    const [schematicVisible, setSchematicVisible] = React.useState<boolean>(false);
+    const [schematicVisible, setSchematicVisible] = React.useState<boolean>(true);
 
     React.useEffect(() => {
         setTesseractContext({ ...tesseractContext, backgroundColor: "blue" });

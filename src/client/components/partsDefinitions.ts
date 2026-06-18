@@ -1,5 +1,6 @@
 import React from "react";
 import DebugStructure from "./debugStructure";
+import Teapot from "./teapot";
 
 export enum ComponentGroup {
     STRUCTURE = "Structures",
@@ -24,8 +25,8 @@ export default {
     ],
     ENGINE: [
         {
-            name: "Debug Engine",
-            render: DebugStructure
+            name: "Teapot Engine",
+            render: Teapot
         }
     ]
 } as { [key in keyof typeof ComponentGroup]: readonly IComponentDefinition[] };

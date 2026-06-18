@@ -15,8 +15,8 @@ export default function Reactor(): React.JSX.Element {
     return <line>
         <boxGeometry />
         <meshPhysicalMaterial />
-        <pointLight color="green" />
-        <mesh ref={reactorRef} scale={0.22}>
+        <pointLight color="green" castShadow />
+        <mesh ref={reactorRef} scale={0.22} castShadow receiveShadow>
             <torusKnotGeometry />
             <meshPhysicalMaterial />
         </mesh>
