@@ -58,7 +58,6 @@
         "konva": "^10.3.0",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
-        "react-konva": "^19.2.5",
         "react-router": "^7.18.0",
         "reflect-metadata": "^0.2.2",
         "tesseract": "link:tesseract",
