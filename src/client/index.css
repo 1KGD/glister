@@ -22,3 +22,8 @@ button {
     navigation: auto;
     types: slide;
 }
+
+div {
+    user-select: none;
+    -moz-user-select: none;
+}

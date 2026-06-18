@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Fiber from '@react-three/fiber';
 import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
@@ -50,15 +51,16 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
             <div className="schematic" style={{ pointerEvents: visible ? "all" : "none" }}>
                 <Arwes.Animator active={visible}>
                     <Arwes.FrameKranox animated />
-                    {visible && <DREI.View className="schematic-view">
+                    <Arwes.Text as="h1">Schematic</Arwes.Text>
+                    {visible && <Fiber.Canvas linear className="schematic-view">
                         <ShipComponentsProvider value={components}>
                             <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                            <ambientLight intensity={5} color="green" />
+                            <ambientLight intensity={5} color="white" />
                             <SchematicContext value={true}>
                                 {children}
                             </SchematicContext>
                         </ShipComponentsProvider>
-                    </DREI.View>}
+                    </Fiber.Canvas>}
                 </Arwes.Animator>
             </div>
         </Tesseract.Overlay>

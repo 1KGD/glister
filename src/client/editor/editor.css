@@ -5,10 +5,13 @@
 .schematic {
     position: relative;
 
-    width: 50vw;
-    height: 50vh;
+    width: 75vw;
+    height: 75vh;
+
+    --arwes-frames-bg-color: rgba(0, 128, 0, 0.8);
 
     margin: auto;
+    padding: 20px;
 }
 
 .schematic-view {
