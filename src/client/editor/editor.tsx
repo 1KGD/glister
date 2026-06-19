@@ -4,6 +4,7 @@ import * as Router from 'react-router';
 import * as THREE from 'three';
 import * as DREI from '@react-three/drei';
 import * as Arwes from '@arwes/react';
+import * as ArwesEffects from '@arwes/react-effects';
 import EditorShip from './editorShip';
 import './editor.css';
 import * as Tesseract from 'tesseract';
@@ -51,16 +52,19 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
             <div className="schematic" style={{ pointerEvents: visible ? "all" : "none" }}>
                 <Arwes.Animator active={visible}>
                     <Arwes.FrameKranox animated />
-                    <Arwes.Text as="h1" manager="decipher">Schematic</Arwes.Text>
-                    {visible && <Fiber.Canvas linear flat className="schematic-view">
-                        <ShipComponentsProvider value={components}>
-                            <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
-                            <ambientLight intensity={5} color="white" />
-                            <SchematicContext value={true}>
-                                {children}
-                            </SchematicContext>
-                        </ShipComponentsProvider>
-                    </Fiber.Canvas>}
+                    {visible && <>
+                        <ArwesEffects.Illuminator color="hsl(20 50% 50% / 20%)" style={{ clipPath: Arwes.styleFrameClipKranox() }} />
+                        <Arwes.Text as="h1" manager="decipher">Schematic</Arwes.Text>
+                        <Fiber.Canvas linear flat className="schematic-view" style={{ clipPath: Arwes.styleFrameClipKranox() }}>
+                            <ShipComponentsProvider value={components}>
+                                <DREI.PerspectiveCamera makeDefault position={[0, 0, 5]} />
+                                <ambientLight intensity={5} color="white" />
+                                <SchematicContext value={true}>
+                                    {children}
+                                </SchematicContext>
+                            </ShipComponentsProvider>
+                        </Fiber.Canvas>
+                    </>}
                 </Arwes.Animator>
             </div>
         </Tesseract.Overlay>
@@ -82,7 +86,8 @@ export default function Editor(): React.JSX.Element {
 
     return <EditorCameraControlProvider value={{ editorCameraControls, setEditorCameraControls }}>
         <ShipComponentsProvider value={{ components, setComponents }}>
-            <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} />
+            <DREI.Stars />
+            <DREI.OrbitControls makeDefault enabled={editorCameraControls.active} maxDistance={100} />
             <directionalLight />
             <MainPage navigate={navigate} />
             <PartsMenu />

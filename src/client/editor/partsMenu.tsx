@@ -40,7 +40,7 @@ function Part({ component, active }: { component: IComponentDefinition, active: 
 function PartsGroup({ name, components }: { name: string, components: readonly IComponentDefinition[] }): React.JSX.Element {
     const [collapsed, setCollapsed] = React.useState<boolean>(true);
 
-    return <div className="parts-group">
+    return <div className="parts-group" style={{ maxHeight: collapsed ? "50px" : "none" }}>
         <Arwes.FrameHeader animated />
         <Arwes.Text className="parts-group-header" as="h2" onClick={() => setCollapsed(!collapsed)}>{name}</Arwes.Text>
         <Arwes.Animator active={!collapsed}>

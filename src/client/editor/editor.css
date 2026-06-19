@@ -8,7 +8,7 @@
     width: 75vw;
     height: 75vh;
 
-    --arwes-frames-bg-color: rgba(0, 128, 0, 0.8);
+    --arwes-frames-bg-color: rgba(0, 85, 0, 0.85);
 
     margin: auto;
     padding: 20px;
@@ -26,7 +26,6 @@
 }
 
 .parts-group-header {
-    position: sticky;
     color: white;
     padding: 6px;
 }
@@ -41,10 +40,18 @@
     margin: 10px;
 }
 
+.part:hover {
+    --arwes-frames-bg-color: rgba(0, 85, 0, 0.1);
+}
+
 .parts-menu {
     position: relative;
-    padding: 32px;
-    max-width: 200px;
+    padding: 10px;
+    width: max-content;
+
+    height: max-content;
+
+    margin: 10px;
 }
 
 .editor-header {

@@ -10,7 +10,9 @@ interface IEditorComponentContext {
 const EditorComponentContext = React.createContext<IEditorComponentContext>(null);
 
 export function useEditorComponentContext(): IEditorComponentContext {
-    return React.useContext(EditorComponentContext);
+    return React.useContext(EditorComponentContext) || {
+        hovered: false
+    };
 }
 
 function EditorComponent({ componentId, position, children }: { componentId: number, position: THREE.Vector3 } & React.PropsWithChildren): React.JSX.Element {
