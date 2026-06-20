@@ -86,3 +86,19 @@
 .part-frame [data-name=line] {
     color: var(--secondary-color-3);
 }
+
+.editor-header-frame [data-name=bg] {
+    color: var(--primary-color-3-transparent);
+}
+
+.editor-header-frame [data-name=line] {
+    color: var(--primary-color-5)
+}
+
+.schematic-frame [data-name=bg] {
+    color: var(--secondary-color-5-transparent);
+}
+
+.schematic-frame [data-name=line] {
+    color: var(--secondary-color-5);
+}

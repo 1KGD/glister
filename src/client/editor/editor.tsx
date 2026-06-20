@@ -12,6 +12,7 @@ import EditorReactor from '../components/reactor';
 import PartsMenu from './partsMenu';
 import Link from '../widgets/link';
 import Button from '../widgets/button';
+import { theme } from '../style';
 
 export interface IEditorCameraControls {
     active: boolean
@@ -53,9 +54,9 @@ function Schematic({ visible, children }: { visible?: boolean } & React.PropsWit
         <Tesseract.Overlay>
             <div className="schematic" style={{ pointerEvents: visible ? "all" : "none" }}>
                 <Arwes.Animator active={visible}>
-                    <Arwes.FrameKranox animated />
+                    <Arwes.FrameKranox animated className="schematic-frame" />
                     {visible && <>
-                        <ArwesEffects.Illuminator color="hsl(20 50% 50% / 20%)" style={{ clipPath: Arwes.styleFrameClipKranox() }} />
+                        <ArwesEffects.Illuminator color={theme.colors.secondary(3, { alpha: 0.04 })} style={{ clipPath: Arwes.styleFrameClipKranox() }} />
                         <Arwes.Text as="h1" manager="decipher">Schematic</Arwes.Text>
                         <Fiber.Canvas linear flat className="schematic-view" style={{ clipPath: Arwes.styleFrameClipKranox() }}>
                             <ShipComponentsProvider value={components}>
@@ -93,18 +94,18 @@ export default function Editor(): React.JSX.Element {
             <directionalLight />
             <MainPage navigate={navigate} />
             <PartsMenu />
-            <Schematic visible={schematicVisible}>
-                <EditorShip />
-            </Schematic>
             <Tesseract.Overlay>
                 <div className="editor-header">
-                    <Arwes.FrameUnderline animated />
+                    <Arwes.FrameUnderline animated className="editor-header-frame" />
                     <Arwes.Text as="h2">Editor</Arwes.Text>
                     <Button onClick={() => setSchematicVisible(!schematicVisible)}>
                         Toggle Schematic
                     </Button>
                 </div>
             </Tesseract.Overlay>
+            <Schematic visible={schematicVisible}>
+                <EditorShip />
+            </Schematic>
             <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
         </ShipComponentsProvider>
     </EditorCameraControlProvider>;

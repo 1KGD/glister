@@ -5,8 +5,8 @@ export const theme = {
     spacen: Arwes.createThemeMultiplier((index) => index * 4),
     colors: {
         background: 'hsla(90, 100%, 3%)',
-        primary: Arwes.createThemeColor((i) => [90, 100, 100 - i * 10]),
-        secondary: Arwes.createThemeColor((i) => [60, 100, 100 - i * 10])
+        primary: Arwes.createThemeColor((i) => [0, 100, 100 - i * 10]),
+        secondary: Arwes.createThemeColor((i) => [30, 100, 100 - i * 10])
     }
 };
 
