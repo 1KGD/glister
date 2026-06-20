@@ -6,7 +6,7 @@ export default function Button({ children, as, ...props }: React.HTMLProps<HTMLD
     const frameRef = React.useRef<SVGSVGElement>(null);
     Arwes.useFrameAssembler(frameRef);
     return <Arwes.Animated as="button" className="button" {...props}>
-        <Arwes.FrameNero elementRef={frameRef} />
-        {children}
+        <Arwes.FrameUnderline elementRef={frameRef} className="button-frame" />
+        <div className="button-content">{children}</div>
     </Arwes.Animated>;
 }

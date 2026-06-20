@@ -64,7 +64,7 @@ function MainGame({ navigate }: { navigate: Router.NavigateFunction }): React.JS
     </roomProvider.staging.RoomProvider>;
 }
 
-const pageFrameSettings: FrameSettings = {
+const pageFrameSettings: Arwes.FrameSettings = {
     elements: [
         {
             name: 'line',
@@ -103,21 +103,23 @@ const pageFrameSettings: FrameSettings = {
             ]
         }
     ]
-}
+};
 
 export default function Homepage(): React.JSX.Element {
     const navigate = Router.useNavigate();
     const { loading, loggedIn, account } = useAccount();
     const outlet = Router.useOutlet({ loading, loggedIn, account });
     Tesseract.useModal({ title: "Loading...", body: "Logging in..." }, loading);
+    const frameRef = React.useRef<SVGSVGElement>(null);
+    Arwes.useFrameAssembler(frameRef);
     if (loading) return <>{outlet}</>;
+    if (loggedIn) return <MainGame navigate={navigate} />;
     return <>
         <Tesseract.Overlay>
-            <div style={{ position: "absolute", width: "100vw", height: "100vh" }}>
-                <Arwes.FrameBase settings={pageFrameSettings} />
+            <div style={{ position: "absolute", width: "100vw", height: "100vh", pointerEvents: "none" }}>
+                <Arwes.FrameBase elementRef={frameRef} className="page-frame" settings={pageFrameSettings} />
             </div>
         </Tesseract.Overlay>
-        {loggedIn && !outlet && <MainGame navigate={navigate} />}
         <Tesseract.Page position={new THREE.Vector3(0, 4, 0)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}

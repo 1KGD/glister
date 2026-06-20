@@ -8,7 +8,6 @@ import { ShipComponentsProvider, useShipComponents } from './editor';
 import partsDefinitions, { ComponentGroup, IComponentDefinition } from '../components/partsDefinitions';
 
 function PartPreview({ children }: React.PropsWithChildren): React.JSX.Element {
-
     const groupRef = React.useRef<THREE.Group>(null);
 
     Fiber.useFrame((_state, delta) => {
@@ -54,7 +53,7 @@ export default function PartsMenu(): React.JSX.Element {
     return <Tesseract.Overlay>
         <ShipComponentsProvider value={components}>
             <div className="parts-menu">
-                <Arwes.FrameLines animated />
+                <Arwes.FrameLines animated className="parts-menu-frame" />
                 <Arwes.Text as="h1">Parts</Arwes.Text>
                 {
                     Object.keys(partsDefinitions)

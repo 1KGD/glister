@@ -8,8 +8,6 @@
     width: 75vw;
     height: 75vh;
 
-    --arwes-frames-bg-color: rgba(0, 85, 0, 0.85);
-
     margin: auto;
     padding: 20px;
 
@@ -40,10 +38,6 @@
     margin: 10px;
 }
 
-.part:hover {
-    --arwes-frames-bg-color: rgba(0, 85, 0, 0.1);
-}
-
 .parts-menu {
     position: relative;
     padding: 10px;
@@ -65,19 +59,14 @@
     flex-direction: row;
 }
 
-.editor-button {
-    position: relative;
-    width: max-content;
-    height: min-content;
-    padding: 10px;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 10px;
-    margin-right: 10px;
+.parts-menu-frame [data-name=bg] {
+    color: var(--primary-color-3-transparent)
 }
 
-.editor-button:hover {
-    --arwes-frames-bg-color: rgba(255, 255, 0, 0.38);
-    --arwes-frames-deco-color: red;
-    --arwes-frames-line-color: rgba(255, 255, 0, 0.843);
+.parts-menu-frame [data-name=line] {
+    color: var(--primary-color-5);
+}
+
+.parts-menu-frame [data-name=deco] {
+    color: var(--secondary-color-5);
 }

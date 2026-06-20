@@ -27,3 +27,19 @@ div {
     user-select: none;
     -moz-user-select: none;
 }
+
+.modal-frame [data-name=bg] {
+    color: var(--secondary-color-3-transparent);
+}
+
+.modal-frame [data-name=line] {
+    color: var(--secondary-color-5);
+}
+
+.page-frame [data-name=bg] {
+    color: var(--primary-color-3-transparent);
+}
+
+.page-frame [data-name=line] {
+    color: var(--primary-color-5);
+}

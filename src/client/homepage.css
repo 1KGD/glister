@@ -1,3 +1,5 @@
-.homepage {
-    
+.page-frame [data-name=line] {
+    stroke: var(--primary-color-5);
+    stroke-width: 1;
+    fill: none;
 }

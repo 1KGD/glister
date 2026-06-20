@@ -4,14 +4,14 @@ import * as DREI from '@react-three/drei';
 import { createRoot } from 'react-dom/client';
 import * as THREE from 'three';
 if (import.meta.env.DEV) await import("@colyseus/sdk/debug");
-import './colors.css';
-import './index.css';
 import * as Router from 'react-router';
 import Homepage from './homepage';
 import * as Tesseract from 'tesseract';
 import { type AccountClientData } from '../server/account';
 import Editor from './editor/editor';
 import config from '../../config';
+import './index.css';
+import style from './style';
 
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
@@ -37,7 +37,7 @@ function CreateAccountPage(): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
-    return <>
+    return <div style={style as { [key: string]: string }}>
         <Arwes.AnimatorGeneralProvider duration={{ enter: 5, exit: 5, stagger: 5, limit: 5 }} disabled={false}>
             <Arwes.BleepsProvider master={{ volume: 0.5 }} bleeps={{
                 intro: {
@@ -68,7 +68,7 @@ function App(): React.JSX.Element {
                 </Tesseract.Wrapper>
             </Arwes.BleepsProvider>
         </Arwes.AnimatorGeneralProvider>
-    </>;
+    </div>;
 }
 
 setTimeout(() => createRoot(document.getElementById("root")).render(<App />), config.dev ? 0 : 2000);

@@ -10,6 +10,8 @@ import './editor.css';
 import * as Tesseract from 'tesseract';
 import EditorReactor from '../components/reactor';
 import PartsMenu from './partsMenu';
+import Link from '../widgets/link';
+import Button from '../widgets/button';
 
 export interface IEditorCameraControls {
     active: boolean
@@ -34,7 +36,7 @@ export const EditorCameraControlProvider = React.createContext<{
 function MainPage({ navigate }: { navigate: Router.NavigateFunction }): React.JSX.Element {
     return <Tesseract.Page xray position={new THREE.Vector3(0, 5, -5)}>
         <Arwes.Text as="div">Editor</Arwes.Text>
-        <Tesseract.Link navigate={navigate} to="/" viewTransition refresh>Back</Tesseract.Link>
+        <Link navigate={navigate} to="/" viewTransition>Back</Link>
     </Tesseract.Page>;
 }
 
@@ -98,10 +100,9 @@ export default function Editor(): React.JSX.Element {
                 <div className="editor-header">
                     <Arwes.FrameUnderline animated />
                     <Arwes.Text as="h2">Editor</Arwes.Text>
-                    <div onClick={() => setSchematicVisible(!schematicVisible)} className="editor-button">
-                        <Arwes.FrameNefrex />
+                    <Button onClick={() => setSchematicVisible(!schematicVisible)}>
                         Toggle Schematic
-                    </div>
+                    </Button>
                 </div>
             </Tesseract.Overlay>
             <DREI.Grid infiniteGrid side={THREE.DoubleSide} sectionColor="white" cellColor="lightgrey" />
