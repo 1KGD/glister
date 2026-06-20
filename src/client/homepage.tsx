@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Router from 'react-router';
 import * as THREE from 'three';
+import * as Arwes from '@arwes/react';
 import * as DREI from '@react-three/drei';
 import { useAccount } from './dataProvider';
 import './homepage.css';
@@ -9,6 +10,7 @@ import * as Colyseus from '@colyseus/sdk';
 import type server from '../server/index';
 import roomProvider from './roomProvider';
 import CelestialSystem from './celestialSystem';
+import Link from './widgets/link';
 
 const client = new Colyseus.Client<typeof server>("/api");
 
@@ -62,6 +64,47 @@ function MainGame({ navigate }: { navigate: Router.NavigateFunction }): React.JS
     </roomProvider.staging.RoomProvider>;
 }
 
+const pageFrameSettings: FrameSettings = {
+    elements: [
+        {
+            name: 'line',
+            path: [
+                ['M', 10, 10],
+                ['h', '7%'],
+                ['l', 10, 10],
+                ['h', '7%']
+            ]
+        },
+        {
+            name: 'line',
+            path: [
+                ['M', '100%-10', 10],
+                ['h', '-7%'],
+                ['l', -10, 10],
+                ['h', '-7%']
+            ]
+        },
+        {
+            name: 'line',
+            path: [
+                ['M', '100%-10', '100%-10'],
+                ['h', '-7%'],
+                ['l', -10, -10],
+                ['h', '-7%']
+            ]
+        },
+        {
+            name: 'line',
+            path: [
+                ['M', '10', '100%-10'],
+                ['h', '7%'],
+                ['l', 10, -10],
+                ['h', '7%']
+            ]
+        }
+    ]
+}
+
 export default function Homepage(): React.JSX.Element {
     const navigate = Router.useNavigate();
     const { loading, loggedIn, account } = useAccount();
@@ -69,8 +112,13 @@ export default function Homepage(): React.JSX.Element {
     Tesseract.useModal({ title: "Loading...", body: "Logging in..." }, loading);
     if (loading) return <>{outlet}</>;
     return <>
+        <Tesseract.Overlay>
+            <div style={{ position: "absolute", width: "100vw", height: "100vh" }}>
+                <Arwes.FrameBase settings={pageFrameSettings} />
+            </div>
+        </Tesseract.Overlay>
         {loggedIn && !outlet && <MainGame navigate={navigate} />}
-        <Tesseract.Page position={new THREE.Vector3(0, 0, 12)} focused={!outlet && !loggedIn}>
+        <Tesseract.Page position={new THREE.Vector3(0, 4, 0)} focused={!outlet && !loggedIn}>
             <div>
                 {loggedIn ? account.name : "not logged in"}
             </div>
@@ -78,8 +126,8 @@ export default function Homepage(): React.JSX.Element {
                 loggedIn ?
                     null :
                     <>
-                        <Tesseract.Link navigate={navigate} to="/login" disabled={!!outlet}>Login</Tesseract.Link><br />
-                        <Tesseract.Link navigate={navigate} to="/createAccount" disabled={!!outlet}>Create Account</Tesseract.Link>
+                        <Link navigate={navigate} to="/login" disabled={!!outlet}>Login</Link><br />
+                        <Link navigate={navigate} to="/createAccount" disabled={!!outlet}>Create Account</Link>
                     </>
             }
         </Tesseract.Page>

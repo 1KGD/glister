@@ -11,6 +11,7 @@ import Homepage from './homepage';
 import * as Tesseract from 'tesseract';
 import { type AccountClientData } from '../server/account';
 import Editor from './editor/editor';
+import config from '../../config';
 
 export type OutletContext = { loading: boolean, loggedIn: boolean, account: AccountClientData };
 
@@ -70,4 +71,4 @@ function App(): React.JSX.Element {
     </>;
 }
 
-createRoot(document.getElementById("root")).render(<App />);
+setTimeout(() => createRoot(document.getElementById("root")).render(<App />), config.dev ? 0 : 2000);

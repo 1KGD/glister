@@ -1,0 +1,17 @@
+.button {
+    position: relative;
+    outline: none;
+    margin: 0;
+    border: none;
+    padding: 0 2rem;
+    line-height: 2rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    letter-spacing: 1px;
+    background: transparent;
+    cursor: pointer;
+    color: var(--button-text);
+    transition-property: opacity, color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
