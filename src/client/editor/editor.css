@@ -70,3 +70,19 @@
 .parts-menu-frame [data-name=deco] {
     color: var(--secondary-color-5);
 }
+
+.parts-group-frame [data-name=line] {
+    color: var(--primary-color-5);
+}
+
+.parts-group-frame [data-name=deco] {
+    color: var(--secondary-color-5);
+}
+
+.part-frame [data-name=bg] {
+    color: var(--secondary-color-5-transparent);
+}
+
+.part-frame [data-name=line] {
+    color: var(--secondary-color-3);
+}

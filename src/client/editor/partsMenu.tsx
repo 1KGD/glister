@@ -23,7 +23,7 @@ function Part({ component, active }: { component: IComponentDefinition, active: 
     const { components, setComponents } = useShipComponents();
 
     return <div className="part" onClick={() => setComponents(components.concat([{ children: React.createElement(component.render), position: new THREE.Vector3 }]))}>
-        <Arwes.FrameUnderline animated />
+        <Arwes.FrameUnderline animated className="part-frame" />
         <Arwes.Text manager="decipher">{component.name}</Arwes.Text>
         {active && <DREI.View style={{ width: "100%", height: "100px" }}>
             <directionalLight />
@@ -40,7 +40,7 @@ function PartsGroup({ name, components }: { name: string, components: readonly I
     const [collapsed, setCollapsed] = React.useState<boolean>(true);
 
     return <div className="parts-group" style={{ maxHeight: collapsed ? "50px" : "none" }}>
-        <Arwes.FrameHeader animated />
+        <Arwes.FrameHeader animated className="parts-group-frame" />
         <Arwes.Text className="parts-group-header" as="h2" onClick={() => setCollapsed(!collapsed)}>{name}</Arwes.Text>
         <Arwes.Animator active={!collapsed}>
             {components.map(component => <Part key={component.name} component={component} active={!collapsed} />)}
