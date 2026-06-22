@@ -5,14 +5,15 @@ import PositionState from '../../common/positionState';
 import roomProvider from '../roomProvider';
 import Player from './player';
 import * as Tesseract from 'tesseract';
+import Link from '../widgets/link';
 
 export default function Ship({ position, navigate }: { position: PositionState, navigate: Router.NavigateFunction }): React.JSX.Element {
     const state = roomProvider.ship.useRoomState();
     return <mesh position={[position.x, position.y, position.z]}>
         <Tesseract.Page xray position={new THREE.Vector3(0, 0, -2)}>
             <>
-                <Tesseract.Link navigate={navigate} to="/api/logout" viewTransition refresh>Logout</Tesseract.Link>
-                <Tesseract.Link navigate={navigate} to="/editor" viewTransition refresh>Ship Editor</Tesseract.Link>
+                <Link navigate={navigate} to="/api/logout" viewTransition>Logout</Link>
+                <Link navigate={navigate} to="/editor" viewTransition refresh>Ship Editor</Link>
             </>
         </Tesseract.Page>
         <torusKnotGeometry />
