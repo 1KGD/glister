@@ -10,6 +10,9 @@ export default class PlayerState extends $.Schema {
     @$.type(PositionState)
     public position: PositionState = new PositionState(0, 0, 0);
 
+    @$.type("boolean")
+    public ready: boolean = false;
+
     public updateSystem: Colyseus.Delayed;
 
     public constructor(name: string) {

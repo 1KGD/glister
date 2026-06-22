@@ -3,6 +3,7 @@ import Account from './account';
 import ShipState from '../common/shipState';
 import accountManager from './accountManager';
 import PlayerState from '../common/playerState';
+import CelestialSystemState from '../common/celestialSystemState';
 
 interface ShipMetadata {
     readonly shipId: string;
@@ -22,6 +23,17 @@ export default class ShipRoom extends Colyseus.Room<{
 }> {
     public override state: ShipState;
 
+    public override messages = {
+        ready: (client: CelestialSystemClient): void => {
+            const player = this.state.players.get(client.sessionId);
+            if (!player.ready) {
+                this.broadcast("notify", `welcome aboard, ${client.auth.name}`);
+                this.clock.setTimeout(() => client.send("notify", "The Quick Brown Fox Jumped Over The Lazy Dog"), 4000);
+                this.state.players.get(client.sessionId).ready = true;
+            }
+        }
+    };
+
     public override onCreate(options: { shipId: string }): void {
         this.metadata = { shipId: options.shipId };
         this.state = new ShipState;
@@ -37,8 +49,6 @@ export default class ShipRoom extends Colyseus.Room<{
 
     public override onJoin(client: CelestialSystemClient): void {
         this.state.players.set(client.sessionId, new PlayerState(client.auth.name));
-        this.broadcast("notify", `welcome aboard, ${client.auth.name}`);
-        this.clock.setTimeout(() => client.send("notify", "The Quick Brown Fox Jumped Over The Lazy Dog"), 4000);
     }
 
     public override onLeave(client: CelestialSystemClient): void {

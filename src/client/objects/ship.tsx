@@ -8,7 +8,10 @@ import * as Tesseract from 'tesseract';
 import Link from '../widgets/link';
 
 export default function Ship({ position, navigate }: { position: PositionState, navigate: Router.NavigateFunction }): React.JSX.Element {
+    const { isConnecting, room } = roomProvider.ship.useRoom();
     const state = roomProvider.ship.useRoomState();
+    React.useEffect(() => { if (room && !isConnecting) room.send("ready") }, [isConnecting]);
+
     return <mesh position={[position.x, position.y, position.z]}>
         <Tesseract.Page xray position={new THREE.Vector3(0, 0, -2)}>
             <>
