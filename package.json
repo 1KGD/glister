@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "concurrently --kill-others --names vite,colyseus -c green,blue 'pnpm run client-dev' 'pnpm run server-dev'",
-        "client-dev": "vite",
+        "client-dev": "vite --host",
         "server-dev": "tsx watch --clear-screen=false src/server/index.ts",
         "build-client": "vite build",
         "build-server": "rollup -c"

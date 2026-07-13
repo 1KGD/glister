@@ -52,7 +52,7 @@ export async function createCelestialSystems(): Promise<void> {
         const system = new CelestialSystem;
         await ormDataSource.manager.save(system);
         await system.populatePlanets();
-        count = await ormDataSource.manager.count(CelestialSystem)
-        console.log(`Populating Systems: ${Math.round(count/systemCount)}%`);
+        count = await ormDataSource.manager.count(CelestialSystem);
+        console.log(`Populating Systems: ${Math.round(count/systemCount*100)}%`);
     }
 }
